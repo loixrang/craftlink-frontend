@@ -2,7 +2,7 @@
 
 Import directly from `src/components/ui/` and `src/components/layout/`.
 
-- `AppShell`: children plus navigation items `{ label, href, current? }`. Supplies header, navigation, skip link, main and footer. Mobile navigation toggles below `md`; Escape inside closes it and focuses the trigger. Only implemented Home is linked; routing belongs to FE-004.
+- `AppShell`: children plus navigation items `{ label, href }`; requires a React Router provider. Supplies header, navigation, skip link, main and footer. Router links determine current navigation automatically. Mobile navigation toggles below `md`; Escape inside closes it and focuses the trigger. See API_FOUNDATION.md for the FE-004 route skeleton.
 - `Button`: primary/secondary/quiet variants, native props and refs. Defaults to `type="button"`. Set `pending` and meaningful text such as “Saving…” to disable activation and expose busy state.
 - `Input`: required visible `label`, optional `hint` and `error`, native props and refs. Generates IDs, preserves caller descriptions and marks errors invalid. Callers own validation and submission announcements.
 - `Badge`: neutral/accent emphasis; always describe status in text.

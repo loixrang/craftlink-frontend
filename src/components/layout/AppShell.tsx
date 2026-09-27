@@ -1,8 +1,9 @@
 import { useId, useRef, useState, type ReactNode } from 'react'
 import { Menu, Wrench, X } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { Link, NavLink } from 'react-router-dom'
 
-type NavigationItem = { label: string; href: string; current?: boolean }
+type NavigationItem = { label: string; href: string }
 type AppShellProps = { children: ReactNode; navigation: readonly NavigationItem[] }
 
 export function AppShell({ children, navigation }: AppShellProps) {
@@ -15,7 +16,7 @@ export function AppShell({ children, navigation }: AppShellProps) {
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-control focus:bg-surface focus:px-4 focus:py-3">Skip to content</a>
       <header className="border-b border-line bg-surface">
         <div className="mx-auto flex w-full max-w-content flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <a href="/" aria-label="Craftlink home" className="inline-flex min-h-11 items-center gap-2 text-xl font-semibold tracking-tight text-ink no-underline"><Wrench aria-hidden="true" size={23} className="text-accent" />Craftlink</a>
+          <Link to="/" onClick={() => setMenuOpen(false)} aria-label="Craftlink home" className="inline-flex min-h-11 items-center gap-2 text-xl font-semibold tracking-tight text-ink no-underline"><Wrench aria-hidden="true" size={23} className="text-accent" />Craftlink</Link>
           <Button ref={menuButton} variant="secondary" className="md:hidden" aria-expanded={menuOpen} aria-controls={navigationId} onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}Menu
           </Button>
@@ -27,7 +28,7 @@ export function AppShell({ children, navigation }: AppShellProps) {
               }
             }}>
             <ul className="flex flex-col gap-2 md:flex-row md:items-center">
-              {navigation.map(({ label, href, current }) => <li key={href}><a href={href} aria-current={current ? 'page' : undefined} onClick={() => setMenuOpen(false)} className={`flex min-h-11 items-center rounded-control px-4 py-2 text-sm font-medium no-underline ${current ? 'bg-accent-soft text-accent-hover' : 'text-ink hover:bg-surface-muted'}`}>{label}</a></li>)}
+              {navigation.map(({ label, href }) => <li key={href}><NavLink to={href} end={href === '/'} onClick={() => setMenuOpen(false)} className={({ isActive }) => `flex min-h-11 items-center rounded-control px-4 py-2 text-sm font-medium no-underline ${isActive ? 'bg-accent-soft text-accent-hover' : 'text-ink hover:bg-surface-muted'}`}>{label}</NavLink></li>)}
             </ul>
           </nav>
         </div>

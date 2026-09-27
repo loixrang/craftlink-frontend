@@ -4,6 +4,14 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 
 ## Unreleased
 
+### 2026-09-27 — FE-004
+
+- Added React Router route skeletons for public/auth/dashboard families, router-aware shell navigation and not-found recovery.
+- Added a stable TanStack Query provider with bounded transient-error query retries and no automatic mutation retries.
+- Added a centralized typed JSON API client with validated public base URL configuration, contract envelopes/pagination, explicit bearer support, cancellation and normalized HTTP/network errors. Added .env.example and API_FOUNDATION.md usage notes.
+- Verified all 49 tests, lint, typecheck, production build and diff whitespace check. Dependency installation audit: zero vulnerabilities. Tests mock HTTP; live backend integration and browser visual inspection were not performed.
+- FE-005 remains unstarted. No API contract, product scope, architecture or deployment changes.
+
 ### 2026-09-27 — FE-003
 
 - Added responsive header/navigation/main/footer, skip link, mobile menu disclosure and Escape focus restoration.

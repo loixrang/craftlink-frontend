@@ -11,7 +11,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 
 ## Authentication
 - [x] FE-AUTH-001 - Registration for customer/artisan with validation and API errors.
-- [ ] FE-AUTH-002 - Login and authenticated state.
+- [x] FE-AUTH-002 - Login and authenticated state.
 - [ ] FE-AUTH-003 - Protected routes and role-aware navigation/session restoration.
 
 ## Discovery

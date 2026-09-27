@@ -1,7 +1,14 @@
 # Current Task
 
-Status: UNASSIGNED
-Feature: NONE
+Status: COMPLETE
+Feature: FE-001 — Initialize React + TypeScript + Vite and quality tooling
+
+Objective: Establish a minimal runnable frontend foundation.
+Scope: React bootstrap, strict TypeScript, Vite, ESLint, Vitest, render smoke test, scripts and Git ignores.
+Exclusions: FE-002 and later features, design system, navigation, API calls and deployment.
+Acceptance: Dependencies install; dev starts; typecheck, lint, tests and production build pass; minimal structure with no feature UI.
+
+Verified 2026-09-27: npm.cmd ci (zero audit vulnerabilities), npm.cmd run typecheck, npm.cmd run lint, npm.cmd test (one passing render smoke test), npm.cmd run build. Development server and production preview started and served HTTP 200; development entry transformed successfully. FE-002 remains unstarted.
 
 When starting:
 1. Read AGENTS.md and the project docs.

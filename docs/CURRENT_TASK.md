@@ -1,25 +1,11 @@
 # Current Task
 
 Status: COMPLETE
-Feature: FE-001 — Initialize React + TypeScript + Vite and quality tooling
+Feature: FE-002 — Configure Tailwind and Craftlink design tokens/global styles
 
-Objective: Establish a minimal runnable frontend foundation.
-Scope: React bootstrap, strict TypeScript, Vite, ESLint, Vitest, render smoke test, scripts and Git ignores.
-Exclusions: FE-002 and later features, design system, navigation, API calls and deployment.
-Acceptance: Dependencies install; dev starts; typecheck, lint, tests and production build pass; minimal structure with no feature UI.
+Objective: Establish the shared visual foundation for Craftlink.
+Scope: Tailwind Vite integration, semantic design tokens, typography, spacing, accessible focus and responsive global styles; apply utilities to the existing bootstrap screen.
+Exclusions: FE-003 and later features, reusable UI components, navigation, feature pages, API calls and deployment.
+Acceptance: Tailwind utilities compile; warm neutral surfaces, charcoal text and restrained amber accents have documented usage; typography, spacing, keyboard focus and responsive foundations work; typecheck, lint, tests and production build pass.
 
-Verified 2026-09-27: npm.cmd ci (zero audit vulnerabilities), npm.cmd run typecheck, npm.cmd run lint, npm.cmd test (one passing render smoke test), npm.cmd run build. Development server and production preview started and served HTTP 200; development entry transformed successfully. FE-002 remains unstarted.
-
-When starting:
-1. Read AGENTS.md and the project docs.
-2. If UNASSIGNED or COMPLETE, select the first incomplete unblocked ROADMAP feature.
-3. Mark it `[~]` and replace this file with its ID, objective, scope, exclusions and acceptance criteria.
-4. Implement only that feature.
-
-When finished:
-- run relevant checks;
-- mark `[x]` only if acceptance criteria pass;
-- append CHANGELOG;
-- set this file to `Status: COMPLETE`;
-- do not begin another feature;
-- report and stop.
+Verified 2026-09-27: Tailwind installed (zero reported audit vulnerabilities); typecheck, lint, existing render smoke test (1 test) and production build passed. Compiled CSS contains semantic utilities, responsive breakpoint rules, keyboard focus and forced-color styles. Numeric contrast checks passed for text, accent and control-boundary pairs. Browser visual/layout inspection was not performed. See DESIGN_FOUNDATION.md for token usage. FE-003 remains unstarted.

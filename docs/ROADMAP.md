@@ -5,7 +5,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 ## Foundation
 - [x] FE-001 - Initialize React + TypeScript + Vite and quality tooling. Acceptance: dev/build/typecheck/lint/test foundations work; sensible source structure; no feature UI.
 - [x] FE-002 - Configure Tailwind and Craftlink design tokens/global styles. Acceptance: typography, colors, spacing, focus and responsive foundations.
-- [ ] FE-003 - Core UI primitives and application shell. Acceptance: navigation/layout plus reusable buttons, inputs, badges, surfaces and loading/error/empty patterns.
+- [x] FE-003 - Core UI primitives and application shell. Acceptance: navigation/layout plus reusable buttons, inputs, badges, surfaces and loading/error/empty patterns.
 - [ ] FE-004 - Router, TanStack Query and API-client foundation. Acceptance: route skeleton, query provider and safe API base URL configuration.
 - [ ] FE-005 - Public landing page. Acceptance: polished responsive landing/category/discovery CTAs without fabricated metrics/testimonials.
 

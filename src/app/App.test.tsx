@@ -1,10 +1,11 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { App } from './App'
+import { AppProviders } from './AppProviders'
 import { MemoryRouter } from 'react-router-dom'
 
 function renderApp(path = '/') {
-  return render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>)
+  return render(<AppProviders><MemoryRouter initialEntries={[path]}><App /></MemoryRouter></AppProviders>)
 }
 
 describe('application bootstrap', () => {

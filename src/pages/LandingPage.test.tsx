@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { App } from '../app/App'
+import { AppProviders } from '../app/AppProviders'
 
 function Location() {
   const location = useLocation()
@@ -9,7 +10,7 @@ function Location() {
 }
 
 function renderLanding() {
-  render(<MemoryRouter><App /><Location /></MemoryRouter>)
+  render(<AppProviders><MemoryRouter><App /><Location /></MemoryRouter></AppProviders>)
 }
 
 describe('public landing page', () => {

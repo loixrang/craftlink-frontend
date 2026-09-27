@@ -1,11 +1,10 @@
-﻿# Current Task
+# Current Task
 
 Status: COMPLETE
-Feature: FE-005 - Public landing page
+Feature: FE-AUTH-001 - Registration for customer/artisan with validation and API errors.
 
-Objective: Build a polished, responsive public introduction to Craftlink.
-Scope: Landing hero, contract-listed category/discovery links, how-it-works content and artisan registration CTA; focused navigation and semantic tests.
-Exclusions: Category API integration, discovery results/filters, authentication, invented metrics/testimonials and deployment changes.
-Acceptance: Responsive landing/category/discovery CTAs using existing routes and design tokens; no fabricated claims; tests, typecheck, lint, build and whitespace checks pass.
+Scope: Registration form, contract registration service, TanStack mutation, accessible validation and pending/error/success states, focused tests.
+Exclusions: Login, authenticated state/session persistence, route guards and subsequent features.
+Acceptance: Only CUSTOMER/ARTISAN can register; submit the exact contract payload; validate email and required password with confirmation; handle API failures and prevent duplicate pending submissions; typecheck, lint, tests, build and whitespace checks pass.
 
-Verified 2026-09-27: All 54 tests, typecheck (via production build), lint and production build pass. Whitespace checked with git diff --check. Responsive layouts use mobile-first stacking, wrapping CTAs and two/four-column category grids. Browser visual inspection was not performed; jsdom does not verify layout. Category links carry service names using the contract-supported q query parameter, not fabricated category IDs. Discovery and registration still lead to existing placeholders; later features implement those flows. No API calls, contract, architecture or deployment changes. FE-AUTH-001 remains unstarted.
+Verified 2026-09-27: All 64 tests pass, including 10 registration tests. Lint, typecheck (via build), production build and git diff --check pass. Dependency install reports zero vulnerabilities. Tests use mocked HTTP; no live backend integration or browser visual inspection was performed. Password policy is enforced by the backend because the frozen contract does not define it. Tokens are discarded; registration success links to the existing login placeholder. FE-AUTH-002 remains unstarted. No API contract, architecture, product scope or deployment changes.

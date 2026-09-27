@@ -8,11 +8,10 @@ function renderApp(path = '/') {
 }
 
 describe('application bootstrap', () => {
-  it('renders the foundation shell in the main landmark', () => {
+  it('renders the landing page in the main landmark', () => {
     renderApp()
     const main = screen.getByRole('main')
-    expect(within(main).getByRole('heading', { level: 1, name: 'Craftlink' })).toBeVisible()
-    expect(within(main).getByText('The frontend foundation is ready.')).toBeVisible()
+    expect(within(main).getByRole('heading', { level: 1, name: 'Find the right hands for the job.' })).toBeVisible()
   })
 
   it('provides shell landmarks, a skip target and current navigation', () => {
@@ -66,6 +65,6 @@ describe('application bootstrap', () => {
   it('returns home from an unknown route', () => {
     renderApp('/missing')
     fireEvent.click(screen.getByRole('link', { name: 'Return home' }))
-    expect(screen.getByRole('heading', { name: 'Craftlink' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Find the right hands for the job.' })).toBeVisible()
   })
 })

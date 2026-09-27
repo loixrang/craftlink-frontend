@@ -7,7 +7,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 - [x] FE-002 - Configure Tailwind and Craftlink design tokens/global styles. Acceptance: typography, colors, spacing, focus and responsive foundations.
 - [x] FE-003 - Core UI primitives and application shell. Acceptance: navigation/layout plus reusable buttons, inputs, badges, surfaces and loading/error/empty patterns.
 - [x] FE-004 - Router, TanStack Query and API-client foundation. Acceptance: route skeleton, query provider and safe API base URL configuration.
-- [ ] FE-005 - Public landing page. Acceptance: polished responsive landing/category/discovery CTAs without fabricated metrics/testimonials.
+- [x] FE-005 - Public landing page. Acceptance: polished responsive landing/category/discovery CTAs without fabricated metrics/testimonials.
 
 ## Authentication
 - [ ] FE-AUTH-001 - Registration for customer/artisan with validation and API errors.

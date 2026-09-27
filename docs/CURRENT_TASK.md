@@ -1,11 +1,11 @@
 ﻿# Current Task
 
 Status: COMPLETE
-Feature: FE-004 - Router, TanStack Query and API-client foundation
+Feature: FE-005 - Public landing page
 
-Objective: Establish route skeletons, the shared query provider and a safe centralized API client.
-Scope: Expected route families and not-found screen, router-aware shell navigation, query defaults, validated public API base URL, typed JSON requests/errors and focused tests.
-Exclusions: Landing page, authentication/session state, role guards, feature API integration and deployment configuration.
-Acceptance: Route skeleton and client-side navigation work; query provider is available; API base configuration is safe; focused tests, typecheck, lint and production build pass.
+Objective: Build a polished, responsive public introduction to Craftlink.
+Scope: Landing hero, contract-listed category/discovery links, how-it-works content and artisan registration CTA; focused navigation and semantic tests.
+Exclusions: Category API integration, discovery results/filters, authentication, invented metrics/testimonials and deployment changes.
+Acceptance: Responsive landing/category/discovery CTAs using existing routes and design tokens; no fabricated claims; tests, typecheck, lint, build and whitespace checks pass.
 
-Verified 2026-09-27: All 49 tests, lint, typecheck, production build and diff whitespace check pass. Dependency installation reports zero vulnerabilities. See API_FOUNDATION.md for setup and usage. Tests use mocked HTTP; live backend integration and browser visual inspection were not performed. FE-005 remains unstarted; no API contract, product scope, architecture or deployment changes.
+Verified 2026-09-27: All 54 tests, typecheck (via production build), lint and production build pass. Whitespace checked with git diff --check. Responsive layouts use mobile-first stacking, wrapping CTAs and two/four-column category grids. Browser visual inspection was not performed; jsdom does not verify layout. Category links carry service names using the contract-supported q query parameter, not fabricated category IDs. Discovery and registration still lead to existing placeholders; later features implement those flows. No API calls, contract, architecture or deployment changes. FE-AUTH-001 remains unstarted.

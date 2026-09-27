@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from 'react-router-dom'
+import { LandingPage } from '../pages/LandingPage'
 
 function Placeholder({ title }: { title: string }) {
   return <><h1 className="text-3xl tracking-tight sm:text-4xl">{title}</h1><p className="mt-4 text-ink-muted">This page is being prepared. Please check back soon.</p></>
@@ -7,7 +8,7 @@ function Placeholder({ title }: { title: string }) {
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<><h1 className="text-3xl tracking-tight sm:text-4xl">Craftlink</h1><p className="mt-4 text-base text-ink-muted">The frontend foundation is ready.</p></>} />
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Placeholder title="Log in" />} />
       <Route path="/register" element={<Placeholder title="Create an account" />} />
       <Route path="/artisans" element={<Placeholder title="Find an artisan" />} />

@@ -86,3 +86,10 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Integrated contract location parameters into existing public discovery queries, preserving other filters and supporting URL/history restoration, page reset and invalid-link feedback. Documented coordinate URL visibility and the absence of an address lookup endpoint in MANUAL_LOCATION.md.
 - Verified all 146 tests (13 added cases), typecheck, lint, production build and whitespace check. Initial new-test label queries were corrected to use accessible names. HTTP is mocked; live integration and browser visual inspection were not performed.
 - Marked FE-DISC-003 complete. FE-DISC-004 remains unstarted. No API contract, architecture, product scope or deployment changes.
+
+### 2026-09-28 - FE-DISC-004
+
+- Added explicitly requested browser geolocation to the existing location form, with pending/cancel/success feedback and review-before-apply behavior. Existing radius and discovery filters are retained.
+- Added manual fallback for permission denial, unavailable position, timeout, unsupported browsers, insecure contexts and invalid results. Obsolete callbacks cannot overwrite manual edits, cleared state or navigation.
+- Added 16 focused tests; all 162 tests, typecheck, lint, production build and whitespace check pass. Corrected the initial jsdom geolocation mock setup. Documented behavior in BROWSER_LOCATION.md; real browser permissions/device location, visual layout and live backend integration were not exercised.
+- Marked FE-DISC-004 complete. FE-DISC-005 remains unstarted. No API contract, architecture, product scope or deployment changes.

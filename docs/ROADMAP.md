@@ -23,7 +23,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 - [x] FE-DISC-006 - Artisan public profile: services, portfolio, safe credentials, rating, contacts, request CTA.
 
 ## Customer
-- [ ] FE-CUST-001 - Customer dashboard.
+- [x] FE-CUST-001 - Customer dashboard.
 - [ ] FE-CUST-002 - Create service request.
 - [ ] FE-CUST-003 - Request history/detail/status.
 - [ ] FE-CUST-004 - Eligible review/rating.

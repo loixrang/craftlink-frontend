@@ -108,3 +108,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Confirmed current detail fields through read-only backend source inspection. Documented provisional populated portfolio shape, currency handling and integration limits in ARTISAN_PROFILE.md. No backend or API contract changes.
 - Verified all 199 tests (16 new cases), typecheck, lint, production build and whitespace checks. HTTP is mocked; live integration and browser visual inspection were not performed.
 - Marked FE-DISC-006 complete. FE-CUST-001 remains unstarted. No dependency or deployment changes.
+
+### 2026-09-28 - FE-CUST-001
+
+- Replaced the customer dashboard placeholder with a responsive welcome, authenticated account summary, artisan search, live category shortcuts and project guidance.
+- Reused the protected customer route, validated category service and shared cancellable TanStack Query cache. Added loading, refresh, error/retry and empty states; search remains available when categories fail. Request creation and tracking are explicitly coming soon, without fabricated activity counts.
+- Added 14 focused tests for account display, search/category navigation, response states, cancellation and access controls. All 213 tests, lint, typecheck, production build and whitespace checks pass. Corrected an ambiguous status query in the initial focused test run.
+- Documented behavior in CUSTOMER_DASHBOARD.md. HTTP is mocked; live integration and browser visual inspection were not performed.
+- Marked FE-CUST-001 complete. FE-CUST-002 remains unstarted. No API contract, dependency or deployment changes.

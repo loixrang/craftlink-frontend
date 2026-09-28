@@ -4,6 +4,7 @@ import { RegisterPage } from '../pages/RegisterPage'
 import { LoginPage } from '../pages/LoginPage'
 import { CategoriesPage } from '../pages/CategoriesPage'
 import { ArtisanProfilePage } from '../pages/ArtisanProfilePage'
+import { CustomerDashboardPage } from '../pages/CustomerDashboardPage'
 import { RequireRole, SessionGate } from './RequireRole'
 
 function Placeholder({ title }: { title: string }) {
@@ -18,7 +19,7 @@ export function AppRoutes() {
       <Route path="/register" element={<SessionGate><RegisterPage /></SessionGate>} />
       <Route path="/artisans" element={<CategoriesPage />} />
       <Route path="/artisans/:artisanId" element={<ArtisanProfilePage />} />
-      <Route path="/customer/*" element={<RequireRole role="CUSTOMER"><Placeholder title="Customer dashboard" /></RequireRole>} />
+      <Route path="/customer/*" element={<RequireRole role="CUSTOMER"><CustomerDashboardPage /></RequireRole>} />
       <Route path="/artisan/*" element={<RequireRole role="ARTISAN"><Placeholder title="Artisan dashboard" /></RequireRole>} />
       <Route path="/admin/*" element={<RequireRole role="ADMIN"><Placeholder title="Admin dashboard" /></RequireRole>} />
       <Route path="*" element={<><h1 className="text-3xl tracking-tight">Page not found</h1><p className="mt-4 text-ink-muted">We couldn’t find that page.</p><Link to="/" className="mt-6 inline-flex min-h-11 items-center">Return home</Link></>} />

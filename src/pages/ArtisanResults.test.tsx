@@ -20,7 +20,7 @@ it('requests public results with exact supported filters, cancellation and safe 
   expect(screen.getByText('Finding artisans...')).toBeVisible()
   expect(await screen.findByRole('link', { name: 'Ada Works' })).toHaveAttribute('href', '/artisans/artisan-1')
   const [url, options] = fetcher.mock.calls[0] as [string, RequestInit]
-  expect(url).toBe('/api/v1/artisans?q=repair+%26+fix&categoryId=plumber&minRating=4&minExperience=2&availability=false')
+  expect(url).toBe('/api/v1/artisans?q=repair+%26+fix&categoryId=plumber&minRating=4&minExperience=2&availability=false&page=4')
   expect(options.signal).toBeInstanceOf(AbortSignal)
   expect(new Headers(options.headers).has('Authorization')).toBe(false)
   expect(screen.getByText('4.5 / 5 (2 reviews)')).toBeVisible()
@@ -179,4 +179,112 @@ it('clears unapplied location drafts and validation errors', async () => {
   fireEvent.click(screen.getByRole('button', { name: 'Clear location' }))
   expect(screen.getByRole('textbox', { name: 'Latitude' })).toHaveValue('')
   expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+})
+
+it.each(['rating', 'experience', 'newest', 'distance'])('sends supported sort %s and resets the page on sort changes', async sort => {
+  const fetcher = vi.fn().mockImplementation(() => Promise.resolve(response()))
+  vi.stubGlobal('fetch', fetcher)
+  setup('/artisans?q=repair&latitude=0&longitude=0&page=3')
+  await screen.findByRole('link', { name: 'Ada Works' })
+  fireEvent.change(screen.getByLabelText('Sort results'), { target: { value: sort } })
+  await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2))
+  expect(fetcher.mock.calls[1]?.[0]).toBe('/api/v1/artisans?q=repair&latitude=0&longitude=0&sort=' + sort)
+  expect(screen.getByLabelText('Current URL')).not.toHaveTextContent('page=')
+  fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+  expect(screen.getByLabelText('Sort results')).toHaveValue('')
+  expect(screen.getByLabelText('Current URL')).toHaveTextContent('page=3')
+})
+
+it.each(['0', '-1', '1.5', 'Infinity', '1e2', '', '9007199254740992'])('ignores invalid page %s with recovery feedback', async page => {
+  const fetcher = vi.fn().mockImplementation(() => Promise.resolve(response()))
+  vi.stubGlobal('fetch', fetcher)
+  setup('/artisans?sort=rating&page=' + page)
+  await screen.findByRole('link', { name: 'Ada Works' })
+  expect(fetcher.mock.calls[0]?.[0]).toBe('/api/v1/artisans?sort=rating')
+  expect(screen.getByText(/The page in this link is invalid/)).toBeVisible()
+})
+
+it.each(['distance', 'unknown'])('ignores unavailable sort %s without location', async sort => {
+  const fetcher = vi.fn().mockImplementation(() => Promise.resolve(response()))
+  vi.stubGlobal('fetch', fetcher)
+  setup('/artisans?sort=' + sort)
+  await screen.findByRole('link', { name: 'Ada Works' })
+  expect(fetcher.mock.calls[0]?.[0]).toBe('/api/v1/artisans')
+  expect(screen.getByRole('option', { name: 'Nearest first' })).toBeDisabled()
+  expect(screen.getByText(/The sort in this link is unavailable/)).toBeVisible()
+})
+
+it('pages with all filters, respects boundaries and restores a cached page through history', async () => {
+  const fetcher = vi.fn((url: string) => {
+    const page = Number(new URL(url, 'http://localhost').searchParams.get('page') ?? 1)
+    return Promise.resolve(response({ data: [{ ...artisan, displayName: 'Artisan page ' + page }], pagination: { page, limit: 1, total: 2, totalPages: 2 } }))
+  })
+  vi.stubGlobal('fetch', fetcher)
+  setup('/artisans?q=repair&categoryId=plumber&minRating=4&minExperience=2&availability=true&latitude=0&longitude=0&radiusKm=10&sort=distance')
+  await screen.findByRole('link', { name: 'Artisan page 1' })
+  expect(screen.getByRole('button', { name: 'Previous page' })).toBeDisabled()
+  fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+  await screen.findByRole('link', { name: 'Artisan page 2' })
+  expect(fetcher.mock.calls[1]?.[0]).toBe('/api/v1/artisans?q=repair&categoryId=plumber&minRating=4&minExperience=2&availability=true&latitude=0&longitude=0&radiusKm=10&sort=distance&page=2')
+  expect(screen.getByText('Page 2 of 2')).toBeVisible()
+  expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled()
+  expect(screen.queryByRole('link', { name: 'Artisan page 1' })).not.toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+  expect(await screen.findByRole('link', { name: 'Artisan page 1' })).toBeVisible()
+  expect(fetcher).toHaveBeenCalledTimes(2)
+})
+
+it('recovers an empty out-of-range page without discarding filters', async () => {
+  const fetcher = vi.fn().mockResolvedValueOnce(response({ data: [], pagination: { page: 8, limit: 20, total: 1, totalPages: 1 } })).mockImplementation(() => Promise.resolve(response()))
+  vi.stubGlobal('fetch', fetcher)
+  setup('/artisans?q=repair&sort=newest&page=8')
+  expect(await screen.findByText('No artisans on this page')).toBeVisible()
+  fireEvent.click(screen.getByRole('button', { name: 'Return to first page' }))
+  expect(await screen.findByRole('link', { name: 'Ada Works' })).toBeVisible()
+  expect(fetcher.mock.calls[1]?.[0]).toBe('/api/v1/artisans?q=repair&sort=newest')
+})
+
+it('shows loading and recoverable error for a new page without displaying previous results', async () => {
+  let rejectPage: (reason: Error) => void = () => {}
+  const fetcher = vi.fn().mockResolvedValueOnce(response({ ...payload, pagination: { page: 1, limit: 1, total: 2, totalPages: 2 } }))
+    .mockImplementationOnce(() => new Promise<Response>((_resolve, reject) => { rejectPage = reject }))
+    .mockResolvedValue(response({ ...payload, pagination: { page: 2, limit: 1, total: 2, totalPages: 2 } }))
+  vi.stubGlobal('fetch', fetcher)
+  setup('/artisans?sort=rating')
+  await screen.findByRole('link', { name: 'Ada Works' })
+  fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+  expect(screen.getByText('Finding artisans...')).toBeVisible()
+  expect(screen.queryByRole('link', { name: 'Ada Works' })).not.toBeInTheDocument()
+  rejectPage(new TypeError('offline'))
+  await screen.findByRole('alert')
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+  expect(await screen.findByText('Page 2 of 2')).toBeVisible()
+  expect(fetcher.mock.calls[2]?.[0]).toBe('/api/v1/artisans?sort=rating&page=2')
+})
+
+it.each([
+  { page: 1, limit: 20, total: 1, totalPages: 0 },
+  { page: 1, limit: 20, total: 0, totalPages: 0 },
+  { page: 2, limit: 20, total: 1, totalPages: 1 },
+  { page: 9007199254740992, limit: 20, total: 1, totalPages: 1 },
+])('rejects unsafe or inconsistent pagination metadata %j', async pagination => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response({ ...payload, pagination })))
+  setup()
+  expect(await screen.findByRole('alert')).toHaveTextContent('Artisans are unavailable')
+  expect(screen.queryByRole('navigation', { name: 'Results pages' })).not.toBeInTheDocument()
+})
+
+it('retains sorting but resets page on search and removes distance sorting when location clears', async () => {
+  const fetcher = vi.fn().mockImplementation(() => Promise.resolve(response()))
+  vi.stubGlobal('fetch', fetcher)
+  setup('/artisans?sort=distance&page=2&latitude=0&longitude=0')
+  await screen.findByRole('link', { name: 'Ada Works' })
+  fireEvent.change(screen.getByLabelText('Search artisans'), { target: { value: 'Ada' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Search artisans' }))
+  await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2))
+  expect(fetcher.mock.calls[1]?.[0]).toBe('/api/v1/artisans?q=Ada&latitude=0&longitude=0&sort=distance')
+  fireEvent.click(screen.getByRole('button', { name: 'Clear location' }))
+  await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(3))
+  expect(fetcher.mock.calls[2]?.[0]).toBe('/api/v1/artisans?q=Ada')
+  expect(screen.getByLabelText('Sort results')).toHaveValue('')
 })

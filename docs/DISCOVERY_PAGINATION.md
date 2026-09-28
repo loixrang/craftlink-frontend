@@ -1,0 +1,9 @@
+# Sorting and pagination - FE-DISC-005
+
+Discovery offers the contract sorts distance, rating, experience and newest. Default order omits sort and leaves ordering to the server. Nearest first requires a valid applied coordinate pair (including zero); drafting or receiving browser coordinates does not enable it until Apply location. Unsupported sorts and distance links without valid location are ignored with visible feedback.
+
+Positive safe-integer decimal page URL values are forwarded through the existing public artisan service and TanStack Query key. Invalid values fall back to the first page with feedback. The API supplies its default page size; no new limit control or client-side sorting is introduced. Previous/next controls use returned pagination metadata and disable at boundaries or during refresh. Pagination metadata is validated for safe integers, consistent totals and bounded result counts. Empty out-of-range pages are permitted and offer a first-page recovery action without removing filters.
+
+Paging preserves applied filters, location and sorting. Sort, search, category and applied-location changes reset page. Clear location also removes distance sort. URL navigation restores controls and cached results; distinct pages use distinct query keys. Existing cancellation, pending, refresh, retry and error states remain active; prior-page results are not presented as the new page while loading. Empty first-page results offer Reset search. No matching artisans are fabricated.
+
+Tests use mocked HTTP and cover sort choices, coordinate gating, direct links, invalid pages/sorts, boundaries, retained filters, history, page resets, unavailable-page recovery, loading/error/retry and malformed pagination. Live backend integration and browser visual/keyboard layout have not been exercised. Public profile remains FE-DISC-006. No API contract, dependencies or deployment changes.

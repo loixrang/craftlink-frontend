@@ -93,3 +93,10 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added manual fallback for permission denial, unavailable position, timeout, unsupported browsers, insecure contexts and invalid results. Obsolete callbacks cannot overwrite manual edits, cleared state or navigation.
 - Added 16 focused tests; all 162 tests, typecheck, lint, production build and whitespace check pass. Corrected the initial jsdom geolocation mock setup. Documented behavior in BROWSER_LOCATION.md; real browser permissions/device location, visual layout and live backend integration were not exercised.
 - Marked FE-DISC-004 complete. FE-DISC-005 remains unstarted. No API contract, architecture, product scope or deployment changes.
+
+### 2026-09-28 - FE-DISC-005
+
+- Added URL-backed default/distance/rating/experience/newest ordering and previous/next pagination with boundary states and filter preservation. Distance sorting requires applied valid coordinates; sort/filter changes reset page and browser history restores selections/results.
+- Added invalid-link feedback, empty-page recovery, first-page reset and safe/consistent pagination-response validation. Existing loading, refresh, cancellation and retry behavior applies to distinct sort/page query keys.
+- Added 21 focused cases; all 183 tests, typecheck, lint and production build pass. Corrected a trailing blank line found by the whitespace check. Documented behavior in DISCOVERY_PAGINATION.md. HTTP is mocked; live backend integration and browser visual inspection were not performed.
+- Marked FE-DISC-005 complete. FE-DISC-006 remains unstarted. No API contract, dependency, architecture or deployment changes.

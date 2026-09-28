@@ -1,7 +1,8 @@
 import { z } from 'zod'
 import { api, ApiError } from './api'
 
-export type ArtisanFilters = { q?: string; categoryId?: string; minRating?: number; minExperience?: number; availability?: boolean; latitude?: number; longitude?: number; radiusKm?: number }
+export type ArtisanSort = 'distance' | 'rating' | 'experience' | 'newest'
+export type ArtisanFilters = { q?: string; categoryId?: string; minRating?: number; minExperience?: number; availability?: boolean; latitude?: number; longitude?: number; radiusKm?: number; sort?: ArtisanSort; page?: number }
 
 const summary = z.object({
   id: z.string().min(1), displayName: z.string().trim().min(1), bio: z.string().nullable(),
@@ -15,6 +16,12 @@ const summary = z.object({
 const collection = z.object({
   data: z.array(summary).refine(items => new Set(items.map(item => item.id)).size === items.length),
   pagination: z.object({ page: z.number().int().positive(), limit: z.number().int().positive(), total: z.number().int().nonnegative(), totalPages: z.number().int().nonnegative() }),
+}).refine(({ data, pagination }) => {
+  const { page, limit, total, totalPages } = pagination
+  return [page, limit, total, totalPages].every(Number.isSafeInteger)
+    && totalPages === Math.ceil(total / limit)
+    && data.length <= limit && data.length <= total
+    && (data.length === 0 || page <= totalPages)
 })
 
 export async function getArtisans(filters: ArtisanFilters, signal: AbortSignal) {

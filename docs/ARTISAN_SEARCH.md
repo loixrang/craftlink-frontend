@@ -13,3 +13,7 @@ Focused tests cover public request construction, URL filters/history/reset, cate
 ## FE-DISC-003 extension
 
 Manual location now adds validated latitude, longitude and optional radiusKm to discovery requests and query keys. Search/category changes preserve the applied location; clear-all removes it. See MANUAL_LOCATION.md for validation, URL behavior and the contract limitation on address lookup. Sorting and pagination controls remain deferred.
+
+## FE-DISC-005 extension
+
+Sorting and pagination are now implemented through the existing URL, service and query flow. See DISCOVERY_PAGINATION.md for sort requirements, page recovery and validation. Earlier deferred-sort/page notes above describe the original FE-DISC-002/003 scope.

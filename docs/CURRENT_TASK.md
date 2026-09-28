@@ -1,10 +1,10 @@
 # Current Task
 
 Status: COMPLETE
-Feature: FE-DISC-004 - Browser geolocation with permission/fallback UX.
+Feature: FE-DISC-005 - Sorting, pagination and result states.
 
-Scope: Explicit browser location request fills the existing manual coordinate form; Apply location submits through existing discovery state and API.
-Acceptance: No automatic permission prompt; pending and success feedback; denial, unavailable, timeout, unsupported and insecure-context recovery with manual fallback; validate browser coordinates; ignore stale callbacks after edits, cancellation or navigation; preserve filters and optional radius; focused tests, typecheck, lint, full tests, build and whitespace check.
-Exclusions: Geocoding, sorting/pagination, profile changes and subsequent features.
+Scope: URL-backed contract sorting and page navigation in existing artisan discovery.
+Acceptance: Supported sorts; distance requires valid applied coordinates; positive integer page validation; preserve filters during paging; reset page when sorting/filtering; history restoration; accessible bounded pagination; loading, error, empty and out-of-range recovery; focused tests, full tests, typecheck, lint, build and whitespace check.
+Exclusions: Public profile and all subsequent features; API or deployment changes.
 
-Verified 2026-09-28: All 162 tests pass (16 new geolocation cases), typecheck, lint, production build and whitespace check pass. Fixed the initial jsdom geolocation mock setup. See BROWSER_LOCATION.md for behavior and browser API limitations. Real browser permissions/device location, visual layout and live backend integration were not exercised. FE-DISC-005 remains unstarted. No API contract or deployment changes.
+Verified 2026-09-28: All 183 tests pass (21 added cases), typecheck, lint and production build pass. Corrected the roadmap trailing blank line found by the whitespace check. See DISCOVERY_PAGINATION.md for behavior and verification limits. Live backend integration and browser visual inspection were not performed. FE-DISC-006 remains unstarted. No API contract, dependency or deployment changes.

@@ -20,7 +20,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 - [x] FE-DISC-003 - Manual location.
 - [x] FE-DISC-004 - Browser geolocation with permission/fallback UX.
 - [x] FE-DISC-005 - Sorting, pagination and result states.
-- [ ] FE-DISC-006 - Artisan public profile: services, portfolio, safe credentials, rating, contacts, request CTA.
+- [x] FE-DISC-006 - Artisan public profile: services, portfolio, safe credentials, rating, contacts, request CTA.
 
 ## Customer
 - [ ] FE-CUST-001 - Customer dashboard.

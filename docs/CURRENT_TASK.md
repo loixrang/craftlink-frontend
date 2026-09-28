@@ -1,10 +1,10 @@
 # Current Task
 
 Status: COMPLETE
-Feature: FE-DISC-005 - Sorting, pagination and result states.
+Feature: FE-DISC-006 - Artisan public profile.
 
-Scope: URL-backed contract sorting and page navigation in existing artisan discovery.
-Acceptance: Supported sorts; distance requires valid applied coordinates; positive integer page validation; preserve filters during paging; reset page when sorting/filtering; history restoration; accessible bounded pagination; loading, error, empty and out-of-range recovery; focused tests, full tests, typecheck, lint, build and whitespace check.
-Exclusions: Public profile and all subsequent features; API or deployment changes.
+Scope: Public detail service and responsive profile route with services, portfolio, safe credential metadata, rating summary, contacts and request CTA.
+Acceptance: Validated public data; loading/error/not-found/empty states; safe contact/media links; no private fields; cancellable per-artisan queries; focused tests and full typecheck/lint/test/build/whitespace checks.
+Exclusions: Request creation (FE-CUST-002), review submission, backend/API changes and subsequent features. Request CTA clearly indicates creation is not yet available.
 
-Verified 2026-09-28: All 183 tests pass (21 added cases), typecheck, lint and production build pass. Corrected the roadmap trailing blank line found by the whitespace check. See DISCOVERY_PAGINATION.md for behavior and verification limits. Live backend integration and browser visual inspection were not performed. FE-DISC-006 remains unstarted. No API contract, dependency or deployment changes.
+Verified 2026-09-28: All 199 tests pass, including 16 new profile tests. Typecheck, lint, production build and whitespace checks pass. See ARTISAN_PROFILE.md for response assumptions and verification limits. Backend source was inspected read-only; live backend integration and browser visual inspection were not performed. Populated portfolio responses await backend confirmation. FE-CUST-001 remains unstarted. No API contract, dependency or deployment changes.

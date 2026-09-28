@@ -100,3 +100,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added invalid-link feedback, empty-page recovery, first-page reset and safe/consistent pagination-response validation. Existing loading, refresh, cancellation and retry behavior applies to distinct sort/page query keys.
 - Added 21 focused cases; all 183 tests, typecheck, lint and production build pass. Corrected a trailing blank line found by the whitespace check. Documented behavior in DISCOVERY_PAGINATION.md. HTTP is mocked; live backend integration and browser visual inspection were not performed.
 - Marked FE-DISC-005 complete. FE-DISC-006 remains unstarted. No API contract, dependency, architecture or deployment changes.
+
+### 2026-09-28 - FE-DISC-006
+
+- Replaced the public profile placeholder with responsive biography, location, availability, experience, rating summary, services, portfolio, safe credential metadata and public phone/WhatsApp contacts.
+- Added validated cancellable per-artisan queries, private-field stripping, safe contact/image links, image fallback and loading/error/not-found/empty states. Request CTA explicitly indicates that creation is coming in FE-CUST-002.
+- Confirmed current detail fields through read-only backend source inspection. Documented provisional populated portfolio shape, currency handling and integration limits in ARTISAN_PROFILE.md. No backend or API contract changes.
+- Verified all 199 tests (16 new cases), typecheck, lint, production build and whitespace checks. HTTP is mocked; live integration and browser visual inspection were not performed.
+- Marked FE-DISC-006 complete. FE-CUST-001 remains unstarted. No dependency or deployment changes.

@@ -71,3 +71,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added 14 focused tests. All 119 tests, lint, typecheck, production build and whitespace check pass after correcting test-query ambiguity and new-file encoding.
 - Documented behavior and the minimal category-response assumption in CATEGORIES.md. Mocked HTTP only; live backend integration and browser visual inspection were not performed.
 - Marked FE-DISC-001 complete. Artisan search/results remain in unstarted FE-DISC-002. No API contract, architecture, product scope or deployment changes.
+
+### 2026-09-28 - FE-DISC-002
+
+- Added public API-backed artisan summaries and submitted keyword/category/rating/experience/availability filtering with URL restoration, history and clear controls.
+- Added validated collection service, cancellable TanStack queries, responsive accessible results and loading/refresh/empty/error/retry handling. Profile links use the existing placeholder route.
+- Added 14 focused tests including category-to-results integration. All 133 tests, lint, typecheck, production build and whitespace check pass after correcting strict test array access and file whitespace.
+- Documented response assumptions and default-first-page scope in ARTISAN_SEARCH.md. No live backend integration or browser visual inspection performed.
+- Marked FE-DISC-002 complete. FE-DISC-003 remains unstarted. No API contract, architecture, product scope or deployment changes.

@@ -4,6 +4,8 @@ import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CategoriesPage } from './CategoriesPage'
 
+vi.mock('./ArtisanResults', () => ({ ArtisanResults: () => null }))
+
 const data = [{ id: 'plumbing-id', name: 'Plumbing' }, { id: 'fashion/id &1', name: 'Tailoring/Fashion Design' }]
 const response = (value: unknown = data) => new Response(JSON.stringify({ data: value }), { status: 200 })
 

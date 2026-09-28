@@ -16,7 +16,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 
 ## Discovery
 - [x] FE-DISC-001 - Category browsing.
-- [ ] FE-DISC-002 - Artisan search/results and filters.
+- [x] FE-DISC-002 - Artisan search/results and filters.
 - [ ] FE-DISC-003 - Manual location.
 - [ ] FE-DISC-004 - Browser geolocation with permission/fallback UX.
 - [ ] FE-DISC-005 - Sorting, pagination and result states.

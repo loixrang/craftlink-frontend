@@ -1,3 +1,4 @@
+import { ArtisanResults } from './ArtisanResults'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowRight, Check, Grid2X2 } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -45,8 +46,9 @@ export function CategoriesPage() {
           </ul>
         </>}
         {categoryId !== null && !selected && <div className="mt-6"><EmptyState title="Category not available" description="This category may have changed. Choose an available category or clear your selection."><Link to={categoryLink()} className="inline-flex min-h-11 items-center">Clear category selection</Link></EmptyState></div>}
-        {selected && <div role="status" className="mt-8 border-l-4 border-accent pl-5"><p className="font-semibold">Selected: {selected.name}</p><p className="mt-2 text-sm text-ink-muted">Artisan listings for this category are coming soon.</p></div>}
+        {selected && <div role="status" className="mt-8 border-l-4 border-accent pl-5"><p className="font-semibold">Selected: {selected.name}</p></div>}
       </>}
     </section>
+    <ArtisanResults />
   </div>
 }

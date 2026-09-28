@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { api, ApiError } from './api'
 
-export type ArtisanFilters = { q?: string; categoryId?: string; minRating?: number; minExperience?: number; availability?: boolean }
+export type ArtisanFilters = { q?: string; categoryId?: string; minRating?: number; minExperience?: number; availability?: boolean; latitude?: number; longitude?: number; radiusKm?: number }
 
 const summary = z.object({
   id: z.string().min(1), displayName: z.string().trim().min(1), bio: z.string().nullable(),

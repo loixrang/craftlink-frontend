@@ -9,3 +9,7 @@ Runtime validation checks the collection/pagination and contract-named summaries
 Results show name/profile link, service categories, location text, biography, experience, availability and rating/review count. Neutral avatar icons are used; image URLs, distance and verification are not rendered. The public profile route remains its existing placeholder pending FE-DISC-006. Loading, refresh, empty, malformed-response, network/server, 400 and 429 states include recovery. Cached same-filter data can remain visible with a refresh error; prior-filter data is not retained during a new search.
 
 Focused tests cover public request construction, URL filters/history/reset, category integration, validation, cancellation, empty results and error/retry. Existing category tests isolate the results component to continue testing the category service independently. No browser visual inspection or live backend integration was performed.
+
+## FE-DISC-003 extension
+
+Manual location now adds validated latitude, longitude and optional radiusKm to discovery requests and query keys. Search/category changes preserve the applied location; clear-all removes it. See MANUAL_LOCATION.md for validation, URL behavior and the contract limitation on address lookup. Sorting and pagination controls remain deferred.

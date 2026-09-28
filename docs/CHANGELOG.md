@@ -79,3 +79,10 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added 14 focused tests including category-to-results integration. All 133 tests, lint, typecheck, production build and whitespace check pass after correcting strict test array access and file whitespace.
 - Documented response assumptions and default-first-page scope in ARTISAN_SEARCH.md. No live backend integration or browser visual inspection performed.
 - Marked FE-DISC-002 complete. FE-DISC-003 remains unstarted. No API contract, architecture, product scope or deployment changes.
+
+### 2026-09-28 - FE-DISC-003
+
+- Added manual latitude/longitude and optional radius filtering with shared Zod validation, React Hook Form, accessible field errors and explicit apply/clear controls.
+- Integrated contract location parameters into existing public discovery queries, preserving other filters and supporting URL/history restoration, page reset and invalid-link feedback. Documented coordinate URL visibility and the absence of an address lookup endpoint in MANUAL_LOCATION.md.
+- Verified all 146 tests (13 added cases), typecheck, lint, production build and whitespace check. Initial new-test label queries were corrected to use accessible names. HTTP is mocked; live integration and browser visual inspection were not performed.
+- Marked FE-DISC-003 complete. FE-DISC-004 remains unstarted. No API contract, architecture, product scope or deployment changes.

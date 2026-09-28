@@ -6,6 +6,8 @@ import { Input } from '../components/ui/Input'
 import { EmptyState, ErrorState, LoadingState } from '../components/ui/Feedback'
 import { getArtisans, type ArtisanFilters } from '../services/artisans'
 import { ApiError } from '../services/api'
+import { readLocation } from '../schemas/location'
+import { ManualLocation } from './ManualLocation'
 
 function numericFilter(value: string | null, max = Infinity) {
   if (!value?.trim()) return undefined
@@ -21,6 +23,7 @@ export function ArtisanResults() {
     minRating: numericFilter(params.get('minRating'), 5),
     minExperience: numericFilter(params.get('minExperience')),
     availability: params.get('availability') === 'true' ? true : params.get('availability') === 'false' ? false : undefined,
+    ...readLocation(params).filters,
   }
   const results = useQuery({ queryKey: ['artisans', filters], queryFn: ({ signal }) => getArtisans(filters, signal) })
   const invalid = ['minRating', 'minExperience'].some(key => params.has(key) && numericFilter(params.get(key), key === 'minRating' ? 5 : Infinity) === undefined)
@@ -28,6 +31,7 @@ export function ArtisanResults() {
 
   return <section aria-labelledby="results-title" className="mt-12 border-t border-line pt-8">
     <h2 id="results-title" className="text-2xl tracking-tight">Explore artisans</h2>
+    <ManualLocation />
     <form key={params.toString()} className="mt-6 grid items-end gap-4 sm:grid-cols-2 lg:grid-cols-4" onSubmit={event => {
       event.preventDefault()
       const form = new FormData(event.currentTarget)

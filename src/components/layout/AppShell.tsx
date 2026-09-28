@@ -4,9 +4,9 @@ import { Button } from '../ui/Button'
 import { Link, NavLink } from 'react-router-dom'
 
 type NavigationItem = { label: string; href: string }
-type AppShellProps = { children: ReactNode; navigation: readonly NavigationItem[] }
+type AppShellProps = { children: ReactNode; navigation: readonly NavigationItem[]; onSignOut?: () => void }
 
-export function AppShell({ children, navigation }: AppShellProps) {
+export function AppShell({ children, navigation, onSignOut }: AppShellProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const navigationId = useId()
   const menuButton = useRef<HTMLButtonElement>(null)
@@ -20,7 +20,7 @@ export function AppShell({ children, navigation }: AppShellProps) {
           <Button ref={menuButton} variant="secondary" className="md:hidden" aria-expanded={menuOpen} aria-controls={navigationId} onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}Menu
           </Button>
-          <nav id={navigationId} aria-label="Main navigation" className={`${menuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`}
+          <nav id={navigationId} aria-label="Main navigation" className={`${menuOpen ? 'block' : 'hidden'} w-full md:flex md:w-auto md:items-center md:gap-2`}
             onKeyDown={(event) => {
               if (event.key === 'Escape' && menuOpen) {
                 setMenuOpen(false)
@@ -30,6 +30,7 @@ export function AppShell({ children, navigation }: AppShellProps) {
             <ul className="flex flex-col gap-2 md:flex-row md:items-center">
               {navigation.map(({ label, href }) => <li key={href}><NavLink to={href} end={href === '/'} onClick={() => setMenuOpen(false)} className={({ isActive }) => `flex min-h-11 items-center rounded-control px-4 py-2 text-sm font-medium no-underline ${isActive ? 'bg-accent-soft text-accent-hover' : 'text-ink hover:bg-surface-muted'}`}>{label}</NavLink></li>)}
             </ul>
+            {onSignOut && <Button variant="quiet" onClick={() => { setMenuOpen(false); onSignOut() }}>Sign out</Button>}
           </nav>
         </div>
       </header>

@@ -19,3 +19,7 @@ These decisions are constraints unless the user explicitly changes them.
 - Do not introduce GraphQL, Redux, WebSockets, microservices, payments, chat, AI recommendations, or major new infrastructure without explicit approval.
 - Never expose secrets, password hashes, raw auth tokens in logs, exact private coordinates unnecessarily, or private credential documents.
 - Visual direction: warm neutral/light surfaces, dark charcoal typography, restrained amber/orange accent, accessible contrast, generous whitespace, subtle borders and restrained shadows. Avoid excessive gradients, glassmorphism, decorative clutter, emoji icons, and giant rounded cards.
+
+## 2026-09-28 - FE-AUTH-003 session restoration
+
+Persist only the V1 bearer token in tab-scoped sessionStorage for reload restoration; never persist passwords or trusted user/role data. Verify through GET /auth/me before restoring access. Unavailable storage falls back to in-memory login. This replaces FE-AUTH-002 reload-to-anonymous behavior. Session storage is accessible to same-origin JavaScript, including XSS; it is not an HttpOnly cookie. No refresh/logout endpoint or cookie authentication is introduced. Sign-out removes storage and clears caches. Backend authorization remains authoritative. No API contract changes.

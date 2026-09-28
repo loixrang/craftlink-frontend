@@ -55,3 +55,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added runtime login-response validation and shared in-memory authentication for all three roles. Navigation retains the session; local sign-out clears authentication and server-state caches. Tokens and passwords are not written to browser storage or mutation results.
 - Added 15 focused tests; all 79 tests, lint, typecheck and production build pass. Documented behavior and response-shape assumptions in LOGIN.md. HTTP is mocked; live backend integration and browser visual inspection were not performed.
 - Marked FE-AUTH-002 complete. Session restoration, route guards and role-aware navigation remain in unstarted FE-AUTH-003. No API contract, architecture, product scope or deployment changes.
+
+### 2026-09-28 - FE-AUTH-003
+
+- Protected customer/artisan/admin route families with exact-role checks, anonymous login redirects, safe return paths and access-denied recovery.
+- Added role-aware dashboard navigation, shell sign-out and verified tab-scoped session restoration through GET /auth/me. Rejected tokens are removed; temporary failures offer retry/sign-out; logout cancels pending restoration and clears storage/cache.
+- Documented the deliberate sessionStorage bearer-token decision in DECISIONS.md and behavior/response assumptions in SESSION.md. No API contract changes; dashboard content remains placeholders.
+- Verified all 105 tests (26 added cases), lint, typecheck, production build and whitespace checks. Initial parallel test workers timed out; npm.cmd test -- --maxWorkers=1 passed. Mocked HTTP now uses a fixed API base independent of local environment configuration. No live integration or browser visual inspection performed.
+- Marked FE-AUTH-003 complete. FE-DISC-001 remains unstarted.

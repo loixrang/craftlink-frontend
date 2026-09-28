@@ -3,6 +3,8 @@ import type { AuthSession } from '../services/login'
 
 export const AuthContext = createContext<{
   session: AuthSession | null
+  status: 'anonymous' | 'restoring' | 'error' | 'authenticated'
+  retry: () => void
   signIn: (session: AuthSession) => void
   signOut: () => void
 } | null>(null)
@@ -12,3 +14,5 @@ export function useAuth() {
   if (!auth) throw new Error('useAuth requires AppProviders.')
   return auth
 }
+
+export const roleHome = { CUSTOMER: '/customer', ARTISAN: '/artisan', ADMIN: '/admin' } as const

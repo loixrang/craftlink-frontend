@@ -6,8 +6,9 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Enter your password.'),
 })
 export type LoginValues = z.infer<typeof loginSchema>
+export const userSchema = z.object({ id: z.string().min(1), email: z.email(), role: z.enum(['CUSTOMER', 'ARTISAN', 'ADMIN']) })
 const sessionSchema = z.object({
-  user: z.object({ id: z.string().min(1), email: z.email(), role: z.enum(['CUSTOMER', 'ARTISAN', 'ADMIN']) }),
+  user: userSchema,
   accessToken: z.string().min(1).regex(/^\S+$/),
 })
 export type AuthSession = z.infer<typeof sessionSchema>

@@ -2,7 +2,8 @@ import { useRef, type FormEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
+import { safeReturnPath } from '../routes/returnPath'
 import { useAuth } from '../app/authContext'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
@@ -21,6 +22,7 @@ function errorMessage(error: unknown) {
 
 export function LoginPage() {
   const { session, signIn, signOut } = useAuth()
+  const location = useLocation()
   const submitting = useRef(false)
   const { register, handleSubmit, getValues, reset, formState: { errors, isSubmitting } } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema), defaultValues: { email: '', password: '' },
@@ -44,6 +46,9 @@ export function LoginPage() {
     }
   })(event)
 
+  const from: unknown = (location.state as { from?: unknown } | null)?.from
+  const returnTo = session && safeReturnPath(from, session.user.role)
+  if (returnTo) return <Navigate to={returnTo} replace />
   return <section className="mx-auto max-w-xl py-4 sm:py-8" aria-labelledby="login-title">
     <p className="text-sm font-semibold text-accent">Welcome back</p>
     <h1 id="login-title" className="mt-3 text-3xl tracking-tight sm:text-4xl">Log in</h1>

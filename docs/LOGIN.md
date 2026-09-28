@@ -1,5 +1,7 @@
 # Login and authenticated state — FE-AUTH-002
 
+FE-AUTH-003 update: see SESSION.md and DECISIONS.md. Tab-scoped token persistence, verified restoration, role navigation and guards now replace the reload-to-anonymous behavior described in this historical feature record.
+
 `/login` uses React Hook Form, Zod and a TanStack mutation. It trims email whitespace, preserves passwords exactly, validates required fields and sends only email/password to `POST /auth/login` through the shared API client. Pending submissions disable inputs and a synchronous guard prevents duplicates. Invalid credentials, account restrictions, validation, rate limiting, network and server failures have deliberate feedback and allow retries without automatic resubmission.
 
 The service validates the returned `data.user` (id, email, CUSTOMER/ARTISAN/ADMIN role) and nonempty `data.accessToken` before authenticating. Unknown response fields are discarded. Tests use this user-summary shape; live backend compatibility remains unverified because the frozen contract describes the summary without a field-level response example.

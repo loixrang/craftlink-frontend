@@ -46,8 +46,8 @@ describe('application bootstrap', () => {
   it.each([
     ['/login', 'Log in'], ['/register', 'Create an account'],
     ['/artisans', 'Find an artisan'], ['/artisans/artisan-123', 'Artisan profile'],
-    ['/customer/requests', 'Customer dashboard'], ['/artisan/services', 'Artisan dashboard'],
-    ['/admin/users', 'Admin dashboard'], ['/missing', 'Page not found'],
+    ['/customer/requests', 'Log in'], ['/artisan/services', 'Log in'],
+    ['/admin/users', 'Log in'], ['/missing', 'Page not found'],
   ])('renders the route at %s', (path, title) => {
     renderApp(path)
     expect(screen.getByRole('heading', { level: 1, name: title })).toBeVisible()

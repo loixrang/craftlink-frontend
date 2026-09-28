@@ -63,3 +63,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Documented the deliberate sessionStorage bearer-token decision in DECISIONS.md and behavior/response assumptions in SESSION.md. No API contract changes; dashboard content remains placeholders.
 - Verified all 105 tests (26 added cases), lint, typecheck, production build and whitespace checks. Initial parallel test workers timed out; npm.cmd test -- --maxWorkers=1 passed. Mocked HTTP now uses a fixed API base independent of local environment configuration. No live integration or browser visual inspection performed.
 - Marked FE-AUTH-003 complete. FE-DISC-001 remains unstarted.
+
+### 2026-09-28 - FE-DISC-001
+
+- Replaced the discovery placeholder with responsive public category browsing through GET /categories, the shared service layer and TanStack Query.
+- Added validated category data, URL-based server-ID selection, landing-name resolution, history/direct-entry support, clear selection and loading/refresh/error/retry/empty/unavailable states.
+- Added 14 focused tests. All 119 tests, lint, typecheck, production build and whitespace check pass after correcting test-query ambiguity and new-file encoding.
+- Documented behavior and the minimal category-response assumption in CATEGORIES.md. Mocked HTTP only; live backend integration and browser visual inspection were not performed.
+- Marked FE-DISC-001 complete. Artisan search/results remain in unstarted FE-DISC-002. No API contract, architecture, product scope or deployment changes.

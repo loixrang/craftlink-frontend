@@ -1,10 +1,10 @@
-﻿# Current Task
+# Current Task
 
 Status: COMPLETE
-Feature: FE-AUTH-003 - Protected routes and role-aware navigation/session restoration.
+Feature: FE-DISC-001 - Category browsing.
 
-Scope: Exact-role dashboard guards, role-aware shell navigation, safe login return paths, tab-scoped restoration through GET /auth/me, logout and focused tests.
-Exclusions: Dashboard content and later roadmap features.
-Acceptance: Matching-role access only; anonymous login redirect; verified restoration; rejected session cleanup; transient failure retry/sign-out; safe return navigation; logout clears storage/cache and pending restoration; all checks pass.
+Scope: Public API-backed categories at /artisans with URL selection and landing entry points.
+Exclusions: Artisan results, search/filter execution, location and later features.
+Acceptance: Service-layer fetch and TanStack Query; responsive accessible links using server IDs; direct navigation/history selection; loading/error/retry/empty/unavailable states; focused tests and required checks.
 
-Verified 2026-09-28: All 105 tests pass with npm.cmd test -- --maxWorkers=1 (26 added session/guard cases). Lint, typecheck, production build and whitespace check pass. Initial parallel test workers timed out; serial execution passed. Mocked HTTP uses a fixed API base independent of local configuration. See SESSION.md and the explicit tab-scoped token-storage decision in DECISIONS.md. No live backend integration or browser visual inspection performed. FE-DISC-001 remains unstarted. No API contract or deployment changes.
+Verified 2026-09-28: All 119 tests pass (14 category cases) with npm.cmd test -- --maxWorkers=1. Lint, typecheck, production build and whitespace check pass. Fixed initial test-query ambiguity and new-file encoding failure. See CATEGORIES.md for behavior and response-shape assumptions. No live backend integration or browser visual inspection performed. FE-DISC-002 remains unstarted. No API contract or deployment changes.

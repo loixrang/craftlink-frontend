@@ -15,7 +15,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 - [x] FE-AUTH-003 - Protected routes and role-aware navigation/session restoration.
 
 ## Discovery
-- [ ] FE-DISC-001 - Category browsing.
+- [x] FE-DISC-001 - Category browsing.
 - [ ] FE-DISC-002 - Artisan search/results and filters.
 - [ ] FE-DISC-003 - Manual location.
 - [ ] FE-DISC-004 - Browser geolocation with permission/fallback UX.

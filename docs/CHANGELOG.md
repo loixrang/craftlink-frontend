@@ -139,3 +139,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added 22 focused tests and updated session routing expectations. All 256 tests, lint, typecheck, production build and whitespace checks pass.
 - Documented provisional response fields and multi-page detail lookup in REQUEST_HISTORY.md. Backend requests are not implemented in the inspected sibling repository; live integration and visual browser checks were not performed.
 - Marked FE-CUST-003 complete. FE-CUST-004 remains unstarted. No API contract, dependency or deployment changes.
+
+### 2026-09-29 - FE-ART-001
+
+- Added a protected artisan dashboard with authenticated account identity, read-only owner profile, location, experience, availability and public-profile link. Future management tools are labeled as coming soon; no fabricated metrics or dead tool links.
+- Added validated, cancellable GET /artisans/me queries scoped by user ID, private-field stripping, missing-profile guidance and deliberate loading/refresh/error/retry behavior. Confirmed response fields and missing-profile code through read-only backend inspection.
+- All 299 tests (15 new), lint, typecheck, production build and whitespace checks pass. Corrected the Badge prop caught by typecheck. Build reports a non-blocking main-chunk size warning (500.39 kB).
+- Documented behavior in ARTISAN_DASHBOARD.md. HTTP is mocked; live integration and visual browser verification were not performed.
+- Marked FE-ART-001 complete. No subsequent feature started; no API contract, dependency or deployment changes.

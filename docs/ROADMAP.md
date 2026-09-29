@@ -5,7 +5,7 @@ Markers:
 `[~]` in progress
 `[x]` complete
 `[!]` blocked
-`[D]` deferred Ã¢â‚¬â€ not required for the current defense milestone; AI must skip this task when selecting the next feature.
+`[D]` deferred — not required for the current defense milestone; AI must skip this task when selecting the next feature.
 
 ## Foundation
 - [x] FE-001 - Initialize React + TypeScript + Vite and quality tooling. Acceptance: dev/build/typecheck/lint/test foundations work; sensible source structure; no feature UI.
@@ -35,7 +35,7 @@ Markers:
 - [D] FE-CUST-005 - Account/profile basics.
 
 ## Artisan
-- [ ] FE-ART-001 - Artisan dashboard.
+- [x] FE-ART-001 - Artisan dashboard.
 - [ ] FE-ART-002 - Profile editing.
 - [ ] FE-ART-003 - Services management.
 - [ ] FE-ART-004 - Portfolio management/upload.

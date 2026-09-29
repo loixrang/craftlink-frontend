@@ -1,0 +1,9 @@
+# Artisan dashboard - FE-ART-001
+
+The protected `/artisan/*` route now shows an artisan workspace with authenticated account identity, a read-only profile summary, location, experience, availability and a link to the public profile using the profile ID. It retains the existing wildcard routing. Upcoming management tools are described as coming soon without dead links or fabricated request metrics. Profile editing and all other artisan roadmap features remain unimplemented.
+
+GET `/artisans/me` uses the dedicated owner-profile service, explicit bearer authentication and a cancellable TanStack Query keyed by authenticated user ID. Runtime validation retains only dashboard fields; contacts, private coordinates, documents and unknown fields are stripped before caching. Session changes use the existing cache-clearing behavior. Loading, refreshing, missing-profile, malformed-response, authorization and network/server error states provide deliberate feedback. Failed refreshes hide stale profile data and links.
+
+Read-only inspection of the sibling backend's `src/modules/artisans/profile.ts`, `routes.ts` and `repository.ts` confirmed the flat owner response and the `404 ARTISAN_PROFILE_NOT_FOUND` response for an account without a profile. Only that specific error is shown as the missing-profile state; other 404 responses remain errors. No contract changes or backend edits were needed.
+
+The mobile-first layout uses existing design tokens, a single h1, labeled sections, native buttons/links, Lucide icons and wrapping text. Fifteen focused tests cover authenticated fetching, profile-ID links, stripping private fields, empty fields, availability, missing profile, failures/retry, failed refresh, cancellation and role/session gating. Required checks: full tests, lint, typecheck through production build and whitespace checks. HTTP is mocked; live backend integration and visual browser verification were not performed.

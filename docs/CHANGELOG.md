@@ -1,5 +1,12 @@
 # Changelog
 
+### 2026-09-29 - FE-CUST-004
+
+- Added completed-request review forms with validated 1–5 ratings and trimmed comments, exact authenticated review payloads, pending/duplicate protection, success acknowledgement across session navigation and public rating cache invalidation.
+- Added deliberate eligibility/conflict/session/validation/rate-limit/uncertain-result handling while preserving inputs. Server remains authoritative for ownership and one review per request; documented missing eligibility metadata and backend implementation in REVIEWS.md.
+- All 284 tests pass (28 added), lint, typecheck, production build and whitespace checks pass. Corrected a test-mock typing issue found by typecheck. HTTP is mocked; no live backend or visual browser verification.
+- Marked FE-CUST-004 complete and preserved existing roadmap deferrals. No subsequent feature started; no API contract, dependency or deployment changes.
+
 Concise AI-assisted implementation history. Git remains the source of code history.
 
 ## Unreleased

@@ -6,6 +6,7 @@ import { Button } from '../components/ui/Button'
 import { EmptyState, ErrorState, LoadingState } from '../components/ui/Feedback'
 import { ApiError } from '../services/api'
 import { getServiceRequests, requestStatuses } from '../services/serviceRequests'
+import { ReviewForm } from './ReviewForm'
 
 export function CustomerRequestsPage() {
   const { session } = useAuth()
@@ -57,6 +58,7 @@ export function CustomerRequestsPage() {
           </dl>
           <p className="text-sm text-ink-muted">The preferred date is a suggestion, not a confirmed booking. Refresh to check for status updates.</p>
           <Link className="inline-flex min-h-11 items-center" to={`/artisans/${encodeURIComponent(detail.artisanId)}`}>View artisan profile</Link>
+          {detail.status === 'COMPLETED' ? <ReviewForm key={`${session?.user.id}:${detail.id}`} requestId={detail.id} artisanId={detail.artisanId} refreshing={requests.isFetching} /> : <p className="text-sm text-ink-muted">Reviews are available after a request is completed.</p>}
         </article> : <EmptyState title="Request not found" description="This request is not in your history. Return to request history to find your available requests." /> : <>
           {data.data.length ? <ul className="divide-y divide-line border-y border-line">{data.data.map(item => <li key={item.id} className="py-5">
             <div className="flex flex-wrap items-center justify-between gap-3"><Badge>{requestStatuses[item.status]}</Badge>{item.createdAt && <time className="text-sm text-ink-muted" dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleDateString()}</time>}</div>

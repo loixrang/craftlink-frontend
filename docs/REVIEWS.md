@@ -1,0 +1,11 @@
+# Eligible review/rating - FE-CUST-004
+
+Completed requests in the customer-only detail page offer an accessible rating select (integer 1–5) and required, trimmed comment through React Hook Form/Zod. Other statuses explain that reviews become available after completion. Pending request refresh disables submission; failed request refresh hides stale details and the form.
+
+The dedicated service sends only `serviceRequestId`, `rating`, and `comment` to bearer-authenticated POST `/reviews`. The response shape is unspecified, so only the shared success envelope is checked and response data is discarded. TanStack Query manages the mutation without automatic retries. An immediate guard prevents concurrent submissions; pending controls are disabled. Errors preserve inputs and explain validation, expired session, authorization/missing/ineligible/already-reviewed requests, rate limiting and uncertain receipt after network/server failures. Public profile and discovery queries are invalidated after success to refresh rating summaries.
+
+A customer/request-scoped boolean acknowledgement in the QueryClient prevents another submission after confirmed success when navigating within the session. It contains no review content or token and is cleared with the existing session cache. It is not durable eligibility information: after reload, the server must reject an already-reviewed request. The frozen contract exposes no review eligibility or existing-review field on request history and no current-customer review endpoint. The UI does not guess such fields or claim that completion alone guarantees eligibility. Final ownership, completion and one-review enforcement belong to the server.
+
+Read-only inspection of the sibling backend on 2026-09-29 found no review implementation. Live integration is therefore unverified. No API contract changes were made. Tests use mocked HTTP; visual browser checks were not performed.
+
+Verification covers completed/noncompleted gating, validation boundaries and whitespace, exact payload and bearer header, pending duplicate protection, success and navigation acknowledgement, rating cache invalidation, expected HTTP errors, input preservation and explicit network-error recovery. Existing request-route tests cover customer/role/session access controls.

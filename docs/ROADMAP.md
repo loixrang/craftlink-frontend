@@ -1,6 +1,11 @@
 # Craftlink Frontend Roadmap
 
-Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
+Markers:
+`[ ]` not started
+`[~]` in progress
+`[x]` complete
+`[!]` blocked
+`[D]` deferred Ã¢â‚¬â€ not required for the current defense milestone; AI must skip this task when selecting the next feature.
 
 ## Foundation
 - [x] FE-001 - Initialize React + TypeScript + Vite and quality tooling. Acceptance: dev/build/typecheck/lint/test foundations work; sensible source structure; no feature UI.
@@ -26,8 +31,8 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 - [x] FE-CUST-001 - Customer dashboard.
 - [x] FE-CUST-002 - Create service request.
 - [x] FE-CUST-003 - Request history/detail/status.
-- [ ] FE-CUST-004 - Eligible review/rating.
-- [ ] FE-CUST-005 - Account/profile basics.
+- [x] FE-CUST-004 - Eligible review/rating.
+- [D] FE-CUST-005 - Account/profile basics.
 
 ## Artisan
 - [ ] FE-ART-001 - Artisan dashboard.
@@ -40,16 +45,16 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 
 ## Admin
 - [ ] FE-ADMIN-001 - Dashboard/statistics.
-- [ ] FE-ADMIN-002 - User management.
-- [ ] FE-ADMIN-003 - Artisan management.
-- [ ] FE-ADMIN-004 - Category management.
+- [D] FE-ADMIN-002 - User management.
+- [D] FE-ADMIN-003 - Artisan management.
+- [D] FE-ADMIN-004 - Category management.
 - [ ] FE-ADMIN-005 - Credential verification.
-- [ ] FE-ADMIN-006 - Reports/moderation.
+- [D] FE-ADMIN-006 - Reports/moderation.
 
 ## Quality/production
 - [ ] FE-QA-001 - Accessibility/keyboard pass.
 - [ ] FE-QA-002 - Responsive/mobile QA.
 - [ ] FE-QA-003 - Loading/error/empty-state consistency.
-- [ ] FE-QA-004 - Critical-flow tests.
+- [D] FE-QA-004 - Critical-flow tests.
 - [ ] FE-PROD-001 - Vercel production configuration.
 - [ ] FE-PROD-002 - README, env example and final developer docs.

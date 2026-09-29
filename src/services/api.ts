@@ -44,13 +44,14 @@ export function createApiClient(baseUrl: string, fetcher: typeof fetch = (...arg
         if (value !== undefined) query.set(key, String(value))
       }
       const headers = new Headers({ Accept: 'application/json' })
-      if (options.body !== undefined) headers.set('Content-Type', 'application/json')
+      const multipart = options.body instanceof FormData
+      if (options.body !== undefined && !multipart) headers.set('Content-Type', 'application/json')
       if (options.accessToken) headers.set('Authorization', `Bearer ${options.accessToken}`)
       let response: Response
       try {
         response = await fetcher(`${base}${path}${query.size ? `?${query}` : ''}`, {
           method: options.method ?? 'GET', headers,
-          body: options.body === undefined ? undefined : JSON.stringify(options.body),
+          body: multipart ? options.body as FormData : options.body === undefined ? undefined : JSON.stringify(options.body),
           signal: options.signal, credentials: 'omit', redirect: 'error',
         })
       } catch (error) {

@@ -155,3 +155,18 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Confirmed backend field names and validation by read-only inspection. Documented behavior and integration limits in ARTISAN_MANAGEMENT.md; no contract, backend, dependency or deployment changes.
 - All 318 tests pass (19 new), lint, typecheck, production build and whitespace checks pass. Corrected test selectors for required-field markers. Build retains a non-blocking main-chunk warning (517.10 kB). HTTP/geolocation are mocked; live backend and visual browser verification were not performed.
 - Marked FE-ART-002 complete; preserved roadmap deferrals and stopped without beginning another feature.
+
+### 2026-09-29 - FE-ART-003 investigation blocked
+
+- Selected artisan portfolio/credential management and inspected the frontend and sibling backend before implementation.
+- Found undefined upload bodies/transport in the frozen contract and unimplemented backend media/credential features; public detail currently returns empty arrays.
+- Marked FE-ART-003 and CURRENT_TASK blocked, with evidence and unblock requirements in ARTISAN_MEDIA.md. Acceptance criteria remain unmet; no invented API payloads or application changes.
+- Documentation whitespace check only; application tests not rerun. No subsequent feature started.
+
+### 2026-09-29 - FE-ART-003 completed after contract update
+
+- Resumed after the supplied contract and backend implementations defined portfolio/credential multipart uploads. Added artisan-only media management and dashboard navigation.
+- Added exact authenticated multipart payloads, private-field stripping, owner credential status, portfolio display, file/date validation, duplicate protection, deletion confirmation, cache refresh and deliberate failure states. Preserved JSON client behavior.
+- All 21 tests currently available in this checkout pass; lint, typecheck, production build and whitespace checks pass. Earlier sessions' test files are absent from this checkout. Build retains the non-blocking chunk-size warning (523.00 kB). HTTP is mocked; live uploads and visual browser verification were not performed.
+- Minimally corrected an existing unused location import and replaced profile watch with useWatch to clear pre-existing check failures. No dependencies, backend, contract content or deployment changes.
+- Documented behavior in ARTISAN_MEDIA.md, marked FE-ART-003 complete and stopped without starting the next feature.

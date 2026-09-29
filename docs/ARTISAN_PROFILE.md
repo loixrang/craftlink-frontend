@@ -15,3 +15,5 @@ The backend has not implemented populated portfolio or credential responses. Por
 Verification: 16 focused tests cover public requests, content and empty states, private-field stripping, unsafe URLs, failed images, HTTP/network recovery, malformed/mismatched data, reserved IDs, navigation isolation and cancellation. Full suite, typecheck, lint, production build and whitespace checks are required before completion. HTTP tests are mocked; live backend integration and browser visual inspection were not performed.
 
 FE-CUST-002 update: The formerly disabled request CTA now links to the customer-only creation form. See CREATE_SERVICE_REQUEST.md. Public profile browsing remains anonymous.
+
+FE-ART-003 update: The synchronized contract now defines populated portfolio items and safe credential metadata, resolving the provisional integration assumptions above. Artisan media management is implemented; see ARTISAN_MEDIA.md. Live media integration remains unverified.

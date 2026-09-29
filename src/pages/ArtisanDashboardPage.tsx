@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ArrowRight, ClipboardList, MapPin, Wrench } from 'lucide-react'
+import { ArrowRight, ClipboardList, MapPin } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../app/authContext'
 import { Badge } from '../components/ui/Badge'
@@ -59,11 +59,11 @@ export function ArtisanDashboardPage() {
       </aside>
     </div>
     <section aria-labelledby="artisan-tools-title"><Link to="/artisan/profile" className="mb-6 inline-flex min-h-11 items-center gap-2">Manage profile and services<ArrowRight size={18} aria-hidden="true" /></Link>
+      <Link to="/artisan/media" className="mb-6 flex min-h-11 items-center gap-2">Manage portfolio and credentials<ArrowRight size={18} aria-hidden="true" /></Link>
       <h2 id="artisan-tools-title" className="text-2xl tracking-tight">Your workspace is growing</h2>
       <p className="mt-3 text-ink-muted">These tools are coming soon.</p>
       <ul className="mt-6 grid gap-8 sm:grid-cols-3">
         {[
-          { title: 'Portfolio and credentials', description: 'Manage portfolio images and credentials.', Icon: Wrench },
           { title: 'Incoming requests', description: 'Review customer requests and manage their progress.', Icon: ClipboardList },
         ].map(({ title, description, Icon }) => <li key={title} className="border-t border-line pt-5"><Icon size={22} className="mb-4 text-accent" aria-hidden="true" /><h3 className="text-lg">{title}</h3><p className="mt-2 text-sm text-ink-muted">{description}</p></li>)}
       </ul>

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../app/authContext'
@@ -68,14 +68,14 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
     handleSubmit,
     getValues,
     reset,
-    watch,
+    control,
     formState: { errors },
   } = useForm<ProfileValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: profileDefaults(profile),
   })
 
-  const selectedState = watch('state') || DEFAULT_STATE
+  const selectedState = useWatch({ control, name: 'state' }) || DEFAULT_STATE
   const availableLgas = getLgasForState(selectedState)
 
   const mutation = useMutation({

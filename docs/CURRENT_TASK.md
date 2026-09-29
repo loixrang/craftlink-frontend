@@ -1,10 +1,10 @@
 # Current Task
 
 Status: COMPLETE
-Feature: FE-ART-002 - Artisan profile management.
+Feature: FE-ART-003 - Artisan portfolio and credential management.
 
-Implemented: Protected profile setup/editing, services creation/editing/deletion, manual/browser location and availability. Includes validation, authenticated mutations, cache invalidation, deletion confirmation and deliberate response states. Dashboard links to management.
+Implemented the artisan-only /artisan/media page with portfolio and credential multipart uploads, safe lists, verification statuses, deletion confirmation, validation, pending/error/recovery states and dashboard navigation. The updated contract and backend implementation resolved the previous blocker. See ARTISAN_MEDIA.md.
 
-Verified 2026-09-29: All 318 tests pass (19 added); lint, typecheck, production build and whitespace checks pass. Production bundle is 517.10 kB with the existing non-blocking chunk-size warning. HTTP/geolocation are mocked; live backend integration and visual browser verification were not performed. See ARTISAN_MANAGEMENT.md.
+Verified 2026-09-29: all 21 tests currently present pass; lint, typecheck, production build and whitespace checks pass. Existing bundle-size warning remains. Earlier test files are absent from this checkout. HTTP is mocked; live uploads and visual browser verification were not performed.
 
-No API contract, dependency, backend or deployment changes. Existing roadmap deferrals preserved. No subsequent feature started.
+Corrected two pre-existing location-code check failures minimally. No backend, contract-content, dependency or deployment changes. No subsequent feature started.

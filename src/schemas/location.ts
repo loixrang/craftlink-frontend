@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DEFAULT_STATE, getLgasForState, isValidLga, isValidState } from '../constants/locations'
+import { DEFAULT_STATE, isValidLga, isValidState } from '../constants/locations'
 
 export const locationSchema = z.object({
   state: z.string().trim().default(DEFAULT_STATE),

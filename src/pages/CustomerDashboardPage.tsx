@@ -66,7 +66,7 @@ export function CustomerDashboardPage() {
     <section aria-labelledby="customer-requests-title" className="border-t border-line pt-8">
       <div className="flex items-center gap-3"><Wrench size={22} className="text-accent" aria-hidden="true" /><h2 id="customer-requests-title" className="text-2xl tracking-tight">Plan your next project</h2></div>
       <p className="mt-4 max-w-2xl text-ink-muted">Explore artisan profiles to compare services, past work and available contact details.</p>
-      <p className="mt-3 max-w-2xl text-sm text-ink-muted">Service request creation and tracking are coming soon. For now, use the public contact methods on an artisan's profile to discuss your project.</p>
+      <p className="mt-3 max-w-2xl text-sm text-ink-muted">Choose Request a service on an artisan's profile to send your project details. Request tracking is coming soon.</p>
     </section>
   </div>
 }

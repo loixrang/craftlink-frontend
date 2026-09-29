@@ -1,10 +1,10 @@
-# Current Task
+﻿# Current Task
 
 Status: COMPLETE
-Feature: FE-CUST-001 - Customer dashboard.
+Feature: FE-CUST-002 - Create service request.
 
-Scope: Replace the protected customer dashboard placeholder with a responsive welcome, verified account summary, artisan search and live category shortcuts.
-Acceptance: Customer-only access; discovery links preserve search/category intent; account information comes from the authenticated session; categories use the existing cancellable service/query with loading, refresh, error/retry and empty states; accessible mobile-first layout; focused tests and full typecheck/lint/test/build/whitespace checks.
-Exclusions: Request creation, history/detail/status, reviews, account editing, other role dashboards, backend/API and deployment changes. Explain upcoming request functionality without fabricated activity or counts.
+Implemented: Customer-only request form linked from public artisan profiles; login return intent; artisan-owned service selection; trimmed description and optional validated ISO date; exact authenticated POST payload; loading/error/empty/pending/success feedback; duplicate-submit guard and no automatic retries.
 
-Verified 2026-09-28: All 213 tests pass, including 14 new dashboard cases. Lint, typecheck, production build and whitespace checks pass. See CUSTOMER_DASHBOARD.md for implementation scope and verification limits. HTTP is mocked; live backend integration and browser visual inspection were not performed. FE-CUST-002 remains unstarted. No API contract, dependency or deployment changes.
+Verified 2026-09-29: Full suite passed 233 tests; final focused run passed all 21 request tests, including one subsequently added foreign-service case (234 total cases now). Typecheck, lint, production build and whitespace checks pass. HTTP is mocked; live backend integration and browser visual inspection were not performed. See CREATE_SERVICE_REQUEST.md for behavior and limitations.
+
+FE-CUST-003 remains unstarted. No history/detail/status, reviews, API contract, dependency or deployment changes.

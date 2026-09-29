@@ -24,7 +24,7 @@ Markers: `[ ]` not started, `[~]` in progress, `[x]` complete, `[!]` blocked.
 
 ## Customer
 - [x] FE-CUST-001 - Customer dashboard.
-- [ ] FE-CUST-002 - Create service request.
+- [x] FE-CUST-002 - Create service request.
 - [ ] FE-CUST-003 - Request history/detail/status.
 - [ ] FE-CUST-004 - Eligible review/rating.
 - [ ] FE-CUST-005 - Account/profile basics.

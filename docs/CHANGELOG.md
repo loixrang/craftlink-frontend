@@ -116,3 +116,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added 14 focused tests for account display, search/category navigation, response states, cancellation and access controls. All 213 tests, lint, typecheck, production build and whitespace checks pass. Corrected an ambiguous status query in the initial focused test run.
 - Documented behavior in CUSTOMER_DASHBOARD.md. HTTP is mocked; live integration and browser visual inspection were not performed.
 - Marked FE-CUST-001 complete. FE-CUST-002 remains unstarted. No API contract, dependency or deployment changes.
+
+### 2026-09-29 - FE-CUST-002
+
+- Added customer-only service request creation from public artisan profiles, preserving login return intent and using the existing public profile query for service selection.
+- Added React Hook Form/Zod validation, exact bearer-authenticated POST payload, optional ISO date, pending/success/empty/error states and duplicate-submit protection without automatic retries. Updated dashboard guidance.
+- Full suite passed 233 tests; final focused run passed 21 request tests including one subsequently added foreign-service case (234 cases total). Typecheck, lint, production build and whitespace checks pass. Tests caught and resolved a pending indicator race on duplicate submit events; React lint handler compliance and an edit encoding artifact were corrected.
+- Documented behavior in CREATE_SERVICE_REQUEST.md. HTTP is mocked; live backend integration and visual browser checks were not performed.
+- Marked FE-CUST-002 complete. FE-CUST-003 remains unstarted. No API contract, dependency or deployment changes.

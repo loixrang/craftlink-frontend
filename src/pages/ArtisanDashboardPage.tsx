@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ArrowRight, ClipboardList, MapPin, UserRound, Wrench } from 'lucide-react'
+import { ArrowRight, ClipboardList, MapPin, Wrench } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../app/authContext'
 import { Badge } from '../components/ui/Badge'
@@ -37,7 +37,7 @@ export function ArtisanDashboardPage() {
         {profile.isPending && <LoadingState label="Loading your profile..." />}
         {profile.isError && <ErrorState title="Profile unavailable" description={errorMessage} onRetry={profile.isFetching ? undefined : () => { void profile.refetch() }} />}
         {profile.isFetching && !profile.isPending && <LoadingState label="Refreshing your profile..." />}
-        {data === null && <EmptyState title="No artisan profile yet" description="Your artisan account is ready. Profile setup is coming soon; your business details will appear here once a profile has been created." />}
+        {data === null && <EmptyState title="No artisan profile yet" description="Your artisan account is ready. Open profile settings to add your business details." />}
         {data && <div className="mt-6 space-y-5">
           <h3 className="break-words text-xl">{data.displayName}</h3>
           <Badge tone={data.isAvailable ? 'accent' : 'neutral'}>{data.isAvailable ? 'Available for work' : 'Not available for work'}</Badge>
@@ -58,13 +58,12 @@ export function ArtisanDashboardPage() {
         <p className="mt-6 text-sm text-ink-muted">Use the navigation menu to sign out when you have finished.</p>
       </aside>
     </div>
-    <section aria-labelledby="artisan-tools-title">
+    <section aria-labelledby="artisan-tools-title"><Link to="/artisan/profile" className="mb-6 inline-flex min-h-11 items-center gap-2">Manage profile and services<ArrowRight size={18} aria-hidden="true" /></Link>
       <h2 id="artisan-tools-title" className="text-2xl tracking-tight">Your workspace is growing</h2>
       <p className="mt-3 text-ink-muted">These tools are coming soon.</p>
       <ul className="mt-6 grid gap-8 sm:grid-cols-3">
         {[
-          { title: 'Business profile', description: 'Edit your introduction, location and availability.', Icon: UserRound },
-          { title: 'Services and work', description: 'Manage services, portfolio images and credentials.', Icon: Wrench },
+          { title: 'Portfolio and credentials', description: 'Manage portfolio images and credentials.', Icon: Wrench },
           { title: 'Incoming requests', description: 'Review customer requests and manage their progress.', Icon: ClipboardList },
         ].map(({ title, description, Icon }) => <li key={title} className="border-t border-line pt-5"><Icon size={22} className="mb-4 text-accent" aria-hidden="true" /><h3 className="text-lg">{title}</h3><p className="mt-2 text-sm text-ink-muted">{description}</p></li>)}
       </ul>

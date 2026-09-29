@@ -33,7 +33,7 @@ it('loads the owner summary securely and links using profile ID, not account ID'
   expect(client.getQueryData(['own-artisan-profile', 'owner-1'])).toEqual(profile)
   expect(JSON.stringify(client.getQueryCache().getAll().map(query => query.queryKey))).not.toContain('private-token')
   expect(document.body).not.toHaveTextContent('private-token')
-  expect(screen.getAllByRole('link')).toHaveLength(1)
+  expect(screen.getAllByRole('link')).toHaveLength(2)
 })
 it('shows honest empty profile fields and unavailable status', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response({ ...profile, bio: '', city: null, state: null, yearsExperience: 1, isAvailable: false })))
@@ -61,7 +61,7 @@ it.each(['network', 'server', 'malformed', '404', '401', '403'])('handles %s err
   expect(alert).toHaveTextContent('Profile unavailable')
   if (failure === '401') expect(alert).toHaveTextContent('session has expired')
   if (failure === '403') expect(alert).toHaveTextContent('cannot access')
-  expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  expect(screen.queryByRole('link', { name: 'View public profile' })).not.toBeInTheDocument()
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
   expect(await screen.findByText('Ada Repairs')).toBeVisible()
 })
@@ -76,7 +76,7 @@ it('announces refreshing and hides stale profile data after failure', async () =
   await act(async () => reject(new TypeError('offline')))
   await screen.findByRole('alert')
   expect(screen.queryByText('Ada Repairs')).not.toBeInTheDocument()
-  expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  expect(screen.queryByRole('link', { name: 'View public profile' })).not.toBeInTheDocument()
 })
 it('cancels the request on unmount', async () => {
   const fetcher = vi.fn<typeof fetch>().mockReturnValue(new Promise(() => {}))

@@ -36,7 +36,7 @@ Markers:
 
 ## Artisan
 - [x] FE-ART-001 - Artisan dashboard.
-- [ ] FE-ART-002 - Artisan profile management: profile editing, services management, and location/availability settings.
+- [x] FE-ART-002 - Artisan profile management: profile editing, services management, and location/availability settings.
 - [ ] FE-ART-003 - Artisan portfolio and credential management: portfolio uploads, credential uploads, and verification status.
 - [ ] FE-ART-004 - Incoming service request management.
 

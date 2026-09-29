@@ -147,3 +147,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - All 299 tests (15 new), lint, typecheck, production build and whitespace checks pass. Corrected the Badge prop caught by typecheck. Build reports a non-blocking main-chunk size warning (500.39 kB).
 - Documented behavior in ARTISAN_DASHBOARD.md. HTTP is mocked; live integration and visual browser verification were not performed.
 - Marked FE-ART-001 complete. No subsequent feature started; no API contract, dependency or deployment changes.
+
+### 2026-09-29 - FE-ART-002
+
+- Added protected artisan profile setup/editing, contact and image URL fields, manual/browser location and availability. Owner fields are validated and cached separately from the dashboard summary; late save completion cannot repopulate owner cache after leaving the page.
+- Added service creation/editing/deletion with live categories, exact authenticated payloads, validation, confirmation, duplicate protection, preserved failure drafts and public-profile/discovery invalidation. Linked management from the dashboard.
+- Confirmed backend field names and validation by read-only inspection. Documented behavior and integration limits in ARTISAN_MANAGEMENT.md; no contract, backend, dependency or deployment changes.
+- All 318 tests pass (19 new), lint, typecheck, production build and whitespace checks pass. Corrected test selectors for required-field markers. Build retains a non-blocking main-chunk warning (517.10 kB). HTTP/geolocation are mocked; live backend and visual browser verification were not performed.
+- Marked FE-ART-002 complete; preserved roadmap deferrals and stopped without beginning another feature.

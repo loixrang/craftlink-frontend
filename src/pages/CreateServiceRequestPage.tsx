@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useParams } from 'react-router-dom'
@@ -31,6 +31,7 @@ export function CreateServiceRequestPage() {
 
 function RequestForm({ artisanId }: { artisanId: string }) {
   const { session } = useAuth()
+  const queryClient = useQueryClient()
   const [complete, setComplete] = useState(false)
   const submitting = useRef(false)
   const profile = useQuery({ queryKey: ['artisan-profile', artisanId], queryFn: ({ signal }) => getArtisanProfile(artisanId, signal) })
@@ -54,6 +55,7 @@ function RequestForm({ artisanId }: { artisanId: string }) {
     submitting.current = true
     try {
       await mutation.mutateAsync()
+      void queryClient.invalidateQueries({ queryKey: ['service-requests', session?.user.id] })
       reset()
       mutation.reset()
       setComplete(true)
@@ -64,7 +66,7 @@ function RequestForm({ artisanId }: { artisanId: string }) {
   return <section className="mx-auto max-w-2xl py-4 sm:py-8">
     <Link to={`/artisans/${encodeURIComponent(artisanId)}`} className="inline-flex min-h-11 items-center">Back to artisan profile</Link>
     <h1 className="mt-4 text-3xl tracking-tight sm:text-4xl">Request a service</h1>
-    {complete ? <div className="mt-8 space-y-5"><SuccessState title="Request sent" description="Your service request was submitted. Your preferred date is a suggestion, not a confirmed booking." /><Link className="inline-flex min-h-11 items-center" to="/customer">Return to dashboard</Link></div> : <>
+    {complete ? <div className="mt-8 space-y-5"><SuccessState title="Request sent" description="Your service request was submitted. Your preferred date is a suggestion, not a confirmed booking." /><Link className="inline-flex min-h-11 items-center" to="/customer">Return to dashboard</Link><Link className="inline-flex min-h-11 items-center" to="/customer/requests">View request history</Link></div> : <>
       {profile.isPending && <LoadingState label="Loading artisan services..." />}
       {profile.isError && <ErrorState title="Services unavailable" description="We could not load this artisan's services. Return to discovery or try again." onRetry={profile.isFetching ? undefined : () => { void profile.refetch() }} />}
       {profile.isFetching && !profile.isPending && <LoadingState label="Refreshing artisan services..." />}

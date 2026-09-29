@@ -124,3 +124,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Full suite passed 233 tests; final focused run passed 21 request tests including one subsequently added foreign-service case (234 cases total). Typecheck, lint, production build and whitespace checks pass. Tests caught and resolved a pending indicator race on duplicate submit events; React lint handler compliance and an edit encoding artifact were corrected.
 - Documented behavior in CREATE_SERVICE_REQUEST.md. HTTP is mocked; live backend integration and visual browser checks were not performed.
 - Marked FE-CUST-002 complete. FE-CUST-003 remains unstarted. No API contract, dependency or deployment changes.
+
+### 2026-09-29 - FE-CUST-003
+
+- Added customer request history and detail routes with pagination, all six current statuses, manual refresh, and loading/error/empty/missing states.
+- Added validated bearer-authenticated collection queries scoped by customer, cancellation and failed-refresh handling. Details resolve through the existing collection endpoint. Linked dashboard and creation success to history; creation invalidates request queries.
+- Added 22 focused tests and updated session routing expectations. All 256 tests, lint, typecheck, production build and whitespace checks pass.
+- Documented provisional response fields and multi-page detail lookup in REQUEST_HISTORY.md. Backend requests are not implemented in the inspected sibling repository; live integration and visual browser checks were not performed.
+- Marked FE-CUST-003 complete. FE-CUST-004 remains unstarted. No API contract, dependency or deployment changes.

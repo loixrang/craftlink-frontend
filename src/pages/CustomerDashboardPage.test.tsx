@@ -41,7 +41,7 @@ it('shows the signed-in customer and loads real categories without exposing cred
   expect(url).toBe('/api/v1/categories')
   expect(new Headers(options?.headers).has('Authorization')).toBe(false)
   expect(options?.signal).toBeInstanceOf(AbortSignal)
-  expect(screen.getByText(/Request tracking is coming soon/)).toBeVisible()
+  expect(screen.getByRole('link', { name: 'View request history' })).toBeVisible()
 })
 
 it.each([['  repair & fit  ', '/artisans?q=repair+%26+fit'], ['   ', '/artisans']])('searches using trimmed keyword %j', async (keyword, target) => {

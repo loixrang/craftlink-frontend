@@ -1,10 +1,10 @@
-﻿# Current Task
+# Current Task
 
 Status: COMPLETE
-Feature: FE-CUST-002 - Create service request.
+Feature: FE-CUST-003 - Request history/detail/status.
 
-Implemented: Customer-only request form linked from public artisan profiles; login return intent; artisan-owned service selection; trimmed description and optional validated ISO date; exact authenticated POST payload; loading/error/empty/pending/success feedback; duplicate-submit guard and no automatic retries.
+Implemented: Customer-only paginated history and direct detail routes; current status and refresh; authenticated validated queries; loading/error/empty/missing states; dashboard and creation-success links; creation cache invalidation.
 
-Verified 2026-09-29: Full suite passed 233 tests; final focused run passed all 21 request tests, including one subsequently added foreign-service case (234 total cases now). Typecheck, lint, production build and whitespace checks pass. HTTP is mocked; live backend integration and browser visual inspection were not performed. See CREATE_SERVICE_REQUEST.md for behavior and limitations.
+Verified 2026-09-29: All 256 tests pass (22 new history tests), lint, typecheck, production build and whitespace checks pass. Updated four session-test expectations for the newly implemented route. HTTP is mocked; no live backend integration or visual browser checks. See REQUEST_HISTORY.md for provisional response fields and collection-based detail lookup limitations.
 
-FE-CUST-003 remains unstarted. No history/detail/status, reviews, API contract, dependency or deployment changes.
+FE-CUST-004 remains unstarted. No status mutation, review, API contract, dependency or deployment changes.

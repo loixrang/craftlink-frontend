@@ -64,10 +64,10 @@ it.each(['network', 'server', 'malformed'])('keeps protected content hidden on %
   vi.stubGlobal('fetch', fetcher)
   mount()
   await screen.findByRole('alert')
-  expect(screen.queryByRole('heading', { name: 'Customer dashboard' })).not.toBeInTheDocument()
+  expect(screen.queryByRole('heading', { name: 'Request history' })).not.toBeInTheDocument()
   expect(fetcher).toHaveBeenCalledTimes(1)
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
-  await screen.findByRole('heading', { name: 'Customer dashboard' })
+  await screen.findByRole('heading', { name: 'Request history' })
 })
 
 it('does not restore a session after logout while verification is pending', async () => {
@@ -90,7 +90,7 @@ it('returns an anonymous visitor to the requested path after login', async () =>
   fireEvent.change(screen.getByLabelText(/^Email address/), { target: { value: 'user@example.com' } })
   fireEvent.change(screen.getByLabelText(/^Password/), { target: { value: 'password' } })
   fireEvent.submit(screen.getByRole('form', { name: 'Login' }))
-  await screen.findByRole('heading', { name: 'Customer dashboard' })
+  await screen.findByRole('heading', { name: 'Request history' })
   expect(screen.getByLabelText('Path')).toHaveTextContent('/customer/requests?view=open#list')
 })
 

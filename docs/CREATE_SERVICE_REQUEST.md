@@ -7,3 +7,5 @@ React Hook Form and Zod require a selected service and a trimmed, nonempty descr
 Pending submissions disable controls and use an immediate guard against duplicate events. Automatic retries are disabled. Errors preserve inputs and explain validation, authorization, unavailable service, rate limiting and uncertain receipt after network/server failures. Success removes the form and explains that a request is not a confirmed booking. State resets when the customer or artisan changes. History, status changes and reviews remain separate roadmap features.
 
 Verification uses mocked HTTP and covers exact payloads with/without date, customer access, login return intent, validation, foreign services, duplicate events, pending/success, error recovery, empty services and query cancellation. Live backend integration and visual browser layout were not performed. API contract, dependencies and deployment configuration are unchanged.
+
+FE-CUST-003 update: Successful creation invalidates the signed-in customer's request queries and offers a request-history link. See REQUEST_HISTORY.md.

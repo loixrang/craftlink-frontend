@@ -36,25 +36,18 @@ Markers:
 
 ## Artisan
 - [x] FE-ART-001 - Artisan dashboard.
-- [ ] FE-ART-002 - Profile editing.
-- [ ] FE-ART-003 - Services management.
-- [ ] FE-ART-004 - Portfolio management/upload.
-- [ ] FE-ART-005 - Credential management/upload/status.
-- [ ] FE-ART-006 - Location and availability settings.
-- [ ] FE-ART-007 - Incoming request management.
+- [ ] FE-ART-002 - Artisan profile management: profile editing, services management, and location/availability settings.
+- [ ] FE-ART-003 - Artisan portfolio and credential management: portfolio uploads, credential uploads, and verification status.
+- [ ] FE-ART-004 - Incoming service request management.
 
 ## Admin
-- [ ] FE-ADMIN-001 - Dashboard/statistics.
+- [ ] FE-ADMIN-001 - Admin dashboard/statistics and credential verification.
 - [D] FE-ADMIN-002 - User management.
 - [D] FE-ADMIN-003 - Artisan management.
 - [D] FE-ADMIN-004 - Category management.
-- [ ] FE-ADMIN-005 - Credential verification.
-- [D] FE-ADMIN-006 - Reports/moderation.
+- [D] FE-ADMIN-005 - Reports/moderation.
 
 ## Quality/production
-- [ ] FE-QA-001 - Accessibility/keyboard pass.
-- [ ] FE-QA-002 - Responsive/mobile QA.
-- [ ] FE-QA-003 - Loading/error/empty-state consistency.
-- [D] FE-QA-004 - Critical-flow tests.
-- [ ] FE-PROD-001 - Vercel production configuration.
-- [ ] FE-PROD-002 - README, env example and final developer docs.
+- [ ] FE-QA-001 - Accessibility/keyboard, responsive/mobile, and loading/error/empty-state QA pass.
+- [D] FE-QA-002 - Critical-flow tests.
+- [ ] FE-PROD-001 - Vercel production configuration, README, env example, and final developer docs.

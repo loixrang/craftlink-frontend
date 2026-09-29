@@ -1,21 +1,44 @@
 import { z } from 'zod'
 import { api, ApiError } from './api'
 
-export type ArtisanSort = 'distance' | 'rating' | 'experience' | 'newest'
-export type ArtisanFilters = { q?: string; categoryId?: string; minRating?: number; minExperience?: number; availability?: boolean; latitude?: number; longitude?: number; radiusKm?: number; sort?: ArtisanSort; page?: number }
+export type ArtisanSort = 'rating' | 'experience' | 'newest'
+export type ArtisanFilters = {
+  q?: string
+  categoryId?: string
+  state?: string
+  city?: string
+  lga?: string
+  minRating?: number
+  minExperience?: number
+  availability?: boolean
+  sort?: ArtisanSort
+  page?: number
+}
 
 const summary = z.object({
-  id: z.string().min(1), displayName: z.string().trim().min(1), bio: z.string().nullable(),
-  yearsExperience: z.number().nonnegative(), profileImageUrl: z.string().nullable(),
-  city: z.string().nullable(), state: z.string().nullable(), isAvailable: z.boolean(),
+  id: z.string().min(1),
+  displayName: z.string().trim().min(1),
+  bio: z.string().nullable(),
+  yearsExperience: z.number().nonnegative(),
+  profileImageUrl: z.string().nullable(),
+  city: z.string().nullable(),
+  state: z.string().nullable(),
+  isAvailable: z.boolean(),
   verificationStatus: z.enum(['PENDING', 'VERIFIED', 'REJECTED']),
-  averageRating: z.number().min(0).max(5).nullable(), reviewCount: z.number().int().nonnegative(),
-  distanceKm: z.number().nonnegative().nullable(),
+  averageRating: z.number().min(0).max(5).nullable(),
+  reviewCount: z.number().int().nonnegative(),
+  distanceKm: z.number().nonnegative().nullable().optional(),
   categories: z.array(z.object({ id: z.string().min(1), name: z.string().min(1) })),
 })
+
 const collection = z.object({
   data: z.array(summary).refine(items => new Set(items.map(item => item.id)).size === items.length),
-  pagination: z.object({ page: z.number().int().positive(), limit: z.number().int().positive(), total: z.number().int().nonnegative(), totalPages: z.number().int().nonnegative() }),
+  pagination: z.object({
+    page: z.number().int().positive(),
+    limit: z.number().int().positive(),
+    total: z.number().int().nonnegative(),
+    totalPages: z.number().int().nonnegative(),
+  }),
 }).refine(({ data, pagination }) => {
   const { page, limit, total, totalPages } = pagination
   return [page, limit, total, totalPages].every(Number.isSafeInteger)

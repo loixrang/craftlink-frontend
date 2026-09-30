@@ -1,10 +1,8 @@
 ﻿# Current Task
 
 Status: COMPLETE
-Feature: FE-ADMIN-001 - Admin dashboard/statistics and credential verification.
+Feature: FE-QA-001 - Accessibility/keyboard, responsive/mobile, and loading/error/empty-state QA pass.
 
-Implemented the protected admin dashboard with validated marketplace totals, URL-backed credential status filtering/pagination, private document availability/expiry handling, confirmed verification/rejection/reopening, duplicate prevention, refreshed statistics/list/public verification and loading/error/empty/success states.
+Reviewed implemented routes and shared UI for keyboard/focus behavior, labels and error descriptions, touch targets, responsive patterns, and data-state feedback. Fixed route-change focus and mobile-menu handling in AppShell and increased two standalone artisan dashboard links to the shared 44px touch target. Added five shell tests and documented the audit in ACCESSIBILITY_QA.md.
 
-Verified backend BE-ADMIN-001 and BE-SEC-001 decisions against source; recorded integration details in ADMIN_DASHBOARD.md and DECISIONS.md. No API contract, backend, dependency or deployment changes. Deferred administration features remain untouched.
-
-Validation: all 75 tests pass (28 new admin tests); lint, typecheck via production build, production build and whitespace checks pass. Build retains the existing non-blocking chunk-size warning (542.58 kB). HTTP is mocked; live backend/Cloudinary integration and visual browser verification were not performed. No next feature started.
+Validation: all 80 tests pass, lint, TypeScript checking through production build, production build, and git diff --check pass. Build retains the existing non-blocking chunk-size warning (542.82 kB). Responsive behavior was source/CSS reviewed; real browser viewport, screen reader, and live API verification remain unperformed. No next feature started.

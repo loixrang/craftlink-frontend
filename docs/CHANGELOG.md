@@ -193,3 +193,10 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added validated authenticated services, account-scoped cancellable queries, duplicate-submit prevention, explicit write errors and refresh/invalidation of statistics, credentials and public verification. Deferred administration features remain untouched.
 - All 75 tests pass (28 new); lint, typecheck through production build, build and whitespace checks pass. Corrected a new-file encoding issue and the expiry test's timer setup during validation. Build retains the non-blocking chunk-size warning (542.58 kB). HTTP is mocked; live backend/Cloudinary integration and visual browser verification were not performed.
 - Marked FE-ADMIN-001 and CURRENT_TASK complete and stopped. No subsequent feature, dependency or deployment changes.
+
+### 2026-09-30 - FE-QA-001 completed
+
+- Audited implemented routes and shared UI for keyboard navigation/focus, form labeling and error associations, touch targets, responsive patterns, and data loading/error/empty/success feedback. Documented findings and browser-only limits in ACCESSIBILITY_QA.md.
+- AppShell now focuses the main landmark after path navigation and closes the mobile menu on route changes while preserving focus for query-only changes. Two standalone artisan dashboard links now meet the 44px minimum target.
+- Added five AppShell tests for skip navigation, route focus, mobile-menu closure/Escape return, and current navigation. All 80 tests pass; lint, typecheck via build, production build, and whitespace checks pass. Build retains the non-blocking 542.82 kB chunk warning.
+- Marked FE-QA-001 complete. FE-PROD-001 remains unstarted. No API, product scope, backend, dependency, or deployment changes; real-browser, screen-reader, and live-API verification were not performed.

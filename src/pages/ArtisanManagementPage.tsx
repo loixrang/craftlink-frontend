@@ -30,7 +30,7 @@ export function ArtisanManagementPage() {
   return (
     <div className="space-y-8">
       <header>
-        <Link to="/artisan">Back to dashboard</Link>
+        <Link to="/artisan" className="inline-flex min-h-11 items-center">Back to dashboard</Link>
         <h1 className="mt-5 text-3xl sm:text-4xl">Manage your business</h1>
         <p className="mt-3 text-ink-muted">Keep your profile, location and services up to date.</p>
       </header>

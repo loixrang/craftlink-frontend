@@ -16,7 +16,7 @@ export function ArtisanMediaPage() {
   const { session } = useAuth()
   const owner = useQuery({ queryKey: ['own-artisan-profile', session?.user.id], queryFn: ({ signal }) => getOwnArtisanProfile(session!.accessToken, signal), enabled: !!session })
   return <div className="space-y-10">
-    <header><Link to="/artisan">Back to dashboard</Link><h1 className="mt-5 text-3xl sm:text-4xl">Portfolio and credentials</h1><p className="mt-3 max-w-2xl text-ink-muted">Show customers your work and share your qualifications for verification.</p></header>
+    <header><Link to="/artisan" className="inline-flex min-h-11 items-center">Back to dashboard</Link><h1 className="mt-5 text-3xl sm:text-4xl">Portfolio and credentials</h1><p className="mt-3 max-w-2xl text-ink-muted">Show customers your work and share your qualifications for verification.</p></header>
     {owner.isPending && <LoadingState label="Loading your profile..." />}
     {owner.isError && <ErrorState title="Profile unavailable" description={mediaError(owner.error)} onRetry={() => { void owner.refetch() }} />}
     {owner.isSuccess && (owner.data ? <div className="space-y-12"><MediaSection kind="portfolio" artisanId={owner.data.id} /><MediaSection kind="credentials" artisanId={owner.data.id} /></div> : <EmptyState title="Set up your profile first" description="Add your business details before uploading work or credentials."><Link to="/artisan/profile">Manage profile</Link></EmptyState>)}

@@ -48,6 +48,6 @@ Markers:
 - [D] FE-ADMIN-005 - Reports/moderation.
 
 ## Quality/production
-- [ ] FE-QA-001 - Accessibility/keyboard, responsive/mobile, and loading/error/empty-state QA pass.
+- [x] FE-QA-001 - Accessibility/keyboard, responsive/mobile, and loading/error/empty-state QA pass.
 - [D] FE-QA-002 - Critical-flow tests.
 - [ ] FE-PROD-001 - Vercel production configuration, README, env example, and final developer docs.

@@ -1,7 +1,7 @@
-import { useId, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Menu, Wrench, X } from 'lucide-react'
 import { Button } from '../ui/Button'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 
 type NavigationItem = { label: string; href: string }
 type AppShellProps = { children: ReactNode; navigation: readonly NavigationItem[]; onSignOut?: () => void }
@@ -10,6 +10,17 @@ export function AppShell({ children, navigation, onSignOut }: AppShellProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const navigationId = useId()
   const menuButton = useRef<HTMLButtonElement>(null)
+  const mainContent = useRef<HTMLElement>(null)
+  const { pathname } = useLocation()
+  const previousPath = useRef(pathname)
+
+  useEffect(() => {
+    if (previousPath.current !== pathname) {
+      setMenuOpen(false)
+      mainContent.current?.focus()
+      previousPath.current = pathname
+    }
+  }, [pathname])
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -34,7 +45,7 @@ export function AppShell({ children, navigation, onSignOut }: AppShellProps) {
           </nav>
         </div>
       </header>
-      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-content flex-1 px-4 py-10 sm:px-6 sm:py-16">{children}</main>
+      <main ref={mainContent} id="main-content" tabIndex={-1} className="mx-auto w-full max-w-content flex-1 px-4 py-10 sm:px-6 sm:py-16">{children}</main>
       <footer className="border-t border-line px-4 py-6 sm:px-6"><div className="mx-auto flex max-w-content flex-col gap-2 text-sm text-ink-muted sm:flex-row sm:justify-between"><span className="font-semibold text-ink">Craftlink</span><p>Connecting customers with skilled artisans.</p></div></footer>
     </div>
   )

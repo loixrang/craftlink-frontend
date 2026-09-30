@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,10 +13,14 @@ import {
   managementError,
   profileDefaults,
   profileFormSchema,
+  profileImageFileError,
+  removeProfileImage,
   saveProfile,
+  uploadProfileImage,
   type OwnerProfile,
   type ProfileValues,
 } from '../services/artisanManagement'
+import { publicImageUrl } from '../services/artisanProfile'
 import { ArtisanServices } from './ArtisanServices'
 
 export function ArtisanManagementPage() {
@@ -55,6 +59,12 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
   const client = useQueryClient()
   const lock = useRef(false)
   const active = useRef(true)
+  const [imageFile, setImageFile] = useState<File>()
+  const [imageIssue, setImageIssue] = useState<string>()
+  const [imageSetupError, setImageSetupError] = useState<unknown>()
+  const [imagePreparing, setImagePreparing] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string>()
+  const previewObjectUrl = useRef<string | undefined>(undefined)
 
   useEffect(() => {
     active.current = true
@@ -62,6 +72,43 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
       active.current = false
     }
   }, [])
+
+  useEffect(() => () => {
+    if (previewObjectUrl.current) URL.revokeObjectURL(previewObjectUrl.current)
+  }, [])
+
+  const selectImage = (file: File | undefined) => {
+    if (previewObjectUrl.current) URL.revokeObjectURL(previewObjectUrl.current)
+    previewObjectUrl.current = file ? URL.createObjectURL(file) : undefined
+    setPreviewUrl(previewObjectUrl.current)
+    setImageFile(file)
+    setImageIssue(file ? profileImageFileError(file) : undefined)
+    setImageSetupError(undefined)
+  }
+
+  const uploadSelectedPhoto = async () => {
+    const issue = profileImageFileError(imageFile)
+    setImageIssue(issue)
+    if (issue || !imageFile) return
+    if (!profile) {
+      setImagePreparing(true)
+      try {
+        const saved = await saveProfile(getValues(), session!.accessToken, null)
+        reset(profileDefaults(saved))
+        client.setQueryData(['editable-artisan-profile', session!.user.id], saved)
+      } catch (error) {
+        setImageSetupError(error)
+        return
+      } finally {
+        setImagePreparing(false)
+      }
+    }
+    try {
+      await imageUpload.mutateAsync(imageFile)
+    } catch { return }
+    selectImage(undefined)
+    await refreshProfile()
+  }
 
   const {
     register,
@@ -79,10 +126,22 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
   const availableLgas = getLgasForState(selectedState)
 
   const mutation = useMutation({
-    mutationFn: () => saveProfile(getValues(), session!.accessToken),
+    mutationFn: () => saveProfile(getValues(), session!.accessToken, profile?.profileImageUrl ?? null),
     retry: false,
     gcTime: 0,
   })
+  const refreshProfile = async () => {
+    await client.invalidateQueries({ queryKey: ['editable-artisan-profile', session!.user.id] })
+    await client.refetchQueries({ queryKey: ['editable-artisan-profile', session!.user.id], type: 'active' })
+    await Promise.all([
+      client.invalidateQueries({ queryKey: ['own-artisan-profile', session!.user.id] }),
+      client.invalidateQueries({ queryKey: ['artisan-profile', profile?.id] }),
+      client.invalidateQueries({ queryKey: ['artisans'] }),
+    ])
+  }
+  const imageUpload = useMutation({ mutationFn: (file: File) => uploadProfileImage(file, session!.accessToken), retry: false, gcTime: 0 })
+  const imageRemoval = useMutation({ mutationFn: () => removeProfileImage(session!.accessToken), retry: false, gcTime: 0 })
+  const imageError = imageUpload.error ?? imageRemoval.error
 
   return (
     <section aria-labelledby="profile-edit-heading" className="max-w-3xl">
@@ -118,6 +177,24 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
       >
         {mutation.isError && <ErrorState title="Profile save not confirmed" description={managementError(mutation.error)} />}
         {mutation.isSuccess && <SuccessState title="Profile saved" description="Your business details are up to date." />}
+        {!!(imageError || imageSetupError) && <ErrorState title="Photo change not confirmed" description={managementError(imageSetupError ?? imageError)} />}
+        {imageUpload.isSuccess && <SuccessState title="Profile photo updated" />}
+        {imageRemoval.isSuccess && <SuccessState title="Profile photo removed" />}
+        <div className="space-y-3">
+          <h3 className="text-lg font-semibold">Profile photo</h3>
+          <div className="flex flex-wrap items-center gap-5">
+            {previewUrl || publicImageUrl(profile?.profileImageUrl ?? null)
+              ? <img src={previewUrl ?? publicImageUrl(profile?.profileImageUrl ?? null)} alt={previewUrl ? 'Selected profile photo preview' : `${profile?.displayName ?? 'Your'} profile photo`} className="size-24 rounded-full border border-line object-cover" />
+              : <div aria-label="No profile photo" className="flex size-24 items-center justify-center rounded-full bg-surface-muted text-sm text-ink-muted">No photo</div>}
+            <div className="space-y-3">
+              <Input label={profile?.profileImageUrl ? 'Change photo' : 'Choose photo'} type="file" accept="image/jpeg,image/png,image/webp" disabled={imageUpload.isPending || imageRemoval.isPending} hint="Static JPEG, PNG or WebP. Maximum 5 MiB and 25 million pixels." error={imageIssue} onChange={event => { selectImage(event.target.files?.[0]); imageUpload.reset(); imageRemoval.reset() }} />
+              <div className="flex flex-wrap gap-3">
+                <Button type="button" disabled={imageRemoval.isPending} pending={imageUpload.isPending || imagePreparing} onClick={() => { if (!profile) { void handleSubmit(uploadSelectedPhoto)() } else { void uploadSelectedPhoto() } }}>{imagePreparing ? 'Saving profile...' : imageUpload.isPending ? 'Uploading photo...' : !profile ? 'Save profile and upload photo' : 'Upload photo'}</Button>
+                {profile?.profileImageUrl && <Button type="button" variant="secondary" disabled={imageUpload.isPending} pending={imageRemoval.isPending} onClick={async () => { try { await imageRemoval.mutateAsync(); selectImage(undefined); await refreshProfile() } catch { /* Keep the existing photo visible until confirmed. */ } }}>{imageRemoval.isPending ? 'Removing photo...' : 'Remove photo'}</Button>}
+              </div>
+            </div>
+          </div>
+        </div>
         <fieldset disabled={mutation.isPending} className="space-y-6">
           <Input label="Business name" {...register('displayName')} error={errors.displayName?.message} required />
           <div>
@@ -142,13 +219,6 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
               max="100"
               {...register('yearsExperience', { valueAsNumber: true })}
               error={errors.yearsExperience?.message}
-            />
-            <Input
-              label="Profile image URL"
-              type="url"
-              {...register('profileImageUrl')}
-              hint="Optional HTTPS image URL. Uploads are coming later."
-              error={errors.profileImageUrl?.message}
             />
             <Input label="Phone" type="tel" {...register('phone')} error={errors.phone?.message} />
             <Input label="WhatsApp" type="tel" {...register('whatsapp')} error={errors.whatsapp?.message} />

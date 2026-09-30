@@ -16,15 +16,6 @@ export const profileFormSchema = z.object({
     'Select a valid city / LGA from the list.',
   ),
   isAvailable: z.boolean(),
-  profileImageUrl: z.string().trim().max(2048).refine(v => {
-    if (!v) return true
-    try {
-      const u = new URL(v)
-      return u.protocol === 'https:' && !u.username && !u.password
-    } catch {
-      return false
-    }
-  }, 'Enter an HTTPS image URL without credentials.'),
 })
 
 export type ProfileValues = z.infer<typeof profileFormSchema>
@@ -61,7 +52,30 @@ export async function getEditableProfile(accessToken: string, signal: AbortSigna
   }
 }
 
-export async function saveProfile(values: ProfileValues, accessToken: string) {
+export function profileImageFileError(file: File | undefined) {
+  if (!file || file.size === 0) return 'Choose a non-empty image.'
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) return 'Choose a JPEG, PNG or WebP image.'
+  if (file.size > 5242880) return 'Choose an image no larger than 5 MiB.'
+  return undefined
+}
+
+export async function uploadProfileImage(file: File, accessToken: string) {
+  const issue = profileImageFileError(file)
+  if (issue) throw new Error(issue)
+  const body = new FormData()
+  body.append('file', file)
+  const parsed = z.object({ data: z.object({ profileImageUrl: z.string().url() }) }).safeParse(
+    await api.request('/artisans/me/profile-image', { method: 'POST', accessToken, body }),
+  )
+  if (!parsed.success) throw new ApiError('The image upload could not be confirmed.', 200, 'INVALID_RESPONSE')
+  return parsed.data.data.profileImageUrl
+}
+
+export async function removeProfileImage(accessToken: string) {
+  await api.request('/artisans/me/profile-image', { method: 'DELETE', accessToken })
+}
+
+export async function saveProfile(values: ProfileValues, accessToken: string, currentProfileImageUrl: string | null = null) {
   const v = profileFormSchema.parse(values)
   return parseOwner(
     await api.request('/artisans/me', {
@@ -72,7 +86,7 @@ export async function saveProfile(values: ProfileValues, accessToken: string) {
         state: v.state || DEFAULT_STATE,
         phone: v.phone || null,
         whatsapp: v.whatsapp || null,
-        profileImageUrl: v.profileImageUrl || null,
+        profileImageUrl: currentProfileImageUrl,
         latitude: null,
         longitude: null,
       },
@@ -90,7 +104,6 @@ export function profileDefaults(profile: OwnerProfile | null): ProfileValues {
     state: profile?.state || DEFAULT_STATE,
     city: profile?.city ?? '',
     isAvailable: profile?.isAvailable ?? false,
-    profileImageUrl: profile?.profileImageUrl ?? '',
   }
 }
 
@@ -124,6 +137,10 @@ export function managementError(error: unknown) {
     if (error.status === 401) return 'Your session has expired. Sign out and log in again.'
     if (error.status === 403) return 'Your account cannot change this profile or service.'
     if (error.status === 400 || error.status === 422) return 'Check the form fields and try again.'
+    if (error.status === 413) return 'Choose an image no larger than 5 MiB.'
+    if (error.code === 'INVALID_IMAGE') return 'Choose a valid, static JPEG, PNG or WebP image with at most 25 million pixels.'
+    if (error.code === 'MEDIA_UNAVAILABLE') return 'Uploads are temporarily unavailable. Please try again later.'
+    if (error.status === 415) return 'Choose a JPEG, PNG or WebP image and try again.'
     if (error.status === 404 || error.status === 409) return 'This profile, service or category may have changed. Reload the page to check before trying again.'
     if (error.status === 429) return 'Too many attempts. Wait a moment before trying again.'
   }

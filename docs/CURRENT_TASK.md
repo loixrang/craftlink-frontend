@@ -1,10 +1,10 @@
 # Current Task
 
 Status: COMPLETE
-Feature: FE-ART-003 - Artisan portfolio and credential management.
+Feature: FE-ART-004 - Incoming service request management.
 
-Implemented the artisan-only /artisan/media page with portfolio and credential multipart uploads, safe lists, verification statuses, deletion confirmation, validation, pending/error/recovery states and dashboard navigation. The updated contract and backend implementation resolved the previous blocker. See ARTISAN_MEDIA.md.
+Implemented artisan-only incoming request listing with expandable details, pagination, permitted status transitions, confirmation, duplicate-submit protection, cache refresh and loading/error/empty/success feedback. Linked from the artisan dashboard.
 
-Verified 2026-09-29: all 21 tests currently present pass; lint, typecheck, production build and whitespace checks pass. Existing bundle-size warning remains. Earlier test files are absent from this checkout. HTTP is mocked; live uploads and visual browser verification were not performed.
+Resolved the former blocker by verifying completed BE-REQ-001/002 and their explicit backend decisions against source. Documented integration details in ARTISAN_REQUESTS.md and DECISIONS.md; no API contract or backend changes were necessary.
 
-Corrected two pre-existing location-code check failures minimally. No backend, contract-content, dependency or deployment changes. No subsequent feature started.
+Validation: all 47 tests pass (26 new); lint, typecheck via production build, production build and whitespace checks pass. Build retains the existing non-blocking chunk-size warning (531.34 kB). HTTP is mocked; live integration and visual browser verification were not performed. No next feature started.

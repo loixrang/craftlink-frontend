@@ -23,3 +23,7 @@ These decisions are constraints unless the user explicitly changes them.
 ## 2026-09-28 - FE-AUTH-003 session restoration
 
 Persist only the V1 bearer token in tab-scoped sessionStorage for reload restoration; never persist passwords or trusted user/role data. Verify through GET /auth/me before restoring access. Unavailable storage falls back to in-memory login. This replaces FE-AUTH-002 reload-to-anonymous behavior. Session storage is accessible to same-origin JavaScript, including XSS; it is not an HttpOnly cookie. No refresh/logout endpoint or cookie authentication is introduced. Sign-out removes storage and clears caches. Backend authorization remains authoritative. No API contract changes.
+
+## 2026-09-30 - FE-ART-004 request integration
+
+Adopt the already documented BE-REQ-001/002 details from the sibling backend DECISIONS.md, verified against its implementation. Artisan status mutations send exactly {status}; permitted transitions are PENDING to ACCEPTED/DECLINED, ACCEPTED to IN_PROGRESS and IN_PROGRESS to COMPLETED. Listing uses standard page/limit pagination and the private request shape, including nullable serviceId and a preserved serviceTitle. Server ownership/transition checks remain authoritative; the frontend validates responses, strips unused participant identity, confirms writes and refreshes after attempts. This resolves the prior missing-policy blocker using published backend decisions, with no frozen endpoint/field changes. See ARTISAN_REQUESTS.md for errors and integration details.

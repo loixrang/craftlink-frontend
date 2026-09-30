@@ -170,3 +170,18 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - All 21 tests currently available in this checkout pass; lint, typecheck, production build and whitespace checks pass. Earlier sessions' test files are absent from this checkout. Build retains the non-blocking chunk-size warning (523.00 kB). HTTP is mocked; live uploads and visual browser verification were not performed.
 - Minimally corrected an existing unused location import and replaced profile watch with useWatch to clear pre-existing check failures. No dependencies, backend, contract content or deployment changes.
 - Documented behavior in ARTISAN_MEDIA.md, marked FE-ART-003 complete and stopped without starting the next feature.
+
+### 2026-09-29 - FE-ART-004 investigation blocked
+
+- Selected incoming service request management and inspected frontend request code, relevant docs and the sibling backend.
+- Confirmed missing request implementation and undefined status mutation payload/artisan transition rules. Marked the feature and CURRENT_TASK blocked; documented evidence and unblock requirements in ARTISAN_REQUESTS.md.
+- Acceptance criteria remain unmet. No application, backend, contract, dependency or deployment changes; no subsequent feature started.
+- Documentation whitespace check only; application tests were not rerun.
+
+### 2026-09-30 - FE-ART-004 completed
+
+- Rechecked the previously blocked feature: BE-REQ-001/002 are now implemented and backend decisions explicitly define the formerly missing request details. Documented the verified integration policy; no frozen contract or backend edits required.
+- Added artisan-only incoming requests with paginated listing, expandable project details, preserved titles for removed services, permitted accept/decline/start/complete actions and confirmation. Linked from the dashboard.
+- Added account-scoped cancellable queries, runtime response validation, unused/private-field stripping, duplicate protection, explicit mutation errors and refresh after status attempts. Terminal requests expose no actions; failed refreshes hide stale data.
+- All 47 tests pass (26 new); lint, typecheck through production build, build and whitespace checks pass. Build retains a non-blocking 531.34 kB chunk warning. HTTP is mocked; live backend integration and visual browser verification were not performed.
+- Marked FE-ART-004 and CURRENT_TASK complete. Preserved existing tracking history; no subsequent feature started.

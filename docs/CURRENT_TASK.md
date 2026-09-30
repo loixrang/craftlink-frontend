@@ -1,10 +1,10 @@
-# Current Task
+﻿# Current Task
 
 Status: COMPLETE
-Feature: FE-ART-004 - Incoming service request management.
+Feature: FE-ADMIN-001 - Admin dashboard/statistics and credential verification.
 
-Implemented artisan-only incoming request listing with expandable details, pagination, permitted status transitions, confirmation, duplicate-submit protection, cache refresh and loading/error/empty/success feedback. Linked from the artisan dashboard.
+Implemented the protected admin dashboard with validated marketplace totals, URL-backed credential status filtering/pagination, private document availability/expiry handling, confirmed verification/rejection/reopening, duplicate prevention, refreshed statistics/list/public verification and loading/error/empty/success states.
 
-Resolved the former blocker by verifying completed BE-REQ-001/002 and their explicit backend decisions against source. Documented integration details in ARTISAN_REQUESTS.md and DECISIONS.md; no API contract or backend changes were necessary.
+Verified backend BE-ADMIN-001 and BE-SEC-001 decisions against source; recorded integration details in ADMIN_DASHBOARD.md and DECISIONS.md. No API contract, backend, dependency or deployment changes. Deferred administration features remain untouched.
 
-Validation: all 47 tests pass (26 new); lint, typecheck via production build, production build and whitespace checks pass. Build retains the existing non-blocking chunk-size warning (531.34 kB). HTTP is mocked; live integration and visual browser verification were not performed. No next feature started.
+Validation: all 75 tests pass (28 new admin tests); lint, typecheck via production build, production build and whitespace checks pass. Build retains the existing non-blocking chunk-size warning (542.58 kB). HTTP is mocked; live backend/Cloudinary integration and visual browser verification were not performed. No next feature started.

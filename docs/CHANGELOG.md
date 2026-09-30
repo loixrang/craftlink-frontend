@@ -185,3 +185,11 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - Added account-scoped cancellable queries, runtime response validation, unused/private-field stripping, duplicate protection, explicit mutation errors and refresh after status attempts. Terminal requests expose no actions; failed refreshes hide stale data.
 - All 47 tests pass (26 new); lint, typecheck through production build, build and whitespace checks pass. Build retains a non-blocking 531.34 kB chunk warning. HTTP is mocked; live backend integration and visual browser verification were not performed.
 - Marked FE-ART-004 and CURRENT_TASK complete. Preserved existing tracking history; no subsequent feature started.
+
+### 2026-09-30 - FE-ADMIN-001 completed
+
+- Replaced the protected admin placeholder with server-backed marketplace statistics and credential verification. Added URL-backed status filters, pagination, safe metadata, private document availability/expiry guidance, confirmed verification/rejection/reopening and independent loading/error/empty/success states.
+- Verified backend BE-ADMIN-001/BE-SEC-001 integration details; documented them in ADMIN_DASHBOARD.md and DECISIONS.md without changing the API contract or backend. Signed document links are admin-only, short-lived and excluded from mutation/public caches; inactive credential queries are removed.
+- Added validated authenticated services, account-scoped cancellable queries, duplicate-submit prevention, explicit write errors and refresh/invalidation of statistics, credentials and public verification. Deferred administration features remain untouched.
+- All 75 tests pass (28 new); lint, typecheck through production build, build and whitespace checks pass. Corrected a new-file encoding issue and the expiry test's timer setup during validation. Build retains the non-blocking chunk-size warning (542.58 kB). HTTP is mocked; live backend/Cloudinary integration and visual browser verification were not performed.
+- Marked FE-ADMIN-001 and CURRENT_TASK complete and stopped. No subsequent feature, dependency or deployment changes.

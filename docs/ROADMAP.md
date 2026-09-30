@@ -41,7 +41,7 @@ Markers:
 - [x] FE-ART-004 - Incoming service request management.
 
 ## Admin
-- [ ] FE-ADMIN-001 - Admin dashboard/statistics and credential verification.
+- [x] FE-ADMIN-001 - Admin dashboard/statistics and credential verification.
 - [D] FE-ADMIN-002 - User management.
 - [D] FE-ADMIN-003 - Artisan management.
 - [D] FE-ADMIN-004 - Category management.

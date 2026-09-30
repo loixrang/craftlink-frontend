@@ -6,7 +6,7 @@
 
 ## Configuration
 
-Copy `.env.example` to `.env.local` when needed, then restart Vite. `VITE_API_BASE_URL` is public build-time configuration, never a secret. It defaults to `/api/v1`, which requires a same-origin backend or reverse proxy. For a separate local backend use, for example, `http://localhost:3000/api/v1`. Production absolute URLs must use HTTPS. Credentials, query strings, fragments and incorrect prefixes are rejected without echoing their contents. Cross-origin backends must permit the frontend origin through CORS. Deployment rewrites and proxy configuration are outside this feature.
+Copy `.env.example` to `.env.local` when needed, then restart Vite. `VITE_API_BASE_URL` is public build-time configuration, never a secret. It defaults to `/api/v1`, which requires a same-origin backend or reverse proxy. For a separate local backend use, for example, `http://localhost:3000/api/v1`. Production absolute URLs must use HTTPS. Credentials, query strings, fragments and incorrect prefixes are rejected without echoing their contents. Cross-origin backends must permit the frontend origin through CORS. See [DEPLOYMENT.md](DEPLOYMENT.md) for Vercel rewrites and production environment setup.
 
 ## Service usage
 

@@ -50,4 +50,4 @@ Markers:
 ## Quality/production
 - [x] FE-QA-001 - Accessibility/keyboard, responsive/mobile, and loading/error/empty-state QA pass.
 - [D] FE-QA-002 - Critical-flow tests.
-- [ ] FE-PROD-001 - Vercel production configuration, README, env example, and final developer docs.
+- [x] FE-PROD-001 - Vercel production configuration, README, env example, and final developer docs.

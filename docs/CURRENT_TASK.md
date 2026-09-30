@@ -1,8 +1,8 @@
 ﻿# Current Task
 
 Status: COMPLETE
-Feature: FE-QA-001 - Accessibility/keyboard, responsive/mobile, and loading/error/empty-state QA pass.
+Feature: FE-PROD-001 - Vercel production configuration, README, env example, and final developer docs.
 
-Reviewed implemented routes and shared UI for keyboard/focus behavior, labels and error descriptions, touch targets, responsive patterns, and data-state feedback. Fixed route-change focus and mobile-menu handling in AppShell and increased two standalone artisan dashboard links to the shared 44px touch target. Added five shell tests and documented the audit in ACCESSIBILITY_QA.md.
+Selected as the first incomplete, unblocked roadmap feature after FE-QA-001. Added Vercel SPA route rewrites, local setup and deployment instructions, environment-variable guidance, and final developer docs in README.md and DEPLOYMENT.md. Clarified the `.env.example` local and production API URL examples and linked deployment guidance from API_FOUNDATION.md.
 
-Validation: all 80 tests pass, lint, TypeScript checking through production build, production build, and git diff --check pass. Build retains the existing non-blocking chunk-size warning (542.82 kB). Responsive behavior was source/CSS reviewed; real browser viewport, screen reader, and live API verification remain unperformed. No next feature started.
+Validation: all 80 tests pass, lint, typecheck, production build, and git diff --check pass. Build retains the existing non-blocking 542.82 kB main-chunk warning. No live Vercel deployment or backend connectivity verification was performed. No next feature started.

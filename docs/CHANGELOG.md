@@ -200,3 +200,10 @@ Concise AI-assisted implementation history. Git remains the source of code histo
 - AppShell now focuses the main landmark after path navigation and closes the mobile menu on route changes while preserving focus for query-only changes. Two standalone artisan dashboard links now meet the 44px minimum target.
 - Added five AppShell tests for skip navigation, route focus, mobile-menu closure/Escape return, and current navigation. All 80 tests pass; lint, typecheck via build, production build, and whitespace checks pass. Build retains the non-blocking 542.82 kB chunk warning.
 - Marked FE-QA-001 complete. FE-PROD-001 remains unstarted. No API, product scope, backend, dependency, or deployment changes; real-browser, screen-reader, and live-API verification were not performed.
+
+### 2026-09-30 - FE-PROD-001 completed
+
+- Added Vercel SPA rewrites so React Router paths load directly, plus README setup/check/deploy instructions and focused deployment documentation.
+- Clarified public build-time API URL examples and HTTPS production requirements; documented Vercel build settings, backend CORS, preview environments, and the absence of a frontend API proxy. No API, backend, dependency, or product behavior changes.
+- All 80 tests pass; lint, typecheck, production build, and whitespace checks pass. Build retains the non-blocking 542.82 kB main-chunk warning. No live Vercel deployment or backend connectivity verification performed.
+- Marked FE-PROD-001 and CURRENT_TASK complete. No subsequent feature started.

@@ -1,4 +1,5 @@
-import { Link, Route, Routes } from 'react-router-dom'
+import { Link, Route, Routes, useLocation } from 'react-router-dom'
+import { SeoMetadata } from '../components/SeoMetadata'
 import { LandingPage } from '../pages/LandingPage'
 import { RegisterPage } from '../pages/RegisterPage'
 import { LoginPage } from '../pages/LoginPage'
@@ -16,6 +17,8 @@ import { RequireRole, SessionGate } from './RequireRole'
 
 export function AppRoutes() {
   return (
+    <>
+    <RouteSeoMetadata />
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<SessionGate><LoginPage /></SessionGate>} />
@@ -33,5 +36,14 @@ export function AppRoutes() {
       <Route path="/admin/*" element={<RequireRole role="ADMIN"><AdminDashboardPage key="admin-dashboard" /></RequireRole>} />
       <Route path="*" element={<><h1 className="text-3xl tracking-tight">Page not found</h1><p className="mt-4 text-ink-muted">We couldn’t find that page.</p><Link to="/" className="mt-6 inline-flex min-h-11 items-center">Return home</Link></>} />
     </Routes>
+    </>
   )
+}
+
+function RouteSeoMetadata() {
+  const { pathname } = useLocation()
+  if (pathname.startsWith('/artisans/')) return null
+  if (pathname === '/') return <SeoMetadata title="Find skilled local artisans | Craftlink" description="Find skilled local artisans for repairs, home projects and more. Explore services and connect with artisans through Craftlink." canonicalPath="/" />
+  if (pathname === '/artisans') return <SeoMetadata title="Explore artisan services | Craftlink" description="Browse Craftlink service categories and discover skilled artisans for repairs, home projects and everyday needs." canonicalPath="/artisans" />
+  return <SeoMetadata title="Craftlink" description="Connect with skilled artisans through Craftlink." canonicalPath={pathname} indexable={false} />
 }

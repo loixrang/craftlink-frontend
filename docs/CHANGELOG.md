@@ -1,5 +1,10 @@
 # Changelog
 
+### 2026-09-30 - SEO discoverability
+
+- Added build-generated robots and sitemap files, canonical production-origin configuration, social metadata, route-specific titles and descriptions, and `noindex` metadata for non-public routes. The sitemap includes the landing and artisan discovery pages; API-backed individual profiles are omitted because IDs are not available at build time.
+- Verified robots, sitemap XML, homepage and an artisan deep route through Vite preview (all HTTP 200); standard production build, Vercel JSON parsing, and `git diff --check` pass. Build reports only the existing large-chunk warning.
+
 ### 2026-09-29 - FE-CUST-004
 
 - Added completed-request review forms with validated 1–5 ratings and trimmed comments, exact authenticated review payloads, pending/duplicate protection, success acknowledgement across session navigation and public rating cache invalidation.

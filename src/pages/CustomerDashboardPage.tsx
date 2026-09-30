@@ -57,7 +57,7 @@ export function CustomerDashboardPage() {
         : <ul className="mt-4 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
           {categories.data.map(category => <li key={category.id} className="min-w-0 border-b border-line">
             <Link to={{ pathname: '/artisans', search: `?${new URLSearchParams({ categoryId: category.id })}` }} className="flex min-h-20 items-center justify-between gap-4 py-5 text-ink no-underline hover:text-accent-hover">
-              <span className="min-w-0 break-words font-medium">{category.name}</span><ArrowRight size={18} className="shrink-0 text-accent" aria-hidden="true" />
+              <span className="min-w-0 wrap-break-word font-medium">{category.name}</span><ArrowRight size={18} className="shrink-0 text-accent" aria-hidden="true" />
             </Link>
           </li>)}
         </ul>)}

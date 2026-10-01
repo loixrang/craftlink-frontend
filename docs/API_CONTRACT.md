@@ -254,6 +254,8 @@ All `/api/v1/admin/*` require `ADMIN`.
 - POST `/api/v1/admin/categories`
 - PATCH `/api/v1/admin/categories/:categoryId`
 - DELETE `/api/v1/admin/categories/:categoryId`
+
+All category administration routes require a current ACTIVE ADMIN. `POST /api/v1/admin/categories` accepts exactly `{"name":"Plumbing"}`; the name is trimmed and must contain 1 to 100 characters. It returns 201 with `{id,name}`. Names are unique and duplicates return 409 `CATEGORY_NAME_CONFLICT`. `PATCH /api/v1/admin/categories/:categoryId` accepts a UUID and a nonempty object containing only optional `name` with the same validation; omitted fields are preserved. It returns 200 with `{id,name}`. Missing IDs return 404 `CATEGORY_NOT_FOUND`. `DELETE` accepts a UUID and no query (body absent or an empty object), returns 200 with `data:null`, and returns 404 for missing IDs. Categories referenced by services cannot be deleted and return 409 `CATEGORY_IN_USE`; concurrent reference creation is reported the same way. All responses use no-store and strict unknown-field/query validation.
 - GET `/api/v1/admin/credentials`
 - PATCH `/api/v1/admin/credentials/:credentialId`
 

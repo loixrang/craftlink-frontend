@@ -8,7 +8,7 @@ export function App() {
   if (session) {
     navigation.push({ label: `${session.user.role === 'CUSTOMER' ? 'Customer' : session.user.role === 'ARTISAN' ? 'Artisan' : 'Admin'} dashboard`, href: roleHome[session.user.role] })
     if (session.user.role === 'CUSTOMER') navigation.push({ label: 'Account', href: '/customer/account' })
-    if (session.user.role === 'ADMIN') navigation.push({ label: 'Users', href: '/admin/users' }, { label: 'Artisans', href: '/admin/artisans' })
+    if (session.user.role === 'ADMIN') navigation.push({ label: 'Users', href: '/admin/users' }, { label: 'Artisans', href: '/admin/artisans' }, { label: 'Categories', href: '/admin/categories' })
   }
   else if (status === 'anonymous') navigation.push({ label: 'Log in', href: '/login' }, { label: 'Join Craftlink', href: '/register' })
   return (

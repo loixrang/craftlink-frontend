@@ -39,3 +39,7 @@ Adopt the published BE-ADMIN-003 decision, verified against the sibling backend 
 ## 2026-10-01 - FE-ADMIN-002 user management
 
 Mirror the completed backend BE-ADMIN-002 decision, verified against its admin model/routes/repository. The frontend API contract now records the published list fields, filters, pagination and exact status mutation payload, including self-suspension protection and USER_NOT_FOUND. No endpoint or behavior is invented or changed. See ADMIN_USERS.md for the UI integration.
+
+## 2026-10-01 - FE-ADMIN-004 category management
+
+Mirror the completed backend BE-ADMIN-004 decision, verified against its admin model/routes/repository. Category create/rename/delete use the published strict request and response shapes, duplicate/in-use/missing errors, and active-admin guard. Category administration details are synchronized into API_CONTRACT.md. No endpoint, payload or persistence behavior is invented or changed. See ADMIN_CATEGORIES.md for UI behavior.

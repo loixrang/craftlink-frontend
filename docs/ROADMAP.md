@@ -44,7 +44,7 @@ Markers:
 - [x] FE-ADMIN-001 - Admin dashboard/statistics and credential verification.
 - [x] FE-ADMIN-002 - User management.
 - [x] FE-ADMIN-003 - Artisan management.
-- [] FE-ADMIN-004 - Category management.
+- [x] FE-ADMIN-004 - Category management.
 - [D] FE-ADMIN-005 - Reports/moderation.
 
 ## Quality/production

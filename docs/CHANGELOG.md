@@ -1,5 +1,12 @@
 # Changelog
 
+### 2026-10-01 - FE-ADMIN-004 completed
+
+- Added protected `/admin/categories` management for listing, creating, renaming and confirming deletion of service categories. The UI validates the published BE-ADMIN-004 request/response shapes and handles duplicate names, service references, missing categories, expired sessions and permission loss.
+- Successful mutations invalidate the shared `['categories']` cache used by public discovery and artisan service forms. Added focused contract, UI, error-state and role-guard tests; documented category administration behavior and mirrored the backend decision/API details.
+- All 97 tests pass with one worker; lint, typecheck, production build and `git diff --check` pass. Build reports the large-chunk warning (571.13 kB). HTTP is mocked; no live backend or browser visual verification was performed.
+- Marked FE-ADMIN-004 and CURRENT_TASK complete. No subsequent feature started.
+
 ### 2026-10-01 - FE-ADMIN-003 completed
 
 - Added the protected `/admin/artisans` directory with URL-backed owner status filtering, pagination, safe profile summary validation, and deliberate loading/error/empty states. Active artisan profiles link to their public detail page; suspended profiles remain listed without exposing an unavailable public link.

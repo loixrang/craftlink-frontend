@@ -32,7 +32,7 @@ Markers:
 - [x] FE-CUST-002 - Create service request.
 - [x] FE-CUST-003 - Request history/detail/status.
 - [x] FE-CUST-004 - Eligible review/rating.
-- [D] FE-CUST-005 - Account/profile basics.
+- [x] FE-CUST-005 - Account/profile basics.
 
 ## Artisan
 - [x] FE-ART-001 - Artisan dashboard.

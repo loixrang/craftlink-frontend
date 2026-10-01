@@ -1,5 +1,11 @@
 # Changelog
 
+### 2026-10-01 - FE-CUST-005 completed
+
+- Added a protected customer account page showing the verified account email and role, with links from customer navigation and the dashboard. Documented that profile editing awaits a contract-defined customer endpoint; no API operation or payload was invented.
+- Added focused coverage for displayed identity, navigation and anonymous/wrong-role access. All 84 tests pass; lint, typecheck, production build and whitespace checks pass. Build reports the existing 549.99 kB main-chunk warning. HTTP is not used by this page; no live backend or browser visual verification was performed.
+- Marked FE-CUST-005 and CURRENT_TASK complete. No subsequent feature started.
+
 ### 2026-09-30 - SEO discoverability
 
 - Added build-generated robots and sitemap files, canonical production-origin configuration, social metadata, route-specific titles and descriptions, and `noindex` metadata for non-public routes. The sitemap includes the landing and artisan discovery pages; API-backed individual profiles are omitted because IDs are not available at build time.

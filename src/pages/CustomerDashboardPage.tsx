@@ -41,6 +41,7 @@ export function CustomerDashboardPage() {
           <div><dt className="text-sm text-ink-muted">Account type</dt><dd className="mt-2"><Badge>Customer</Badge></dd></div>
         </dl>
         <p className="mt-6 text-sm text-ink-muted">You can sign out from the navigation menu when you have finished.</p>
+        <Link className="mt-4 inline-flex min-h-11 items-center font-semibold" to="/customer/account">View account details</Link>
       </aside>
     </div>
 

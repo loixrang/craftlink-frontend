@@ -13,6 +13,7 @@ import { ArtisanMediaPage } from '../pages/ArtisanMediaPage'
 import { ArtisanManagementPage } from '../pages/ArtisanManagementPage'
 import { CreateServiceRequestPage } from '../pages/CreateServiceRequestPage'
 import { CustomerRequestsPage } from '../pages/CustomerRequestsPage'
+import { CustomerAccountPage } from '../pages/CustomerAccountPage'
 import { RequireRole, SessionGate } from './RequireRole'
 
 export function AppRoutes() {
@@ -28,6 +29,7 @@ export function AppRoutes() {
       <Route path="/customer/requests/new/:artisanId" element={<RequireRole role="CUSTOMER"><CreateServiceRequestPage /></RequireRole>} />
       <Route path="/customer/requests" element={<RequireRole role="CUSTOMER"><CustomerRequestsPage /></RequireRole>} />
       <Route path="/customer/requests/:requestId" element={<RequireRole role="CUSTOMER"><CustomerRequestsPage /></RequireRole>} />
+      <Route path="/customer/account" element={<RequireRole role="CUSTOMER"><CustomerAccountPage /></RequireRole>} />
       <Route path="/customer/*" element={<RequireRole role="CUSTOMER"><CustomerDashboardPage /></RequireRole>} />
       <Route path="/artisan/media" element={<RequireRole role="ARTISAN"><ArtisanMediaPage /></RequireRole>} />
       <Route path="/artisan/requests" element={<RequireRole role="ARTISAN"><ArtisanRequestsPage /></RequireRole>} />

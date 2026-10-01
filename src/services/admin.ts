@@ -8,6 +8,19 @@ export const accountStatus = z.enum(['ACTIVE', 'SUSPENDED'])
 export type AccountStatus = z.infer<typeof accountStatus>
 export const accountRole = z.enum(['CUSTOMER', 'ARTISAN', 'ADMIN'])
 export type AccountRole = z.infer<typeof accountRole>
+const adminArtisan = z.object({
+  id: z.uuid(), email: z.email(), accountStatus: accountStatus, displayName: z.string().min(1),
+  yearsExperience: z.number().int().min(0).max(100), city: z.string(), state: z.string(),
+  isAvailable: z.boolean(), verificationStatus, averageRating: z.number().finite().min(0).max(5).nullable(),
+  reviewCount: count, createdAt: z.iso.datetime({ offset: true }),
+})
+export type AdminArtisan = z.infer<typeof adminArtisan>
+const artisansCollection = z.object({
+  data: z.array(adminArtisan),
+  pagination: z.object({ page: z.number().int().min(1).max(1_000_000), limit: z.number().int().min(1).max(100), total: count, totalPages: count }),
+}).refine(({ data, pagination: p }) => p.totalPages === Math.ceil(p.total / p.limit)
+  && data.length === Math.min(p.limit, Math.max(0, p.total - (p.page - 1) * p.limit))
+  && new Set(data.map(item => item.id)).size === data.length)
 const adminUser = z.object({ id: z.uuid(), email: z.email(), role: accountRole, status: accountStatus, createdAt: z.iso.datetime({ offset: true }) })
 export type AdminUser = z.infer<typeof adminUser>
 const usersCollection = z.object({
@@ -46,6 +59,15 @@ export async function getAdminUsers(page: number, limit: number, role: AccountRo
   if (!parsed.success || parsed.data.pagination.page !== page || parsed.data.pagination.limit !== limit
     || (role && parsed.data.data.some(item => item.role !== role)) || (status && parsed.data.data.some(item => item.status !== status))) {
     throw new ApiError('Accounts could not be read.', 200, 'INVALID_RESPONSE')
+  }
+  return parsed.data
+}
+
+export async function getAdminArtisans(page: number, limit: number, status: AccountStatus | undefined, accessToken: string, signal: AbortSignal) {
+  const parsed = artisansCollection.safeParse(await api.request<unknown>('/admin/artisans', { query: { page, limit, status }, accessToken, signal }))
+  if (!parsed.success || parsed.data.pagination.page !== page || parsed.data.pagination.limit !== limit
+    || (status && parsed.data.data.some(item => item.accountStatus !== status))) {
+    throw new ApiError('Artisan profiles could not be read.', 200, 'INVALID_RESPONSE')
   }
   return parsed.data
 }

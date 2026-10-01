@@ -270,6 +270,17 @@ It returns `{id,email,role,status,createdAt}`. Repeating the current status is
 successful. Missing users return 404 `USER_NOT_FOUND`; an administrator cannot
 suspend their own account and receives 409 `SELF_SUSPENSION_NOT_ALLOWED`.
 Both endpoints require a current ACTIVE ADMIN and use no-store.
+
+`GET /api/v1/admin/artisans` accepts only `page` (default 1, max 1,000,000),
+`limit` (default 20, max 100), and optional owner account `status`
+(`ACTIVE`/`SUSPENDED`). It lists artisan profiles regardless of account status,
+ordered newest profile first then ID ascending, with counts and rows from one
+repeatable-read snapshot. Items contain only `{id,email,accountStatus,
+displayName,yearsExperience,city,state,isAvailable,verificationStatus,
+averageRating,reviewCount,createdAt}`. Credential verification is the derived
+summary documented in BE-ADMIN-001. Coordinates, contact methods, bio, image
+storage identifiers and credential documents are excluded. The route requires
+a current ACTIVE ADMIN and uses no-store.
 - GET `/api/v1/admin/reports`
 - PATCH `/api/v1/admin/reports/:reportId`
 

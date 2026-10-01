@@ -1,5 +1,12 @@
 # Changelog
 
+### 2026-10-01 - FE-ADMIN-003 completed
+
+- Added the protected `/admin/artisans` directory with URL-backed owner status filtering, pagination, safe profile summary validation, and deliberate loading/error/empty states. Active artisan profiles link to their public detail page; suspended profiles remain listed without exposing an unavailable public link.
+- Mirrored published BE-ADMIN-003 list details in API_CONTRACT.md and documented the frontend behavior in ADMIN_ARTISANS.md. Added focused service, UI, filtering, pagination, privacy, and role-gating tests.
+- All 93 tests pass; lint, typecheck, production build, and `git diff --check` pass. Build reports the large main-chunk warning (563.89 kB). HTTP is mocked; no live backend or visual browser verification was performed.
+- Marked FE-ADMIN-003 and CURRENT_TASK complete. No subsequent feature started.
+
 ### 2026-10-01 - FE-ADMIN-002 completed
 
 - Added a protected `/admin/users` page for account listing, role/status filtering, pagination and confirmed account suspension/reactivation. Runtime response validation limits the UI/cache to documented safe account fields; the current administrator cannot suspend themselves.

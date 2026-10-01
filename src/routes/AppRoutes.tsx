@@ -14,6 +14,7 @@ import { ArtisanManagementPage } from '../pages/ArtisanManagementPage'
 import { CreateServiceRequestPage } from '../pages/CreateServiceRequestPage'
 import { CustomerRequestsPage } from '../pages/CustomerRequestsPage'
 import { CustomerAccountPage } from '../pages/CustomerAccountPage'
+import { AdminUsersPage } from '../pages/AdminUsersPage'
 import { RequireRole, SessionGate } from './RequireRole'
 
 export function AppRoutes() {
@@ -35,6 +36,7 @@ export function AppRoutes() {
       <Route path="/artisan/requests" element={<RequireRole role="ARTISAN"><ArtisanRequestsPage /></RequireRole>} />
       <Route path="/artisan/profile" element={<RequireRole role="ARTISAN"><ArtisanManagementPage /></RequireRole>} />
       <Route path="/artisan/*" element={<RequireRole role="ARTISAN"><ArtisanDashboardPage /></RequireRole>} />
+      <Route path="/admin/users" element={<RequireRole role="ADMIN"><AdminUsersPage /></RequireRole>} />
       <Route path="/admin/*" element={<RequireRole role="ADMIN"><AdminDashboardPage key="admin-dashboard" /></RequireRole>} />
       <Route path="*" element={<><h1 className="text-3xl tracking-tight">Page not found</h1><p className="mt-4 text-ink-muted">We couldn’t find that page.</p><Link to="/" className="mt-6 inline-flex min-h-11 items-center">Return home</Link></>} />
     </Routes>

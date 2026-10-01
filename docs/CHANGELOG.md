@@ -1,5 +1,12 @@
 # Changelog
 
+### 2026-10-01 - FE-ADMIN-002 completed
+
+- Added a protected `/admin/users` page for account listing, role/status filtering, pagination and confirmed account suspension/reactivation. Runtime response validation limits the UI/cache to documented safe account fields; the current administrator cannot suspend themselves.
+- Mirrored the completed backend BE-ADMIN-002 contract details in API_CONTRACT.md and documented behavior in ADMIN_USERS.md. Added focused authorization, payload, filtering, pagination, confirmation and error validation coverage.
+- All 88 tests pass; lint, typecheck, production build and `git diff --check` pass. Build reports the large main-chunk warning (557.61 kB). HTTP is mocked; no live backend or visual browser verification was performed.
+- Marked FE-ADMIN-002 and CURRENT_TASK complete. No subsequent feature started.
+
 ### 2026-10-01 - FE-CUST-005 completed
 
 - Added a protected customer account page showing the verified account email and role, with links from customer navigation and the dashboard. Documented that profile editing awaits a contract-defined customer endpoint; no API operation or payload was invented.

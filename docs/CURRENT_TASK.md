@@ -1,8 +1,8 @@
 ﻿# Current Task
 
 Status: COMPLETE
-Feature: FE-CUST-005 - Account/profile basics.
+Feature: FE-ADMIN-002 - User management.
 
-Selected as the first incomplete, unblocked roadmap feature. Added a protected customer account page for verified email and customer role, linked it from customer navigation and the dashboard, and documented the API boundary in CUSTOMER_ACCOUNT.md. The frozen contract has no customer profile update endpoint, so the page does not invent editable fields or API operations.
+Added protected ADMIN user management with URL-backed role/status filters, pagination, safe account fields and confirmed ACTIVE/SUSPENDED changes. Current-admin self-suspension is blocked in the UI and by the server. Mirrored the published BE-ADMIN-002 list/update contract in API_CONTRACT.md and documented the page in ADMIN_USERS.md.
 
-Validation: all 84 tests pass, lint, typecheck, production build, and git diff --check pass. Build reports the existing main-chunk size warning (549.99 kB). No live backend or browser visual verification was performed. No next feature started.
+Validation: all 88 tests pass; lint, typecheck, production build and git diff --check pass. Build reports the existing large-chunk warning (557.61 kB). HTTP is mocked; no live backend or browser visual verification was performed. No next feature started.

@@ -256,6 +256,20 @@ All `/api/v1/admin/*` require `ADMIN`.
 - DELETE `/api/v1/admin/categories/:categoryId`
 - GET `/api/v1/admin/credentials`
 - PATCH `/api/v1/admin/credentials/:credentialId`
+
+`GET /api/v1/admin/users` accepts only `page` (default 1, max 1,000,000),
+`limit` (default 20, max 100), `role` (`CUSTOMER`, `ARTISAN`, `ADMIN`), and
+`status` (`ACTIVE`, `SUSPENDED`). Filters combine with AND. Results are ordered
+by newest `createdAt`, then ID ascending, and return `{id,email,role,status,createdAt}`
+with ISO timestamps in the standard collection envelope. Counts and rows use
+one repeatable-read snapshot.
+
+`PATCH /api/v1/admin/users/:userId/status` accepts a UUID and exactly
+`{"status":"ACTIVE"}` or `{"status":"SUSPENDED"}`, with no query fields.
+It returns `{id,email,role,status,createdAt}`. Repeating the current status is
+successful. Missing users return 404 `USER_NOT_FOUND`; an administrator cannot
+suspend their own account and receives 409 `SELF_SUSPENSION_NOT_ALLOWED`.
+Both endpoints require a current ACTIVE ADMIN and use no-store.
 - GET `/api/v1/admin/reports`
 - PATCH `/api/v1/admin/reports/:reportId`
 

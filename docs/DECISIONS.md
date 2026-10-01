@@ -31,3 +31,7 @@ Adopt the already documented BE-REQ-001/002 details from the sibling backend DEC
 ## 2026-09-30 - FE-ADMIN-001 admin integration
 
 Adopt published backend BE-ADMIN-001 and BE-SEC-001 details, verified against admin routes/models/repository and the Cloudinary provider. Admin statistics and credential listing use the documented fields/pagination; verification PATCH sends exactly {verificationStatus}, supports all three statuses and uses the backend's last-committed-write policy. Private documentUrl is nullable and otherwise a signed five-minute download link, never a permanent public asset. Frontend links expire conservatively, remain in active admin memory only and are excluded from mutation/public caches. This resolves undefined admin integration details without changing the frozen contract or backend. See ADMIN_DASHBOARD.md for policy, states, privacy and validation limits.
+
+## 2026-10-01 - FE-ADMIN-002 user management
+
+Mirror the completed backend BE-ADMIN-002 decision, verified against its admin model/routes/repository. The frontend API contract now records the published list fields, filters, pagination and exact status mutation payload, including self-suspension protection and USER_NOT_FOUND. No endpoint or behavior is invented or changed. See ADMIN_USERS.md for the UI integration.

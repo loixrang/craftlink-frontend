@@ -51,12 +51,12 @@ export function AdminArtisansPage() {
   return <div className="space-y-8">
     <header>
       <Link to="/admin" className="inline-flex min-h-11 items-center">Back to admin dashboard</Link>
-      <h1 className="mt-5 text-3xl tracking-tight sm:text-4xl">Artisan management</h1>
-      <p className="mt-3 max-w-2xl text-ink-muted">Review artisan profiles, account access and marketplace summaries. Contact details and private documents are not shown here.</p>
+      <h1 className="mt-5 text-3xl sm:text-headline">Artisan management</h1>
+      <p className="mt-4 max-w-2xl text-ink-muted">Review artisan profiles, account access and marketplace summaries. Contact details and private documents are not shown here.</p>
     </header>
-    <section aria-label="Artisan filters" className="flex flex-wrap items-end gap-4 border-y border-line py-5">
-      <label className="grid gap-2 text-sm font-medium">Owner account status
-        <select className="min-h-11 rounded-control border border-control-border bg-surface px-3" value={rawStatus} onChange={event => navigate(1, event.target.value)}>
+    <section aria-label="Artisan filters" className="flex flex-wrap items-end gap-4 rounded-panel border border-line bg-surface-muted p-5 sm:p-6">
+      <label className="grid gap-2 text-sm font-semibold">Owner account status
+        <select className="min-h-12 rounded-control border border-control-border bg-surface px-3 transition-colors focus:border-accent disabled:cursor-not-allowed" value={rawStatus} onChange={event => navigate(1, event.target.value)}>
           {!valid && rawStatus !== 'ALL' && <option value={rawStatus}>Invalid status</option>}
           <option value="ALL">All account statuses</option>
           {accountStatus.options.map(value => <option key={value} value={value}>{value === 'ACTIVE' ? 'Active' : 'Suspended'}</option>)}
@@ -71,15 +71,15 @@ export function AdminArtisansPage() {
       {data && <>
         {data.data.length ? <>
           <p role="status" className="text-sm text-ink-muted">Showing {data.data.length} of {data.pagination.total.toLocaleString()} artisan profiles</p>
-          <ul className="divide-y divide-line border-y border-line">{data.data.map(artisan => <li key={artisan.id} className="space-y-4 py-5">
+          <ul className="grid gap-4">{data.data.map(artisan => <li key={artisan.id} className="space-y-4 rounded-panel border border-line bg-surface p-5 shadow-card sm:p-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0"><h2 className="break-words text-lg font-semibold">{artisan.displayName}</h2><p className="mt-1 break-all text-sm text-ink-muted">{artisan.email}</p><p className="mt-1 text-sm text-ink-muted">{artisan.city}, {artisan.state} · {artisan.yearsExperience} {artisan.yearsExperience === 1 ? 'year' : 'years'} experience</p></div>
               <div className="flex flex-wrap gap-2"><Badge tone={artisan.accountStatus === 'ACTIVE' ? 'accent' : 'neutral'}>{artisan.accountStatus === 'ACTIVE' ? 'Active account' : 'Suspended account'}</Badge><Badge tone={artisan.isAvailable ? 'accent' : 'neutral'}>{artisan.isAvailable ? 'Available' : 'Unavailable'}</Badge><Badge>{verificationLabels[artisan.verificationStatus]} credentials</Badge></div>
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-3 text-sm"><p className="text-ink-muted">{ratingLabel(artisan)} · Joined <time dateTime={artisan.createdAt}>{new Date(artisan.createdAt).toLocaleDateString()}</time></p>{artisan.accountStatus === 'ACTIVE' && <Link to={`/artisans/${artisan.id}`} className="inline-flex min-h-11 items-center font-medium">View public profile<span className="sr-only">: {artisan.displayName}</span></Link>}</div>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4 text-sm"><p className="text-ink-muted">{ratingLabel(artisan)} · Joined <time dateTime={artisan.createdAt}>{new Date(artisan.createdAt).toLocaleDateString()}</time></p>{artisan.accountStatus === 'ACTIVE' && <Link to={`/artisans/${artisan.id}`} className="inline-flex min-h-11 items-center font-semibold">View public profile<span className="sr-only">: {artisan.displayName}</span></Link>}</div>
           </li>)}</ul>
         </> : <EmptyState title={page === 1 ? 'No artisan profiles found' : 'No artisan profiles on this page'} description="Try another account status or refresh for new profiles.">{page > 1 && <Button onClick={() => navigate(1)}>First page</Button>}</EmptyState>}
-        <nav aria-label="Artisan pages" className="flex flex-wrap items-center gap-4"><Button variant="secondary" disabled={page <= 1 || busy} onClick={() => navigate(page - 1)}>Previous</Button><span>Page {page} of {Math.max(1, data.pagination.totalPages)}</span><Button variant="secondary" disabled={page >= data.pagination.totalPages || busy} onClick={() => navigate(page + 1)}>Next</Button></nav>
+        <nav aria-label="Artisan pages" className="flex flex-wrap items-center gap-4"><Button variant="secondary" disabled={page <= 1 || busy} onClick={() => navigate(page - 1)}>Previous</Button><span className="text-sm text-ink-muted">Page {page} of {Math.max(1, data.pagination.totalPages)}</span><Button variant="secondary" disabled={page >= data.pagination.totalPages || busy} onClick={() => navigate(page + 1)}>Next</Button></nav>
       </>}
     </>}
   </div>

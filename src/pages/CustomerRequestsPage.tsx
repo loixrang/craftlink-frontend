@@ -40,14 +40,14 @@ export function CustomerRequestsPage() {
 
   return <section className="mx-auto max-w-3xl space-y-6">
     <Link className="inline-flex min-h-11 items-center" to={requestId ? '/customer/requests' : '/customer'}>{requestId ? 'Back to request history' : 'Back to dashboard'}</Link>
-    <header><h1 className="text-3xl tracking-tight sm:text-4xl">{requestId ? 'Request details' : 'Request history'}</h1><p className="mt-3 text-ink-muted">Follow your service requests and their current status.</p></header>
+    <header><h1 className="text-3xl sm:text-headline">{requestId ? 'Request details' : 'Request history'}</h1><p className="mt-4 max-w-2xl text-ink-muted">Follow your service requests and their current status.</p></header>
     {!validPage && !requestId ? <EmptyState title="Invalid history page" description="Return to the first page to see your requests."><Button onClick={() => changePage(1)}>First page</Button></EmptyState> : <>
       {requests.isPending && <LoadingState label="Loading requests..." />}
       {requests.isError && <ErrorState title="Requests unavailable" description={errorMessage} onRetry={requests.isFetching ? undefined : () => { void requests.refetch() }} />}
       {requests.isFetching && !requests.isPending && <LoadingState label="Refreshing requests..." />}
       {data && <>
         <Button variant="secondary" pending={requests.isFetching} onClick={() => { void requests.refetch() }}>Refresh status</Button>
-        {requestId ? detail ? <article className="space-y-6 border-t border-line pt-6">
+        {requestId ? detail ? <article className="space-y-6 rounded-panel border border-line bg-surface p-5 shadow-card sm:p-8">
           <Badge>{requestStatuses[detail.status]}</Badge>
           <dl className="space-y-5">
             <div><dt className="text-sm text-ink-muted">Project description</dt><dd className="mt-2 whitespace-pre-wrap break-words">{detail.description}</dd></div>
@@ -60,12 +60,12 @@ export function CustomerRequestsPage() {
           <Link className="inline-flex min-h-11 items-center" to={`/artisans/${encodeURIComponent(detail.artisanId)}`}>View artisan profile</Link>
           {detail.status === 'COMPLETED' ? <ReviewForm key={`${session?.user.id}:${detail.id}`} requestId={detail.id} artisanId={detail.artisanId} refreshing={requests.isFetching} /> : <p className="text-sm text-ink-muted">Reviews are available after a request is completed.</p>}
         </article> : <EmptyState title="Request not found" description="This request is not in your history. Return to request history to find your available requests." /> : <>
-          {data.data.length ? <ul className="divide-y divide-line border-y border-line">{data.data.map(item => <li key={item.id} className="py-5">
+          {data.data.length ? <ul className="grid gap-4">{data.data.map(item => <li key={item.id} className="rounded-panel border border-line bg-surface p-5 shadow-card sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3"><Badge>{requestStatuses[item.status]}</Badge>{item.createdAt && <time className="text-sm text-ink-muted" dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleDateString()}</time>}</div>
             <p className="my-3 line-clamp-2 break-words">{item.description}</p>
             <Link className="inline-flex min-h-11 items-center" to={`/customer/requests/${encodeURIComponent(item.id)}`} aria-label={`View request ${item.id}`}>View details</Link>
           </li>)}</ul> : <EmptyState title={page === 1 ? 'No requests yet' : 'No requests on this page'} description={page === 1 ? 'Find an artisan and choose a service to start your first request.' : 'Return to the first page or browse previous requests.'}><Link to="/artisans">Find an artisan</Link>{page > 1 && <Button onClick={() => changePage(1)}>First page</Button>}</EmptyState>}
-          <nav aria-label="Request history pages" className="flex flex-wrap items-center gap-4"><Button variant="secondary" disabled={page <= 1 || requests.isFetching} onClick={() => changePage(page - 1)}>Previous</Button><span>Page {page} of {Math.max(1, data.pagination.totalPages)}</span><Button variant="secondary" disabled={page >= data.pagination.totalPages || requests.isFetching} onClick={() => changePage(page + 1)}>Next</Button></nav>
+          <nav aria-label="Request history pages" className="flex flex-wrap items-center gap-4"><Button variant="secondary" disabled={page <= 1 || requests.isFetching} onClick={() => changePage(page - 1)}>Previous</Button><span className="text-sm text-ink-muted">Page {page} of {Math.max(1, data.pagination.totalPages)}</span><Button variant="secondary" disabled={page >= data.pagination.totalPages || requests.isFetching} onClick={() => changePage(page + 1)}>Next</Button></nav>
         </>}
       </>}
     </>}

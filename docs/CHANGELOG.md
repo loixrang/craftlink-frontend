@@ -1,5 +1,21 @@
 # Changelog
 
+### 2026-10-02 - Landing page theme fix
+
+- Fixed the homepage rendering permanently in dark mode. The `.slate-band` helper added during the Stitch refresh re-declared every `--color-*` token with hardcoded dark hex values and set `color-scheme: dark`, which bypasses `light-dark()` and ignores both `:root.light`/`:root.dark` and `prefers-color-scheme`. The class wrapped the whole landing page, so the theme toggle had no effect on it.
+- Removed `.slate-band` from `src/index.css` and the `slate-band` class from the landing page wrapper in `src/pages/LandingPage.tsx`. The charcoal dark appearance is unchanged because the helper's hardcoded values were identical to the global dark tokens; light mode now resolves the same markup through the shared theme tokens like every other page.
+- Added `src/index.css.test.ts` to fail if theme colours are declared outside `@theme` or `color-scheme: dark` is forced on anything other than `:root.dark`. Corrected the `.slate-band` note in `docs/DESIGN_FOUNDATION.md`. No layout, copy, route, API, auth or business-logic changes.
+
+### 2026-10-02 - Stitch design refresh
+
+- Rebuilt the visual layer against the Google Stitch reference in `design/` while preserving all routes, API contracts, queries, mutations, auth and business logic. No feature was added or removed; only markup structure and class names changed.
+- Rewrote `src/index.css` tokens to the reference palette and scale: canvas/surface/ink values, accent `#C2410C`, new `--color-accent-text`, `--color-amber`, `--color-success`, `--color-danger`, `--color-accent-soft-ink`, radii (`control` 0.5rem, `panel` 1rem, `modal` 1.5rem), `--container-content` 80rem, `--text-display`, `--text-headline`, plus-jakarta/Inter font pairs and a four-step elevation scale (`shadow-card`, `shadow-lift`, `shadow-float`, `shadow-action`) replacing `shadow-subtle`. Theme mechanism (`light-dark()` + `:root.light/.dark` + persisted toggle) is unchanged, so dark mode still follows `prefers-color-scheme` by default.
+- Added `.slate-band` (charcoal `#141311` marketing band) and `.full-bleed` layout utilities to `src/index.css`; the landing page reproduces the reference dark hero, category grid, three-step "how it works", artisan call-to-action banner and header/footer using live API data rather than Stitch placeholders. The reference's escrow and direct-messaging claims were dropped because they are not part of the V1 product.
+- Restyled `AppShell` (sticky blurred header, pill navigation, terracotta wordmark, compact footer), `ThemeToggle` and every route: discovery now uses the 4-column sticky category rail with an 8-column results feed, artisan profiles use Level-1 profile cards with a sticky contact aside, and customer/artisan/admin screens use consistent page headers, eyebrow labels, card surfaces, 48px controls and elevated list rows. Forms moved to 48px `min-h-12` controls with accent focus borders and `text-danger` validation text.
+- Added the shared `src/components/ui/VerifiedBadge.tsx` used by discovery and artisan profiles; `Surface`, `Button`, `Badge`, `Input` and `Feedback` keep their existing props and variants. Loaded Plus Jakarta Sans and Inter from Google Fonts in `index.html` and updated `theme-color` per scheme.
+- Intentional deviations from the reference: control borders stay stronger than the design's faint hairline to preserve a 3:1 non-text boundary; the footer omits link columns that would duplicate accessible link names asserted in `AppShell.test.tsx`; the hero location field is a select of supported LGAs rather than free text. `design/screen.png` could not be read, so `DESIGN.md` and `code.html` drove the work.
+- All 99 tests pass; lint, typecheck and production build pass. Build reports the existing large-chunk warning (594.16 kB). HTTP is mocked; no live backend or browser visual verification was performed.
+
 ### 2026-10-02 - Dark theme
 
 - Added a dark theme by making the existing semantic `@theme` tokens in `src/index.css` theme-aware with `light-dark()`, so all existing surfaces, text, borders, controls and accent states adapt without component restyling. Light values are unchanged.

@@ -42,7 +42,7 @@ export function AppRoutes() {
       <Route path="/admin/artisans" element={<RequireRole role="ADMIN"><AdminArtisansPage /></RequireRole>} />
       <Route path="/admin/categories" element={<RequireRole role="ADMIN"><AdminCategoriesPage /></RequireRole>} />
       <Route path="/admin/*" element={<RequireRole role="ADMIN"><AdminDashboardPage key="admin-dashboard" /></RequireRole>} />
-      <Route path="*" element={<><h1 className="text-3xl tracking-tight">Page not found</h1><p className="mt-4 text-ink-muted">We couldn’t find that page.</p><Link to="/" className="mt-6 inline-flex min-h-11 items-center">Return home</Link></>} />
+      <Route path="*" element={<section className="mx-auto max-w-xl py-4 text-center sm:py-12"><h1 className="text-3xl sm:text-headline">Page not found</h1><p className="mt-4 text-ink-muted">We couldn’t find that page.</p><Link to="/" className="mt-6 inline-flex min-h-11 items-center font-semibold">Return home</Link></section>} />
     </Routes>
     </>
   )

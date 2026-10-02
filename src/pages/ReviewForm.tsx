@@ -57,20 +57,20 @@ export function ReviewForm({ requestId, artisanId, refreshing }: { requestId: st
       <fieldset disabled={pending || refreshing} className="space-y-5">
         <div className="grid gap-2">
           <label htmlFor="review-rating" className="text-sm font-semibold">Rating</label>
-          <select id="review-rating" {...register('rating', { valueAsNumber: true })} required aria-invalid={!!errors.rating} aria-describedby={errors.rating ? 'rating-error' : undefined} className="min-h-11 w-full rounded-control border border-control-border bg-surface px-3 py-2">
+          <select id="review-rating" {...register('rating', { valueAsNumber: true })} required aria-invalid={!!errors.rating} aria-describedby={errors.rating ? 'rating-error' : undefined} className="min-h-12 w-full rounded-control border border-control-border bg-surface px-3 py-2 transition-colors focus:border-accent aria-invalid:border-danger disabled:cursor-not-allowed disabled:bg-surface-muted">
             <option value="0">Choose a rating</option>
             <option value="1">1 — Poor</option><option value="2">2 — Fair</option><option value="3">3 — Good</option><option value="4">4 — Very good</option><option value="5">5 — Excellent</option>
           </select>
-          {errors.rating && <p id="rating-error" className="text-sm">{errors.rating.message}</p>}
+          {errors.rating && <p id="rating-error" className="text-sm font-medium text-danger">{errors.rating.message}</p>}
         </div>
         <div className="grid gap-2">
           <label htmlFor="review-comment" className="text-sm font-semibold">Your review</label>
-          <textarea id="review-comment" {...register('comment')} required rows={4} aria-invalid={!!errors.comment} aria-describedby={errors.comment ? 'comment-error' : undefined} className="w-full rounded-control border border-control-border bg-surface px-3 py-2" />
-          {errors.comment && <p id="comment-error" className="text-sm">{errors.comment.message}</p>}
+          <textarea id="review-comment" {...register('comment')} required rows={4} aria-invalid={!!errors.comment} aria-describedby={errors.comment ? 'comment-error' : undefined} className="w-full rounded-control border border-control-border bg-surface px-3 py-2 transition-colors focus:border-accent aria-invalid:border-danger disabled:cursor-not-allowed disabled:bg-surface-muted" />
+          {errors.comment && <p id="comment-error" className="text-sm font-medium text-danger">{errors.comment.message}</p>}
         </div>
         <Button type="submit" pending={pending}>{pending ? 'Submitting review...' : 'Submit review'}</Button>
       </fieldset>
-      {pending && <p role="status">Submitting your review...</p>}
+      {pending && <p role="status" className="text-sm text-ink-muted">Submitting your review...</p>}
     </form>
   </section>
 }

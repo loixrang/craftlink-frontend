@@ -16,7 +16,7 @@ export function ArtisanMediaPage() {
   const { session } = useAuth()
   const owner = useQuery({ queryKey: ['own-artisan-profile', session?.user.id], queryFn: ({ signal }) => getOwnArtisanProfile(session!.accessToken, signal), enabled: !!session })
   return <div className="space-y-10">
-    <header><Link to="/artisan" className="inline-flex min-h-11 items-center">Back to dashboard</Link><h1 className="mt-5 text-3xl sm:text-4xl">Portfolio and credentials</h1><p className="mt-3 max-w-2xl text-ink-muted">Show customers your work and share your qualifications for verification.</p></header>
+    <header><Link to="/artisan" className="inline-flex min-h-11 items-center">Back to dashboard</Link><h1 className="mt-5 text-3xl sm:text-headline">Portfolio and credentials</h1><p className="mt-4 max-w-2xl text-ink-muted">Show customers your work and share your qualifications for verification.</p></header>
     {owner.isPending && <LoadingState label="Loading your profile..." />}
     {owner.isError && <ErrorState title="Profile unavailable" description={mediaError(owner.error)} onRetry={() => { void owner.refetch() }} />}
     {owner.isSuccess && (owner.data ? <div className="space-y-12"><MediaSection kind="portfolio" artisanId={owner.data.id} /><MediaSection kind="credentials" artisanId={owner.data.id} /></div> : <EmptyState title="Set up your profile first" description="Add your business details before uploading work or credentials."><Link to="/artisan/profile">Manage profile</Link></EmptyState>)}
@@ -46,14 +46,14 @@ function MediaSection({ kind, artisanId }: { kind: MediaKind; artisanId: string 
     {list.isError && <ErrorState title={`${isPortfolio ? 'Portfolio' : 'Credentials'} unavailable`} description={mediaError(list.error)} onRetry={() => { void list.refetch() }} />}
     {list.isSuccess && <>
       {list.data.length === 0 && <EmptyState title={`No ${kind} yet`} description={isPortfolio ? 'Add a photo of a completed project.' : 'Upload an image of your qualification to submit it for verification.'} />}
-      <ul className={isPortfolio ? 'grid gap-6 sm:grid-cols-2 lg:grid-cols-3' : 'divide-y divide-line'}>{list.data.map(item => <li key={item.id} className="min-w-0 space-y-3 py-4">
+      <ul className={isPortfolio ? 'grid gap-6 sm:grid-cols-2 lg:grid-cols-3' : 'grid gap-4'}>{list.data.map(item => <li key={item.id} className="min-w-0 space-y-3 rounded-panel border border-line bg-surface p-5 shadow-card">
         {'imageUrl' in item && <PortfolioImage url={item.imageUrl} title={item.title} />}
         <h3 className="break-words text-lg">{item.title}</h3>
         {'description' in item && item.description && <p className="whitespace-pre-wrap break-words text-ink-muted">{item.description}</p>}
-        {'issuer' in item && <><p className="break-words text-ink-muted">{item.issuer}{item.issuedAt ? ` · Issued ${item.issuedAt.slice(0, 10)}` : ''}</p><Badge>{item.verificationStatus === 'PENDING' ? 'Pending verification' : item.verificationStatus === 'VERIFIED' ? 'Verified' : 'Rejected'}</Badge>{item.verificationStatus === 'REJECTED' && <p className="text-sm text-ink-muted">This credential was not verified. You can delete it and submit a corrected image.</p>}</>}
+        {'issuer' in item && <><p className="break-words text-sm text-ink-muted">{item.issuer}{item.issuedAt ? ` · Issued ${item.issuedAt.slice(0, 10)}` : ''}</p><Badge>{item.verificationStatus === 'PENDING' ? 'Pending verification' : item.verificationStatus === 'VERIFIED' ? 'Verified' : 'Rejected'}</Badge>{item.verificationStatus === 'REJECTED' && <p className="text-sm text-ink-muted">This credential was not verified. You can delete it and submit a corrected image.</p>}</>}
         <div><Button variant="quiet" disabled={editing || !!removing || list.isFetching} aria-label={`Delete ${item.title}`} onClick={() => { setRemoving(item); removal.reset(); setNotice('') }}>Delete</Button></div>
       </li>)}</ul>
-      {removing && <div role="group" aria-label={`Confirm ${kind} deletion`} className="space-y-4 rounded-panel border border-line p-5"><p>Delete “{removing.title}”? This cannot be undone.{isPortfolio && ' A previously shared image URL may remain accessible briefly.'}</p>
+      {removing && <div role="group" aria-label={`Confirm ${kind} deletion`} className="space-y-4 rounded-panel border border-line bg-surface p-5 shadow-card"><p>Delete “{removing.title}”? This cannot be undone.{isPortfolio && ' A previously shared image URL may remain accessible briefly.'}</p>
         {removal.isError && <ErrorState title="Deletion not confirmed" description={mediaError(removal.error)} />}
         <div className="flex flex-wrap gap-3"><Button pending={removal.isPending} onClick={async () => { if (lock.current) return; lock.current = true; try { await removal.mutateAsync(); setRemoving(null); setNotice('Item deleted'); await changed() } catch { /* Keep confirmation for recovery. */ } finally { lock.current = false } }}>Confirm delete</Button><Button variant="secondary" disabled={removal.isPending} onClick={() => setRemoving(null)}>Cancel deletion</Button></div>
       </div>}
@@ -66,7 +66,7 @@ function MediaSection({ kind, artisanId }: { kind: MediaKind; artisanId: string 
 function PortfolioImage({ url, title }: { url: string; title: string }) {
   const [failed, setFailed] = useState(false)
   const safe = publicImageUrl(url)
-  return safe && !failed ? <img src={safe} alt={title} loading="lazy" referrerPolicy="no-referrer" onError={() => setFailed(true)} className="aspect-[4/3] w-full rounded-control object-cover" /> : <p className="bg-surface-muted p-6 text-sm">Image unavailable</p>
+  return safe && !failed ? <img src={safe} alt={title} loading="lazy" referrerPolicy="no-referrer" onError={() => setFailed(true)} className="aspect-[4/3] w-full rounded-control object-cover" /> : <p className="flex aspect-[4/3] items-center justify-center rounded-control bg-surface-muted p-6 text-sm text-ink-muted">Image unavailable</p>
 }
 
 function UploadForm({ kind, onCancel, onSaved }: { kind: MediaKind; onCancel: () => void; onSaved: () => Promise<void> }) {
@@ -76,7 +76,7 @@ function UploadForm({ kind, onCancel, onSaved }: { kind: MediaKind; onCancel: ()
   const lock = useRef(false)
   const { register, handleSubmit, setError, formState: { errors } } = useForm<MediaValues>({ resolver: zodResolver(mediaFormSchema), defaultValues: { title: '', description: '', issuer: '', issuedAt: '' } })
   const upload = useMutation({ mutationFn: (values: MediaValues) => uploadMedia(kind, values, file!, session!.accessToken), retry: false, gcTime: 0 })
-  return <form aria-label={`Upload ${kind}`} noValidate className="max-w-2xl space-y-5 rounded-panel border border-line bg-surface p-5 sm:p-6" onSubmit={event => { void handleSubmit(async values => {
+  return <form aria-label={`Upload ${kind}`} noValidate className="max-w-2xl space-y-5 rounded-panel border border-line bg-surface p-5 shadow-card sm:p-6" onSubmit={event => { void handleSubmit(async values => {
     if (lock.current) return
     const issue = fileError(file); setFileIssue(issue)
     if (kind === 'credentials' && !values.issuer.trim()) { setError('issuer', { message: 'Enter the issuer.' }); return }
@@ -90,7 +90,7 @@ function UploadForm({ kind, onCancel, onSaved }: { kind: MediaKind; onCancel: ()
       <Input label="Title" required maxLength={100} {...register('title')} error={errors.title?.message} />
       {kind === 'portfolio' ? <Input label="Description" maxLength={2000} {...register('description')} error={errors.description?.message} /> : <><Input label="Issuer" required maxLength={100} {...register('issuer')} error={errors.issuer?.message} /><Input label="Issue date" type="date" {...register('issuedAt')} error={errors.issuedAt?.message} /></>}
       <Input label={kind === 'portfolio' ? 'Portfolio image' : 'Credential image'} type="file" required accept="image/jpeg,image/png,image/webp" hint="Static JPEG, PNG or WebP. Maximum 5 MiB and 25 million pixels. PDFs are not supported; use a clear photo of your document." error={fileIssue} onChange={event => { const next = event.target.files?.[0]; setFile(next); setFileIssue(fileError(next)) }} />
-      {(fileIssue || Object.keys(errors).length > 0) && <p role="alert">Check the highlighted upload fields.</p>}
+      {(fileIssue || Object.keys(errors).length > 0) && <p role="alert" className="text-sm font-medium text-danger">Check the highlighted upload fields.</p>}
       <div className="flex flex-wrap gap-3"><Button type="submit" pending={upload.isPending}>{upload.isPending ? 'Uploading...' : 'Upload image'}</Button><Button variant="secondary" onClick={onCancel}>Cancel upload</Button></div>
     </fieldset>
   </form>

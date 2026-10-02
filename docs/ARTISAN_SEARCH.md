@@ -12,7 +12,7 @@ Focused tests cover public request construction, URL filters/history/reset, cate
 
 ## FE-DISC-003 extension
 
-Manual location now adds validated latitude, longitude and optional radiusKm to discovery requests and query keys. Search/category changes preserve the applied location; clear-all removes it. See MANUAL_LOCATION.md for validation, URL behavior and the contract limitation on address lookup. Sorting and pagination controls remain deferred.
+Manual location adds an administrative state and city/LGA filter to discovery requests and query keys. Search/category changes preserve the applied location; clear-all removes it. The pair is sent as the `state` and `city` query parameters, with `lga` accepted only as a URL alias and never sent. See MANUAL_LOCATION.md for validation and URL behavior. Browser geolocation is not implemented; see BROWSER_LOCATION.md. Coordinate filtering and distance sorting are not offered.
 
 ## FE-DISC-005 extension
 

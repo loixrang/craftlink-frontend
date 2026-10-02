@@ -1,5 +1,12 @@
 # Changelog
 
+### 2026-10-02 - Discovery location contract addition
+
+- Added optional `state` and `city` query parameters to `GET /api/v1/artisans` in `docs/API_CONTRACT.md`, documented in `docs/DECISIONS.md`. `state` matches the artisan's stored state and `city` matches the stored city value (an LGA within that state); they filter administratively and are independent of the existing coordinate filters. `lga` is documented as a URL alias normalized to `city`, not a query parameter. This is additive: no endpoint, verb, payload or existing parameter was changed or removed.
+- Rationale: the implemented discovery location control has always been a state plus city/LGA selector backed by `SUPPORTED_STATES`/`getLgasForState`, and artisan profiles store `city`/`state` as strings, so an administrative filter matches both sides honestly. Coordinate filters (`latitude`, `longitude`, `radiusKm`) remain in the contract as a backend capability and stay unused, so `sort=distance` remains unavailable and `distanceKm` is never rendered.
+- Corrected documentation drift: `MANUAL_LOCATION.md` and `BROWSER_LOCATION.md` described coordinate entry and browser geolocation that do not exist in the code (`navigator.geolocation` is absent from `src/`), and the FE-DISC-003 note in `ARTISAN_SEARCH.md` described `radiusKm`. All three now describe the implementation; `BROWSER_LOCATION.md` records the absence of geolocation explicitly.
+- No application code changed; the emitted request surface is unchanged and was verified against the contract. `ROADMAP.md` still marks FE-DISC-004 complete with no implementation, which needs a separate product decision. The sibling backend repository must be synchronized before integration.
+
 ### 2026-10-02 - Landing page theme fix
 
 - Fixed the homepage rendering permanently in dark mode. The `.slate-band` helper added during the Stitch refresh re-declared every `--color-*` token with hardcoded dark hex values and set `color-scheme: dark`, which bypasses `light-dark()` and ignores both `:root.light`/`:root.dark` and `prefers-color-scheme`. The class wrapped the whole landing page, so the theme toggle had no effect on it.

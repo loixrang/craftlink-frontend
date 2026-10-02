@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Menu, Wrench, X } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { ThemeToggle } from './ThemeToggle'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 
 type NavigationItem = { label: string; href: string }
@@ -41,6 +42,7 @@ export function AppShell({ children, navigation, onSignOut }: AppShellProps) {
             <ul className="flex flex-col gap-2 md:flex-row md:items-center">
               {navigation.map(({ label, href }) => <li key={href}><NavLink to={href} end={href === '/'} onClick={() => setMenuOpen(false)} className={({ isActive }) => `flex min-h-11 items-center rounded-control px-4 py-2 text-sm font-medium no-underline ${isActive ? 'bg-accent-soft text-accent-hover' : 'text-ink hover:bg-surface-muted'}`}>{label}</NavLink></li>)}
             </ul>
+            <ThemeToggle />
             {onSignOut && <Button variant="quiet" onClick={() => { setMenuOpen(false); onSignOut() }}>Sign out</Button>}
           </nav>
         </div>

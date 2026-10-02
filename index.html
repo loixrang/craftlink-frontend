@@ -6,6 +6,17 @@
     <link rel="icon" href="/assets/favicon.png" type="image/png">
     <meta name="description" content="Find skilled local artisans for repairs, home projects and more. Explore services and connect with artisans through Craftlink." />
     <meta name="theme-color" content="#f7f5f0" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1c1917" />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('craftlink-theme');
+          if (theme === 'dark' || theme === 'light') {
+            document.documentElement.classList.add(theme);
+          }
+        } catch (error) {}
+      })();
+    </script>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Craftlink" />
     <meta property="og:title" content="Find skilled local artisans | Craftlink" />

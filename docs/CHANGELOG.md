@@ -1,5 +1,11 @@
 # Changelog
 
+### 2026-10-02 - Dark theme
+
+- Added a dark theme by making the existing semantic `@theme` tokens in `src/index.css` theme-aware with `light-dark()`, so all existing surfaces, text, borders, controls and accent states adapt without component restyling. Light values are unchanged.
+- Respects `prefers-color-scheme` by default via `color-scheme: light dark`; an explicit choice is stored under `craftlink-theme` and applied before first paint by a small inline script in `index.html` to avoid a flash of the wrong theme.
+- Added an accessible icon toggle to the existing header navigation that switches and persists light/dark. Added focused toggle tests; all 99 tests, lint, typecheck and production build pass. No API, routing, auth or business-logic changes.
+
 ### 2026-10-01 - FE-ADMIN-004 completed
 
 - Added protected `/admin/categories` management for listing, creating, renaming and confirming deletion of service categories. The UI validates the published BE-ADMIN-004 request/response shapes and handles duplicate names, service references, missing categories, expired sessions and permission loss.

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Menu, Wrench, X } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { ThemeToggle } from './ThemeToggle'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 
 type NavigationItem = { label: string; href: string }
@@ -22,31 +23,48 @@ export function AppShell({ children, navigation, onSignOut }: AppShellProps) {
     }
   }, [pathname])
 
+  const linkClass = ({ isActive }: { isActive: boolean }) => `flex min-h-11 items-center rounded-full px-4 py-2 text-sm font-semibold no-underline transition-colors ${isActive ? 'bg-surface text-accent-text shadow-card' : 'text-ink-muted hover:bg-surface hover:text-ink'}`
+
   return (
-    <div className="flex min-h-dvh flex-col">
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-control focus:bg-surface focus:px-4 focus:py-3">Skip to content</a>
-      <header className="border-b border-line bg-surface">
-        <div className="mx-auto flex w-full max-w-content flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link to="/" onClick={() => setMenuOpen(false)} aria-label="Craftlink home" className="inline-flex min-h-11 items-center gap-2 text-xl font-semibold tracking-tight text-ink no-underline"><Wrench aria-hidden="true" size={23} className="text-accent" />Craftlink</Link>
+    <div className="flex min-h-dvh flex-col bg-canvas">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-surface focus:px-4 focus:py-3">Skip to content</a>
+      <header className="sticky top-0 z-50 border-b border-line bg-surface/85 backdrop-blur-xl">
+        <div className="mx-auto flex min-h-20 w-full max-w-content items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
+          <Link to="/" onClick={() => setMenuOpen(false)} aria-label="Craftlink home" className="inline-flex min-h-11 items-center gap-2 text-xl font-bold tracking-tight text-accent-text no-underline">
+            <span aria-hidden="true" className="flex size-9 items-center justify-center rounded-control bg-accent-soft text-accent"><Wrench size={20} /></span>Craftlink
+          </Link>
           <Button ref={menuButton} variant="secondary" className="md:hidden" aria-expanded={menuOpen} aria-controls={navigationId} onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}Menu
           </Button>
-          <nav id={navigationId} aria-label="Main navigation" className={`${menuOpen ? 'block' : 'hidden'} w-full md:flex md:w-auto md:items-center md:gap-2`}
+          <nav id={navigationId} aria-label="Main navigation" className={`${menuOpen ? 'block' : 'hidden'} w-full md:flex md:w-auto md:items-center md:gap-3`}
             onKeyDown={(event) => {
               if (event.key === 'Escape' && menuOpen) {
                 setMenuOpen(false)
                 menuButton.current?.focus()
               }
             }}>
-            <ul className="flex flex-col gap-2 md:flex-row md:items-center">
-              {navigation.map(({ label, href }) => <li key={href}><NavLink to={href} end={href === '/'} onClick={() => setMenuOpen(false)} className={({ isActive }) => `flex min-h-11 items-center rounded-control px-4 py-2 text-sm font-medium no-underline ${isActive ? 'bg-accent-soft text-accent-hover' : 'text-ink hover:bg-surface-muted'}`}>{label}</NavLink></li>)}
+            <ul className="flex flex-col gap-1 rounded-panel bg-surface-muted p-1 md:flex-row md:items-center md:gap-0.5">
+              {navigation.map(({ label, href }) => <li key={href}><NavLink to={href} end={href === '/'} onClick={() => setMenuOpen(false)} className={linkClass}>{label}</NavLink></li>)}
             </ul>
-            {onSignOut && <Button variant="quiet" onClick={() => { setMenuOpen(false); onSignOut() }}>Sign out</Button>}
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              {onSignOut && <Button variant="quiet" onClick={() => { setMenuOpen(false); onSignOut() }}>Sign out</Button>}
+            </div>
           </nav>
         </div>
       </header>
-      <main ref={mainContent} id="main-content" tabIndex={-1} className="mx-auto w-full max-w-content flex-1 px-4 py-10 sm:px-6 sm:py-16">{children}</main>
-      <footer className="border-t border-line px-4 py-6 sm:px-6"><div className="mx-auto flex max-w-content flex-col gap-2 text-sm text-ink-muted sm:flex-row sm:justify-between"><span className="font-semibold text-ink">Craftlink</span><p>Connecting customers with skilled artisans.</p></div></footer>
+      <main ref={mainContent} id="main-content" tabIndex={-1} className="mx-auto w-full max-w-content flex-1 px-4 py-8 sm:px-6 sm:py-12 lg:px-10 lg:py-16">{children}</main>
+      <footer className="border-t border-line bg-surface-muted">
+        <div className="mx-auto w-full max-w-content px-4 py-12 sm:px-6 lg:px-10">
+          <div className="max-w-md">
+            <p className="inline-flex items-center gap-2 text-lg font-bold tracking-tight text-accent-text">
+              <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-control bg-accent-soft text-accent"><Wrench size={18} /></span>Craftlink
+            </p>
+            <p className="mt-4 text-sm text-ink-muted">Connecting customers with skilled artisans across Akwa Ibom, from everyday repairs to bespoke work.</p>
+          </div>
+          <p className="mt-10 border-t border-line pt-6 text-sm text-ink-muted">Craftlink · Dedicated to genuine craftsmanship and local mastery.</p>
+        </div>
+      </footer>
     </div>
   )
 }

@@ -43,3 +43,13 @@ Mirror the completed backend BE-ADMIN-002 decision, verified against its admin m
 ## 2026-10-01 - FE-ADMIN-004 category management
 
 Mirror the completed backend BE-ADMIN-004 decision, verified against its admin model/routes/repository. Category create/rename/delete use the published strict request and response shapes, duplicate/in-use/missing errors, and active-admin guard. Category administration details are synchronized into API_CONTRACT.md. No endpoint, payload or persistence behavior is invented or changed. See ADMIN_CATEGORIES.md for UI behavior.
+
+## 2026-10-02 - Discovery location filters by state and city
+
+Discovery location is administrative, not geometric. `GET /api/v1/artisans` accepts optional `state` and `city` query parameters, added to the contract alongside the existing parameters. `state` matches the artisan's stored state and `city` matches the artisan's stored city value, which is a local government area within that state. The frontend sends `state` on every discovery request and sends `city` only when a city is selected. `lga` is a URL alias accepted when reading discovery links; it is normalized to `city` before the request and is never sent as a query parameter.
+
+Rationale: the shipped location control is a state plus city/LGA selector driven by `SUPPORTED_STATES` and `getLgasForState` in `src/constants/locations.ts`, and artisan profiles store `city` and `state` as plain strings, so an administrative filter is the honest match for both sides. Coordinate filtering via `latitude`, `longitude` and `radiusKm` remains in the contract as a backend capability and is unused by this frontend, so `sort=distance` stays unavailable exactly as it already was, and the optional `distanceKm` summary field stays unused.
+
+This corrects a documented drift rather than choosing between two designs: `MANUAL_LOCATION.md` and `BROWSER_LOCATION.md` described coordinate entry and browser geolocation that no longer exist in the code, while the implemented control has always been a city/LGA selector. Those documents, and the FE-DISC-003/FE-DISC-004 notes in `ARTISAN_SEARCH.md`, are corrected to match the implementation.
+
+Consequences: no endpoint, verb, payload or existing query parameter is changed or removed; this is purely additive. The sibling backend repository must be synchronized before integration. If the backend does not accept `state` and `city`, discovery requests would be rejected under strict query validation or the filters would be silently ignored. `ROADMAP.md` still marks FE-DISC-004 (browser geolocation) complete although no geolocation code exists; that marker needs a separate product decision and is deliberately left unchanged here.

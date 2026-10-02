@@ -47,13 +47,13 @@ export function RegisterPage() {
 
   return (
     <section className="mx-auto max-w-xl py-4 sm:py-8" aria-labelledby="register-title">
-      <p className="text-sm font-semibold text-accent">Join Craftlink</p>
-      <h1 id="register-title" className="mt-3 text-3xl tracking-tight sm:text-4xl">Create an account</h1>
+      <p className="text-xs font-bold uppercase tracking-[0.04em] text-accent-text">Join Craftlink</p>
+      <h1 id="register-title" className="mt-3 text-3xl sm:text-headline">Create an account</h1>
       <p className="mt-4 text-ink-muted">Find skilled help for your next project, or bring your craft to customers nearby.</p>
       {complete ? <div className="mt-8 space-y-4">
         <SuccessState title="Your account is ready" description="Your registration was successful. You can now log in with your email and password." />
         <Link to="/login" className="inline-flex min-h-11 items-center font-semibold">Continue to log in</Link>
-      </div> : <form onSubmit={submit} noValidate className="mt-8 space-y-6" aria-label="Registration" aria-busy={isSubmitting}>
+      </div> : <form onSubmit={submit} noValidate className="mt-8 space-y-6 rounded-modal border border-line bg-surface p-6 shadow-card sm:p-8" aria-label="Registration" aria-busy={isSubmitting}>
         {mutation.isError && <ErrorState title="We couldn’t create your account" description={errorMessage(mutation.error)} />}
         <fieldset disabled={isSubmitting} className="space-y-6">
           <fieldset>
@@ -62,12 +62,12 @@ export function RegisterPage() {
               {([
                 ['CUSTOMER', 'As a customer', 'Find help for your projects.'],
                 ['ARTISAN', 'As an artisan', 'Offer your skills and services.'],
-              ] as const).map(([value, label, hint]) => <label key={value} className="flex cursor-pointer items-start gap-3 rounded-control border border-control-border bg-surface p-4">
+              ] as const).map(([value, label, hint]) => <label key={value} className="flex cursor-pointer items-start gap-3 rounded-control border border-control-border bg-surface p-4 transition-colors hover:bg-surface-muted has-checked:border-accent has-checked:bg-accent-soft/60">
                 <input {...register('role')} type="radio" value={value} className="mt-1 size-4 shrink-0" />
                 <span><span className="block font-semibold">{label}</span><span className="text-sm text-ink-muted">{hint}</span></span>
               </label>)}
             </div>
-            {errors.role && <p role="alert">Choose customer or artisan.</p>}
+            {errors.role && <p role="alert" className="mt-2 text-sm font-medium text-danger">Choose customer or artisan.</p>}
           </fieldset>
           <Input {...register('email')} label="Email address" type="email" autoComplete="email" required error={errors.email?.message} />
           <Input {...register('password')} label="Password" type="password" autoComplete="new-password" required hint="Choose a strong, unique password." error={errors.password?.message} />

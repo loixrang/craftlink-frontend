@@ -9,7 +9,6 @@ export const locationSchema = z.object({
 
 export type LocationValues = z.infer<typeof locationSchema>
 export const locationKeys = ['state', 'city', 'lga'] as const
-export const allLocationKeys = ['state', 'city', 'lga', 'latitude', 'longitude', 'radiusKm'] as const
 
 export interface LocationFilters {
   state?: string

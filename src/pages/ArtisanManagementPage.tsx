@@ -35,8 +35,8 @@ export function ArtisanManagementPage() {
     <div className="space-y-8">
       <header>
         <Link to="/artisan" className="inline-flex min-h-11 items-center">Back to dashboard</Link>
-        <h1 className="mt-5 text-3xl sm:text-4xl">Manage your business</h1>
-        <p className="mt-3 text-ink-muted">Keep your profile, location and services up to date.</p>
+        <h1 className="mt-5 text-3xl sm:text-headline">Manage your business</h1>
+        <p className="mt-4 max-w-2xl text-ink-muted">Keep your profile, location and services up to date.</p>
       </header>
       {profile.isPending && <LoadingState label="Loading profile settings..." />}
       {profile.isError && (
@@ -144,7 +144,7 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
   const imageError = imageUpload.error ?? imageRemoval.error
 
   return (
-    <section aria-labelledby="profile-edit-heading" className="max-w-3xl">
+    <section aria-labelledby="profile-edit-heading" className="max-w-3xl rounded-modal border border-line bg-surface p-5 shadow-card sm:p-8">
       <h2 id="profile-edit-heading" className="text-2xl">
         {profile ? 'Business profile' : 'Set up your profile'}
       </h2>
@@ -184,8 +184,8 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
           <h3 className="text-lg font-semibold">Profile photo</h3>
           <div className="flex flex-wrap items-center gap-5">
             {previewUrl || publicImageUrl(profile?.profileImageUrl ?? null)
-              ? <img src={previewUrl ?? publicImageUrl(profile?.profileImageUrl ?? null)} alt={previewUrl ? 'Selected profile photo preview' : `${profile?.displayName ?? 'Your'} profile photo`} className="size-24 rounded-full border border-line object-cover" />
-              : <div aria-label="No profile photo" className="flex size-24 items-center justify-center rounded-full bg-surface-muted text-sm text-ink-muted">No photo</div>}
+              ? <img src={previewUrl ?? publicImageUrl(profile?.profileImageUrl ?? null)} alt={previewUrl ? 'Selected profile photo preview' : `${profile?.displayName ?? 'Your'} profile photo`} className="size-24 rounded-panel border border-line object-cover shadow-card" />
+              : <div aria-label="No profile photo" className="flex size-24 items-center justify-center rounded-panel border border-line bg-surface-muted text-center text-sm text-ink-muted">No photo</div>}
             <div className="space-y-3">
               <Input label={profile?.profileImageUrl ? 'Change photo' : 'Choose photo'} type="file" accept="image/jpeg,image/png,image/webp" disabled={imageUpload.isPending || imageRemoval.isPending} hint="Static JPEG, PNG or WebP. Maximum 5 MiB and 25 million pixels." error={imageIssue} onChange={event => { selectImage(event.target.files?.[0]); imageUpload.reset(); imageRemoval.reset() }} />
               <div className="flex flex-wrap gap-3">
@@ -207,9 +207,9 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
               rows={4}
               aria-invalid={!!errors.bio}
               aria-describedby={errors.bio ? 'bio-error' : undefined}
-              className="mt-2 w-full rounded-control border border-control-border bg-surface p-3"
+              className="mt-2 w-full rounded-control border border-control-border bg-surface p-3 transition-colors focus:border-accent aria-invalid:border-danger disabled:cursor-not-allowed disabled:bg-surface-muted"
             />
-            {errors.bio && <p id="bio-error" className="mt-1 text-sm text-ink-muted">{errors.bio.message}</p>}
+            {errors.bio && <p id="bio-error" className="mt-1 text-sm font-medium text-danger">{errors.bio.message}</p>}
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
             <Input
@@ -233,7 +233,7 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
                 id="profile-state-select"
                 {...register('state')}
                 disabled
-                className="min-h-11 rounded-control border border-control-border bg-surface-muted px-3 py-2 text-ink-muted opacity-75 cursor-not-allowed"
+                className="min-h-12 rounded-control border border-control-border bg-surface-muted px-3 py-2 text-ink-muted opacity-75 cursor-not-allowed"
               >
                 {SUPPORTED_STATES.map(s => (
                   <option key={s} value={s}>
@@ -250,7 +250,7 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
                 {...register('city')}
                 aria-invalid={!!errors.city}
                 aria-describedby={errors.city ? 'profile-city-error' : undefined}
-                className="min-h-11 rounded-control border border-control-border bg-surface px-3 py-2"
+                className="min-h-12 rounded-control border border-control-border bg-surface px-3 py-2 transition-colors focus:border-accent aria-invalid:border-danger"
               >
                 <option value="">Select city / LGA</option>
                 {availableLgas.map(lga => (
@@ -260,7 +260,7 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
                 ))}
               </select>
               {errors.city && (
-                <p id="profile-city-error" className="text-sm">
+                <p id="profile-city-error" className="text-sm font-medium text-danger">
                   {errors.city.message}
                 </p>
               )}
@@ -268,10 +268,10 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
           </div>
 
           <label className="flex min-h-11 items-center gap-3">
-            <input type="checkbox" {...register('isAvailable')} className="size-5" />
+            <input type="checkbox" {...register('isAvailable')} className="size-5 rounded-[4px]" />
             Available for work
           </label>
-          {Object.keys(errors).length > 0 && <p role="alert">Check the highlighted profile fields.</p>}
+          {Object.keys(errors).length > 0 && <p role="alert" className="text-sm font-medium text-danger">Check the highlighted profile fields.</p>}
           <Button type="submit" pending={mutation.isPending}>
             {mutation.isPending ? 'Saving profile...' : 'Save profile'}
           </Button>

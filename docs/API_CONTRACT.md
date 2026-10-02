@@ -51,7 +51,9 @@ Initial categories: Electrical Services; Plumbing; Carpentry; Painting; Welding;
 ## Artisan discovery
 
 ### GET `/api/v1/artisans`
-Optional query: `q`, `categoryId`, `latitude`, `longitude`, `radiusKm`, `minRating`, `minExperience`, `availability`, `sort`, `page`, `limit`.
+Optional query: `q`, `categoryId`, `state`, `city`, `latitude`, `longitude`, `radiusKm`, `minRating`, `minExperience`, `availability`, `sort`, `page`, `limit`.
+
+`state` matches the artisan's stored state; `city` matches the artisan's stored city value, which is a local government area within `state`. The two filter administratively and are independent of coordinates. `latitude`, `longitude` and `radiusKm` remain coordinate-based, and are the only filters that can populate `distanceKm`. `lga` is not a query parameter; clients that expose it as a URL alias normalize it to `city`.
 
 `sort`: `distance`, `rating`, `experience`, `newest`. Coordinates are required for distance sorting/filtering.
 

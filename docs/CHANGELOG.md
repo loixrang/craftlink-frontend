@@ -1,5 +1,34 @@
 # Changelog
 
+### 2026-10-02 - Discovery location contract addition
+
+- Added optional `state` and `city` query parameters to `GET /api/v1/artisans` in `docs/API_CONTRACT.md`, documented in `docs/DECISIONS.md`. `state` matches the artisan's stored state and `city` matches the stored city value (an LGA within that state); they filter administratively and are independent of the existing coordinate filters. `lga` is documented as a URL alias normalized to `city`, not a query parameter. This is additive: no endpoint, verb, payload or existing parameter was changed or removed.
+- Rationale: the implemented discovery location control has always been a state plus city/LGA selector backed by `SUPPORTED_STATES`/`getLgasForState`, and artisan profiles store `city`/`state` as strings, so an administrative filter matches both sides honestly. Coordinate filters (`latitude`, `longitude`, `radiusKm`) remain in the contract as a backend capability and stay unused, so `sort=distance` remains unavailable and `distanceKm` is never rendered.
+- Corrected documentation drift: `MANUAL_LOCATION.md` and `BROWSER_LOCATION.md` described coordinate entry and browser geolocation that do not exist in the code (`navigator.geolocation` is absent from `src/`), and the FE-DISC-003 note in `ARTISAN_SEARCH.md` described `radiusKm`. All three now describe the implementation; `BROWSER_LOCATION.md` records the absence of geolocation explicitly.
+- No application code changed; the emitted request surface is unchanged and was verified against the contract. `ROADMAP.md` still marks FE-DISC-004 complete with no implementation, which needs a separate product decision. The sibling backend repository must be synchronized before integration.
+
+### 2026-10-02 - Landing page theme fix
+
+- Fixed the homepage rendering permanently in dark mode. The `.slate-band` helper added during the Stitch refresh re-declared every `--color-*` token with hardcoded dark hex values and set `color-scheme: dark`, which bypasses `light-dark()` and ignores both `:root.light`/`:root.dark` and `prefers-color-scheme`. The class wrapped the whole landing page, so the theme toggle had no effect on it.
+- Removed `.slate-band` from `src/index.css` and the `slate-band` class from the landing page wrapper in `src/pages/LandingPage.tsx`. The charcoal dark appearance is unchanged because the helper's hardcoded values were identical to the global dark tokens; light mode now resolves the same markup through the shared theme tokens like every other page.
+- Added `src/index.css.test.ts` to fail if theme colours are declared outside `@theme` or `color-scheme: dark` is forced on anything other than `:root.dark`. Corrected the `.slate-band` note in `docs/DESIGN_FOUNDATION.md`. No layout, copy, route, API, auth or business-logic changes.
+
+### 2026-10-02 - Stitch design refresh
+
+- Rebuilt the visual layer against the Google Stitch reference in `design/` while preserving all routes, API contracts, queries, mutations, auth and business logic. No feature was added or removed; only markup structure and class names changed.
+- Rewrote `src/index.css` tokens to the reference palette and scale: canvas/surface/ink values, accent `#C2410C`, new `--color-accent-text`, `--color-amber`, `--color-success`, `--color-danger`, `--color-accent-soft-ink`, radii (`control` 0.5rem, `panel` 1rem, `modal` 1.5rem), `--container-content` 80rem, `--text-display`, `--text-headline`, plus-jakarta/Inter font pairs and a four-step elevation scale (`shadow-card`, `shadow-lift`, `shadow-float`, `shadow-action`) replacing `shadow-subtle`. Theme mechanism (`light-dark()` + `:root.light/.dark` + persisted toggle) is unchanged, so dark mode still follows `prefers-color-scheme` by default.
+- Added `.slate-band` (charcoal `#141311` marketing band) and `.full-bleed` layout utilities to `src/index.css`; the landing page reproduces the reference dark hero, category grid, three-step "how it works", artisan call-to-action banner and header/footer using live API data rather than Stitch placeholders. The reference's escrow and direct-messaging claims were dropped because they are not part of the V1 product.
+- Restyled `AppShell` (sticky blurred header, pill navigation, terracotta wordmark, compact footer), `ThemeToggle` and every route: discovery now uses the 4-column sticky category rail with an 8-column results feed, artisan profiles use Level-1 profile cards with a sticky contact aside, and customer/artisan/admin screens use consistent page headers, eyebrow labels, card surfaces, 48px controls and elevated list rows. Forms moved to 48px `min-h-12` controls with accent focus borders and `text-danger` validation text.
+- Added the shared `src/components/ui/VerifiedBadge.tsx` used by discovery and artisan profiles; `Surface`, `Button`, `Badge`, `Input` and `Feedback` keep their existing props and variants. Loaded Plus Jakarta Sans and Inter from Google Fonts in `index.html` and updated `theme-color` per scheme.
+- Intentional deviations from the reference: control borders stay stronger than the design's faint hairline to preserve a 3:1 non-text boundary; the footer omits link columns that would duplicate accessible link names asserted in `AppShell.test.tsx`; the hero location field is a select of supported LGAs rather than free text. `design/screen.png` could not be read, so `DESIGN.md` and `code.html` drove the work.
+- All 99 tests pass; lint, typecheck and production build pass. Build reports the existing large-chunk warning (594.16 kB). HTTP is mocked; no live backend or browser visual verification was performed.
+
+### 2026-10-02 - Dark theme
+
+- Added a dark theme by making the existing semantic `@theme` tokens in `src/index.css` theme-aware with `light-dark()`, so all existing surfaces, text, borders, controls and accent states adapt without component restyling. Light values are unchanged.
+- Respects `prefers-color-scheme` by default via `color-scheme: light dark`; an explicit choice is stored under `craftlink-theme` and applied before first paint by a small inline script in `index.html` to avoid a flash of the wrong theme.
+- Added an accessible icon toggle to the existing header navigation that switches and persists light/dark. Added focused toggle tests; all 99 tests, lint, typecheck and production build pass. No API, routing, auth or business-logic changes.
+
 ### 2026-10-01 - FE-ADMIN-004 completed
 
 - Added protected `/admin/categories` management for listing, creating, renaming and confirming deletion of service categories. The UI validates the published BE-ADMIN-004 request/response shapes and handles duplicate names, service references, missing categories, expired sessions and permission loss.

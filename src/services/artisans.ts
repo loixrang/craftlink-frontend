@@ -7,7 +7,6 @@ export type ArtisanFilters = {
   categoryId?: string
   state?: string
   city?: string
-  lga?: string
   minRating?: number
   minExperience?: number
   availability?: boolean

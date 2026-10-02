@@ -50,8 +50,8 @@ export function LoginPage() {
   const returnTo = session && safeReturnPath(from, session.user.role)
   if (returnTo) return <Navigate to={returnTo} replace />
   return <section className="mx-auto max-w-xl py-4 sm:py-8" aria-labelledby="login-title">
-    <p className="text-sm font-semibold text-accent">Welcome back</p>
-    <h1 id="login-title" className="mt-3 text-3xl tracking-tight sm:text-4xl">Log in</h1>
+    <p className="text-xs font-bold uppercase tracking-[0.04em] text-accent-text">Welcome back</p>
+    <h1 id="login-title" className="mt-3 text-3xl sm:text-headline">Log in</h1>
     {session ? <div className="mt-8 space-y-4">
       <SuccessState title="You’re signed in" description={`Signed in as ${session.user.email}.`} />
       <div className="flex flex-wrap items-center gap-4">
@@ -60,7 +60,7 @@ export function LoginPage() {
       </div>
     </div> : <>
       <p className="mt-4 text-ink-muted">Sign in to your Craftlink account.</p>
-      <form onSubmit={submit} noValidate className="mt-8 space-y-6" aria-label="Login" aria-busy={isSubmitting}>
+      <form onSubmit={submit} noValidate className="mt-8 space-y-6 rounded-modal border border-line bg-surface p-6 shadow-card sm:p-8" aria-label="Login" aria-busy={isSubmitting}>
         {mutation.isError && <ErrorState title="We couldn’t log you in" description={errorMessage(mutation.error)} />}
         <fieldset disabled={isSubmitting} className="space-y-6">
           <Input {...register('email')} label="Email address" type="email" autoComplete="username" required error={errors.email?.message} />

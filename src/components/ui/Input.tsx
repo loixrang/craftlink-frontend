@@ -12,7 +12,7 @@ export function Input({ label, hint, error, id, className = '', 'aria-describedb
   const description = [describedBy, hint && `${inputId}-hint`, error && `${inputId}-error`].filter(Boolean).join(' ') || undefined
 
   return (
-    <div className="grid gap-2">
+    <div className="grid min-w-0 gap-2">
       <label htmlFor={inputId} className="text-sm font-semibold">{label}{props.required && <span aria-hidden="true"> *</span>}</label>
       {hint && <p id={`${inputId}-hint`} className="text-sm text-ink-muted">{hint}</p>}
       <input {...props} id={inputId} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={description}

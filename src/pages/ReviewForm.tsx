@@ -57,7 +57,7 @@ export function ReviewForm({ requestId, artisanId, refreshing }: { requestId: st
       <fieldset disabled={pending || refreshing} className="space-y-5">
         <div className="grid gap-2">
           <label htmlFor="review-rating" className="text-sm font-semibold">Rating</label>
-          <select id="review-rating" {...register('rating', { valueAsNumber: true })} required aria-invalid={!!errors.rating} aria-describedby={errors.rating ? 'rating-error' : undefined} className="min-h-12 w-full rounded-control border border-control-border bg-surface px-3 py-2 transition-colors focus:border-accent aria-invalid:border-danger disabled:cursor-not-allowed disabled:bg-surface-muted">
+          <select id="review-rating" {...register('rating', { valueAsNumber: true })} required aria-invalid={!!errors.rating} aria-describedby={errors.rating ? 'rating-error' : undefined} className="min-h-12 w-full min-w-0 rounded-control border border-control-border bg-surface px-3 py-2 transition-colors focus:border-accent aria-invalid:border-danger disabled:cursor-not-allowed disabled:bg-surface-muted">
             <option value="0">Choose a rating</option>
             <option value="1">1 — Poor</option><option value="2">2 — Fair</option><option value="3">3 — Good</option><option value="4">4 — Very good</option><option value="5">5 — Excellent</option>
           </select>

@@ -87,7 +87,7 @@ export function LandingPage() {
         <div aria-hidden="true" className="pointer-events-none absolute -top-32 left-1/4 size-96 rounded-full bg-accent/15 blur-[128px]" />
         <div aria-hidden="true" className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-amber/10 blur-[110px]" />
         <div className="relative z-10 mx-auto grid w-full max-w-content items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-10">
-          <div className="flex flex-col items-start gap-4 lg:col-span-7">
+          <div className="flex min-w-0 flex-col items-start gap-4 lg:col-span-7">
             <p className="inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1.5 text-xs font-bold uppercase tracking-[0.04em] text-accent-soft-ink shadow-card">
               <span aria-hidden="true" className="relative flex size-2.5 items-center justify-center">
                 <span className="absolute inline-flex size-full rounded-full bg-accent opacity-75 motion-safe:animate-ping" />
@@ -143,7 +143,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="flex justify-center lg:col-span-5 lg:justify-end">
+          <div className="flex min-w-0 justify-center lg:col-span-5 lg:justify-end">
             <article className="relative w-full max-w-md rounded-modal bg-surface p-4 shadow-float">
               {featured.isPending && <LoadingState label="Loading a featured artisan…" />}
               {featured.isError && <p className="py-8 text-center text-sm text-ink-muted">Artisans are unavailable right now. <Link to="/artisans">Browse categories</Link> to keep exploring.</p>}
@@ -157,8 +157,8 @@ export function LandingPage() {
                   <div className="flex min-w-0 items-center gap-3">
                     <ArtisanImage url={artisan.profileImageUrl} alt={artisan.displayName} className="size-12 shrink-0 rounded-full object-cover" />
                     <div className="min-w-0">
-                      <h2 className="flex items-center gap-2 text-lg">
-                        <span className="min-w-0 truncate">{artisan.displayName}</span>
+                      <h2 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-lg">
+                        <span className="min-w-0 flex-1 line-clamp-1">{artisan.displayName}</span>
                         <VerifiedBadge verified={artisan.verificationStatus === 'VERIFIED'} className="shrink-0 px-2 py-0.5 text-[0.6875rem]" />
                       </h2>
                       <p className="mt-1 flex items-center gap-1 text-sm text-ink-muted">
@@ -180,7 +180,7 @@ export function LandingPage() {
                     <p className="text-xs font-semibold uppercase tracking-[0.04em] text-ink-muted">Starting from</p>
                     <p className="text-lg font-bold text-amber tabular-nums">{priceFrom === null ? 'On enquiry' : priceFrom.toLocaleString('en-NG')}</p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {artisan.averageRating !== null && artisan.reviewCount > 0 && <span className="inline-flex items-center gap-1 rounded-full bg-canvas px-3 py-2 text-sm font-semibold text-ink">
                       <Star size={16} aria-hidden="true" className="text-amber" />
                       {artisan.averageRating.toFixed(1)}

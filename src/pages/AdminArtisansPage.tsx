@@ -56,7 +56,7 @@ export function AdminArtisansPage() {
     </header>
     <section aria-label="Artisan filters" className="flex flex-wrap items-end gap-4 rounded-panel border border-line bg-surface-muted p-5 sm:p-6">
       <label className="grid gap-2 text-sm font-semibold">Owner account status
-        <select className="min-h-12 rounded-control border border-control-border bg-surface px-3 transition-colors focus:border-accent disabled:cursor-not-allowed" value={rawStatus} onChange={event => navigate(1, event.target.value)}>
+        <select className="min-h-12 min-w-0 rounded-control border border-control-border bg-surface px-3 transition-colors focus:border-accent disabled:cursor-not-allowed" value={rawStatus} onChange={event => navigate(1, event.target.value)}>
           {!valid && rawStatus !== 'ALL' && <option value={rawStatus}>Invalid status</option>}
           <option value="ALL">All account statuses</option>
           {accountStatus.options.map(value => <option key={value} value={value}>{value === 'ACTIVE' ? 'Active' : 'Suspended'}</option>)}

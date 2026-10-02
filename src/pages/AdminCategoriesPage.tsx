@@ -30,7 +30,7 @@ function CategoryNameForm({ initialName = '', submitLabel, pending, onSubmit, on
   const { register, handleSubmit, formState: { errors } } = useForm<NameValues>({ resolver: zodResolver(nameSchema), defaultValues: { name: initialName } })
   return <form className="flex flex-col gap-3 sm:flex-row sm:items-end" onSubmit={handleSubmit(values => onSubmit(values.name))}>
     <div className="min-w-0 flex-1"><label className="block text-sm font-semibold" htmlFor={`category-name-${submitLabel.toLowerCase().replaceAll(' ', '-')}`}>Category name</label><input id={`category-name-${submitLabel.toLowerCase().replaceAll(' ', '-')}`} maxLength={100} autoComplete="off" aria-invalid={!!errors.name} aria-describedby={errors.name ? 'category-name-error' : undefined} className="mt-2 min-h-12 w-full rounded-control border border-control-border bg-surface px-3 transition-colors focus:border-accent aria-invalid:border-danger disabled:cursor-not-allowed disabled:bg-surface-muted" {...register('name')} />{errors.name && <p id="category-name-error" className="mt-1 text-sm font-medium text-danger">{errors.name.message}</p>}</div>
-    <div className="flex gap-3"><Button type="submit" pending={pending}>{submitLabel}</Button>{onCancel && <Button type="button" variant="secondary" disabled={pending} onClick={onCancel}>Cancel</Button>}</div>
+    <div className="flex flex-wrap gap-3"><Button type="submit" pending={pending}>{submitLabel}</Button>{onCancel && <Button type="button" variant="secondary" disabled={pending} onClick={onCancel}>Cancel</Button>}</div>
   </form>
 }
 

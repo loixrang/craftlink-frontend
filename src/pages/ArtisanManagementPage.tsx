@@ -184,9 +184,9 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
           <h3 className="text-lg font-semibold">Profile photo</h3>
           <div className="flex flex-wrap items-center gap-5">
             {previewUrl || publicImageUrl(profile?.profileImageUrl ?? null)
-              ? <img src={previewUrl ?? publicImageUrl(profile?.profileImageUrl ?? null)} alt={previewUrl ? 'Selected profile photo preview' : `${profile?.displayName ?? 'Your'} profile photo`} className="size-24 rounded-panel border border-line object-cover shadow-card" />
-              : <div aria-label="No profile photo" className="flex size-24 items-center justify-center rounded-panel border border-line bg-surface-muted text-center text-sm text-ink-muted">No photo</div>}
-            <div className="space-y-3">
+              ? <img src={previewUrl ?? publicImageUrl(profile?.profileImageUrl ?? null)} alt={previewUrl ? 'Selected profile photo preview' : `${profile?.displayName ?? 'Your'} profile photo`} className="size-24 shrink-0 rounded-panel border border-line object-cover shadow-card" />
+              : <div aria-label="No profile photo" className="flex size-24 shrink-0 items-center justify-center rounded-panel border border-line bg-surface-muted text-center text-sm text-ink-muted">No photo</div>}
+            <div className="min-w-0 space-y-3">
               <Input label={profile?.profileImageUrl ? 'Change photo' : 'Choose photo'} type="file" accept="image/jpeg,image/png,image/webp" disabled={imageUpload.isPending || imageRemoval.isPending} hint="Static JPEG, PNG or WebP. Maximum 5 MiB and 25 million pixels." error={imageIssue} onChange={event => { selectImage(event.target.files?.[0]); imageUpload.reset(); imageRemoval.reset() }} />
               <div className="flex flex-wrap gap-3">
                 <Button type="button" disabled={imageRemoval.isPending} pending={imageUpload.isPending || imagePreparing} onClick={() => { if (!profile) { void handleSubmit(uploadSelectedPhoto)() } else { void uploadSelectedPhoto() } }}>{imagePreparing ? 'Saving profile...' : imageUpload.isPending ? 'Uploading photo...' : !profile ? 'Save profile and upload photo' : 'Upload photo'}</Button>
@@ -233,7 +233,7 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
                 id="profile-state-select"
                 {...register('state')}
                 disabled
-                className="min-h-12 rounded-control border border-control-border bg-surface-muted px-3 py-2 text-ink-muted opacity-75 cursor-not-allowed"
+                className="min-h-12 min-w-0 rounded-control border border-control-border bg-surface-muted px-3 py-2 text-ink-muted opacity-75 cursor-not-allowed"
               >
                 {SUPPORTED_STATES.map(s => (
                   <option key={s} value={s}>
@@ -250,7 +250,7 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
                 {...register('city')}
                 aria-invalid={!!errors.city}
                 aria-describedby={errors.city ? 'profile-city-error' : undefined}
-                className="min-h-12 rounded-control border border-control-border bg-surface px-3 py-2 transition-colors focus:border-accent aria-invalid:border-danger"
+                className="min-h-12 min-w-0 rounded-control border border-control-border bg-surface px-3 py-2 transition-colors focus:border-accent aria-invalid:border-danger"
               >
                 <option value="">Select city / LGA</option>
                 {availableLgas.map(lga => (

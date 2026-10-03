@@ -61,8 +61,6 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
   const active = useRef(true)
   const [imageFile, setImageFile] = useState<File>()
   const [imageIssue, setImageIssue] = useState<string>()
-  const [imageSetupError, setImageSetupError] = useState<unknown>()
-  const [imagePreparing, setImagePreparing] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string>()
   const previewObjectUrl = useRef<string | undefined>(undefined)
 
@@ -83,31 +81,6 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
     setPreviewUrl(previewObjectUrl.current)
     setImageFile(file)
     setImageIssue(file ? profileImageFileError(file) : undefined)
-    setImageSetupError(undefined)
-  }
-
-  const uploadSelectedPhoto = async () => {
-    const issue = profileImageFileError(imageFile)
-    setImageIssue(issue)
-    if (issue || !imageFile) return
-    if (!profile) {
-      setImagePreparing(true)
-      try {
-        const saved = await saveProfile(getValues(), session!.accessToken, null)
-        reset(profileDefaults(saved))
-        client.setQueryData(['editable-artisan-profile', session!.user.id], saved)
-      } catch (error) {
-        setImageSetupError(error)
-        return
-      } finally {
-        setImagePreparing(false)
-      }
-    }
-    try {
-      await imageUpload.mutateAsync(imageFile)
-    } catch { return }
-    selectImage(undefined)
-    await refreshProfile()
   }
 
   const {
@@ -141,7 +114,14 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
   }
   const imageUpload = useMutation({ mutationFn: (file: File) => uploadProfileImage(file, session!.accessToken), retry: false, gcTime: 0 })
   const imageRemoval = useMutation({ mutationFn: () => removeProfileImage(session!.accessToken), retry: false, gcTime: 0 })
-  const imageError = imageUpload.error ?? imageRemoval.error
+  const applySaved = (saved: OwnerProfile) => {
+    reset(profileDefaults(saved))
+    client.setQueryData(['editable-artisan-profile', session!.user.id], saved)
+    void client.invalidateQueries({ queryKey: ['editable-artisan-profile', session!.user.id] })
+    void client.invalidateQueries({ queryKey: ['own-artisan-profile', session!.user.id] })
+    void client.invalidateQueries({ queryKey: ['artisan-profile', saved.id] })
+    void client.invalidateQueries({ queryKey: ['artisans'] })
+  }
 
   return (
     <section aria-labelledby="profile-edit-heading" className="max-w-3xl rounded-modal border border-line bg-surface p-5 shadow-card sm:p-8">
@@ -158,15 +138,30 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
         onSubmit={event => {
           void handleSubmit(async () => {
             if (lock.current) return
+            mutation.reset()
+            imageUpload.reset()
+            if (imageFile) {
+              const issue = profileImageFileError(imageFile)
+              setImageIssue(issue)
+              if (issue) return
+            }
             lock.current = true
             try {
               const saved = await mutation.mutateAsync()
               if (!active.current) return
-              reset(profileDefaults(saved))
-              client.setQueryData(['editable-artisan-profile', session!.user.id], saved)
-              void client.invalidateQueries({ queryKey: ['own-artisan-profile', session!.user.id] })
-              void client.invalidateQueries({ queryKey: ['artisan-profile', saved.id] })
-              void client.invalidateQueries({ queryKey: ['artisans'] })
+              let imageUrl = saved.profileImageUrl
+              if (imageFile) {
+                try {
+                  imageUrl = await imageUpload.mutateAsync(imageFile)
+                } catch {
+                  if (!active.current) return
+                  applySaved(saved)
+                  return
+                }
+              }
+              if (!active.current) return
+              selectImage(undefined)
+              applySaved({ ...saved, profileImageUrl: imageUrl })
             } catch {
               /* Preserve draft. */
             } finally {
@@ -176,9 +171,9 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
         }}
       >
         {mutation.isError && <ErrorState title="Profile save not confirmed" description={managementError(mutation.error)} />}
-        {mutation.isSuccess && <SuccessState title="Profile saved" description="Your business details are up to date." />}
-        {!!(imageError || imageSetupError) && <ErrorState title="Photo change not confirmed" description={managementError(imageSetupError ?? imageError)} />}
-        {imageUpload.isSuccess && <SuccessState title="Profile photo updated" />}
+        {mutation.isSuccess && !imageUpload.isError && <SuccessState title="Profile saved" description={imageUpload.isSuccess ? 'Your business details and profile photo are up to date.' : 'Your business details are up to date.'} />}
+        {imageUpload.isError && mutation.isSuccess && <ErrorState title="Profile saved, but the photo could not be uploaded" description={managementError(imageUpload.error)} />}
+        {imageRemoval.isError && <ErrorState title="Photo change not confirmed" description={managementError(imageRemoval.error)} />}
         {imageRemoval.isSuccess && <SuccessState title="Profile photo removed" />}
         <div className="space-y-3">
           <h3 className="text-lg font-semibold">Profile photo</h3>
@@ -187,15 +182,12 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
               ? <img src={previewUrl ?? publicImageUrl(profile?.profileImageUrl ?? null)} alt={previewUrl ? 'Selected profile photo preview' : `${profile?.displayName ?? 'Your'} profile photo`} className="size-24 shrink-0 rounded-panel border border-line object-cover shadow-card" />
               : <div aria-label="No profile photo" className="flex size-24 shrink-0 items-center justify-center rounded-panel border border-line bg-surface-muted text-center text-sm text-ink-muted">No photo</div>}
             <div className="min-w-0 space-y-3">
-              <Input label={profile?.profileImageUrl ? 'Change photo' : 'Choose photo'} type="file" accept="image/jpeg,image/png,image/webp" disabled={imageUpload.isPending || imageRemoval.isPending} hint="Static JPEG, PNG or WebP. Maximum 5 MiB and 25 million pixels." error={imageIssue} onChange={event => { selectImage(event.target.files?.[0]); imageUpload.reset(); imageRemoval.reset() }} />
-              <div className="flex flex-wrap gap-3">
-                <Button type="button" disabled={imageRemoval.isPending} pending={imageUpload.isPending || imagePreparing} onClick={() => { if (!profile) { void handleSubmit(uploadSelectedPhoto)() } else { void uploadSelectedPhoto() } }}>{imagePreparing ? 'Saving profile...' : imageUpload.isPending ? 'Uploading photo...' : !profile ? 'Save profile and upload photo' : 'Upload photo'}</Button>
-                {profile?.profileImageUrl && <Button type="button" variant="secondary" disabled={imageUpload.isPending} pending={imageRemoval.isPending} onClick={async () => { try { await imageRemoval.mutateAsync(); selectImage(undefined); await refreshProfile() } catch { /* Keep the existing photo visible until confirmed. */ } }}>{imageRemoval.isPending ? 'Removing photo...' : 'Remove photo'}</Button>}
-              </div>
+              <Input label={profile?.profileImageUrl ? 'Change photo' : 'Choose photo'} type="file" accept="image/jpeg,image/png,image/webp" disabled={mutation.isPending || imageUpload.isPending || imageRemoval.isPending} hint="Static JPEG, PNG or WebP. Maximum 5 MiB and 25 million pixels." error={imageIssue} onChange={event => { selectImage(event.target.files?.[0]); imageUpload.reset(); imageRemoval.reset() }} />
+              {profile?.profileImageUrl && <Button type="button" variant="secondary" disabled={mutation.isPending || imageUpload.isPending} pending={imageRemoval.isPending} onClick={async () => { try { await imageRemoval.mutateAsync(); selectImage(undefined); await refreshProfile() } catch { /* Keep the existing photo visible until confirmed. */ } }}>{imageRemoval.isPending ? 'Removing photo...' : 'Remove photo'}</Button>}
             </div>
           </div>
         </div>
-        <fieldset disabled={mutation.isPending} className="space-y-6">
+        <fieldset disabled={mutation.isPending || imageUpload.isPending} className="space-y-6">
           <Input label="Business name" {...register('displayName')} error={errors.displayName?.message} required />
           <div>
             <label htmlFor="profile-bio" className="block text-sm font-semibold">
@@ -272,8 +264,8 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
             Available for work
           </label>
           {Object.keys(errors).length > 0 && <p role="alert" className="text-sm font-medium text-danger">Check the highlighted profile fields.</p>}
-          <Button type="submit" pending={mutation.isPending}>
-            {mutation.isPending ? 'Saving profile...' : 'Save profile'}
+          <Button type="submit" pending={mutation.isPending || imageUpload.isPending}>
+            {mutation.isPending ? 'Saving profile...' : imageUpload.isPending ? 'Uploading photo...' : 'Save profile'}
           </Button>
         </fieldset>
       </form>

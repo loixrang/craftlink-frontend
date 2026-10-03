@@ -8,6 +8,7 @@ import { LoadingState, ErrorState } from '../components/ui/Feedback'
 import { Badge } from '../components/ui/Badge'
 import { VerifiedBadge } from '../components/ui/VerifiedBadge'
 import { SeoMetadata } from '../components/SeoMetadata'
+import { formatCurrency } from '../constants/currency'
 
 function PublicImage({ url, alt, className }: { url: string | null; alt: string; className: string }) {
   const [failed, setFailed] = useState(false)
@@ -63,7 +64,7 @@ export function ArtisanProfilePage() {
               {artisan.services.map(service => <li key={service.id} className="border-b border-line py-5 first:pt-0 last:border-b-0 last:pb-0">
                 <h3 className="text-lg">{service.title}</h3>
                 <p className="mt-2 whitespace-pre-line text-ink-muted">{service.description}</p>
-                {service.priceFrom != null && <p className="mt-3 text-sm tabular-nums">Starting price: {service.priceFrom.toLocaleString('en-NG')} · Confirm currency and final quote with the artisan.</p>}
+                {service.priceFrom != null && <p className="mt-3 text-sm tabular-nums">Starting price: {formatCurrency(service.priceFrom)} · Confirm the final quote with the artisan.</p>}
               </li>)}
             </ul> : <p className="mt-4 text-ink-muted">No services listed yet.</p>}
           </section>

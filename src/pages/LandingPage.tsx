@@ -9,6 +9,7 @@ import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { LoadingState } from '../components/ui/Feedback'
 import { VerifiedBadge } from '../components/ui/VerifiedBadge'
+import { formatCurrency } from '../constants/currency'
 import { DEFAULT_STATE, getLgasForState } from '../constants/locations'
 import { getArtisans } from '../services/artisans'
 import { getArtisanProfile, publicImageUrl } from '../services/artisanProfile'
@@ -178,7 +179,7 @@ export function LandingPage() {
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.04em] text-ink-muted">Starting from</p>
-                    <p className="text-lg font-bold text-amber tabular-nums">{priceFrom === null ? 'On enquiry' : priceFrom.toLocaleString('en-NG')}</p>
+                    <p className="text-lg font-bold text-amber tabular-nums">{priceFrom === null ? 'On enquiry' : formatCurrency(priceFrom)}</p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     {artisan.averageRating !== null && artisan.reviewCount > 0 && <span className="inline-flex items-center gap-1 rounded-full bg-canvas px-3 py-2 text-sm font-semibold text-ink">

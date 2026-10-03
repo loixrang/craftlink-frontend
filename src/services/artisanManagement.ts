@@ -113,7 +113,7 @@ export const serviceFormSchema = z.object({
   description: z.string().trim().min(1, 'Describe your service.').max(2000),
   priceFrom: z.string().trim().refine(
     v => !v || (/^\d+(\.\d{1,2})?$/.test(v) && Number(v) <= 9999999999.99),
-    'Enter a non-negative price with at most two decimal places.',
+    'Enter a non-negative price in Nigerian Naira with at most two decimal places.',
   ),
 })
 

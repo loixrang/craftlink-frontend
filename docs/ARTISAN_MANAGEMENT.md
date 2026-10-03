@@ -2,6 +2,8 @@
 
 The artisan-only `/artisan/profile` route provides profile setup/editing, contact details, profile image URL, experience, location, availability and service create/edit/delete. The dashboard links to it. Portfolio/credential uploads and incoming request management remain separate roadmap features.
 
+The Business Profile section uses a view/edit flow like the services section: with a saved profile it opens read-only (photo, business name, city/state, availability badge, experience, introduction, phone, WhatsApp) with an "Edit" button that opens the populated form; a successful save collapses the form back into the summary with a temporary "Profile saved" notice, and "Cancel" discards unsaved changes and staged images without a request. An artisan without a profile sees the setup form directly. The backend supports no profile deletion, so the saved profile has no delete action.
+
 Owner reads and PUT writes use `/artisans/me`. A separate user-scoped query retains only the editable owner fields, including coordinates needed by the owner form; the dashboard's existing summary cache still strips private fields. Nothing is written to browser storage or URL parameters. A save completing after the editor unmounts cannot repopulate the owner cache. Existing session handling clears caches on sign-out.
 
 Manual city/state are required; paired coordinates are optional. Browser location runs only on explicit activation and fills a draft, with permission/error/manual fallback. Manual changes, cancellation, clearing, submission and unmount invalidate old callbacks. Coordinates reach the API only on Save profile. Clearing optional contacts, image URL and coordinates sends nulls. Profile saves invalidate dashboard, public profile and discovery queries.

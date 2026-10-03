@@ -3,7 +3,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
+import { MapPin } from 'lucide-react'
 import { useAuth } from '../app/authContext'
+import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { ErrorState, LoadingState, SuccessState } from '../components/ui/Feedback'
@@ -59,6 +61,8 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
   const client = useQueryClient()
   const lock = useRef(false)
   const active = useRef(true)
+  const [editing, setEditing] = useState(profile == null)
+  const [notice, setNotice] = useState('')
   const [imageFile, setImageFile] = useState<File>()
   const [imageIssue, setImageIssue] = useState<string>()
   const [previewUrl, setPreviewUrl] = useState<string>()
@@ -125,9 +129,14 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
 
   return (
     <section aria-labelledby="profile-edit-heading" className="max-w-3xl rounded-modal border border-line bg-surface p-5 shadow-card sm:p-8">
-      <h2 id="profile-edit-heading" className="text-2xl">
-        {profile ? 'Business profile' : 'Set up your profile'}
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h2 id="profile-edit-heading" className="text-2xl">
+          {profile ? 'Business profile' : 'Set up your profile'}
+        </h2>
+        {!editing && <Button variant="secondary" onClick={() => { setEditing(true); setNotice('') }}>Edit</Button>}
+      </div>
+      {notice && <div className="mt-5"><SuccessState title={notice} description="Your business profile is up to date." /></div>}
+      {editing ? (
       <form
         aria-label="Business profile"
         noValidate
@@ -162,6 +171,8 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
               if (!active.current) return
               selectImage(undefined)
               applySaved({ ...saved, profileImageUrl: imageUrl })
+              setEditing(false)
+              setNotice('Profile saved')
             } catch {
               /* Preserve draft. */
             } finally {
@@ -171,7 +182,6 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
         }}
       >
         {mutation.isError && <ErrorState title="Profile save not confirmed" description={managementError(mutation.error)} />}
-        {mutation.isSuccess && !imageUpload.isError && <SuccessState title="Profile saved" description={imageUpload.isSuccess ? 'Your business details and profile photo are up to date.' : 'Your business details are up to date.'} />}
         {imageUpload.isError && mutation.isSuccess && <ErrorState title="Profile saved, but the photo could not be uploaded" description={managementError(imageUpload.error)} />}
         {imageRemoval.isError && <ErrorState title="Photo change not confirmed" description={managementError(imageRemoval.error)} />}
         {imageRemoval.isSuccess && <SuccessState title="Profile photo removed" />}
@@ -264,11 +274,49 @@ function ProfileEditor({ profile }: { profile: OwnerProfile | null }) {
             Available for work
           </label>
           {Object.keys(errors).length > 0 && <p role="alert" className="text-sm font-medium text-danger">Check the highlighted profile fields.</p>}
-          <Button type="submit" pending={mutation.isPending || imageUpload.isPending}>
-            {mutation.isPending ? 'Saving profile...' : imageUpload.isPending ? 'Uploading photo...' : 'Save profile'}
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button type="submit" pending={mutation.isPending || imageUpload.isPending}>
+              {mutation.isPending ? 'Saving profile...' : imageUpload.isPending ? 'Uploading photo...' : 'Save profile'}
+            </Button>
+            {profile && <Button variant="secondary" type="button" disabled={mutation.isPending || imageUpload.isPending} onClick={() => setEditing(false)}>Cancel</Button>}
+          </div>
         </fieldset>
       </form>
+      ) : (
+        profile && <ProfileSummary profile={profile} />
+      )}
     </section>
+  )
+}
+
+function ProfileSummary({ profile }: { profile: OwnerProfile }) {
+  const photo = publicImageUrl(profile.profileImageUrl)
+  return (
+    <div className="mt-6 space-y-5">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+        {photo
+          ? <img src={photo} alt={`${profile.displayName} profile photo`} className="size-24 shrink-0 rounded-panel border border-line object-cover shadow-card" />
+          : <div aria-label="No profile photo" className="flex size-24 shrink-0 items-center justify-center rounded-panel border border-line bg-surface-muted text-center text-sm text-ink-muted">No photo</div>}
+        <div className="min-w-0">
+          <h3 className="break-words text-xl">{profile.displayName}</h3>
+          <p className="mt-1 flex items-center gap-2 text-ink-muted"><MapPin size={16} aria-hidden="true" />{[profile.city, profile.state].filter(value => value?.trim()).join(', ') || 'Location not added yet'}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+            <Badge tone={profile.isAvailable ? 'accent' : 'neutral'}>{profile.isAvailable ? 'Available for work' : 'Not available for work'}</Badge>
+            <span>{profile.yearsExperience} {profile.yearsExperience === 1 ? 'year' : 'years'} of experience</span>
+          </div>
+        </div>
+      </div>
+      <p className="whitespace-pre-wrap break-words text-ink-muted">{profile.bio?.trim() || 'No introduction added yet.'}</p>
+      <dl className="grid gap-5 rounded-control bg-surface-muted p-5 sm:grid-cols-2">
+        <div className="min-w-0">
+          <dt className="text-sm text-ink-muted">Phone</dt>
+          <dd className="mt-2 break-words">{profile.phone ?? 'Not added yet'}</dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="text-sm text-ink-muted">WhatsApp</dt>
+          <dd className="mt-2 break-words">{profile.whatsapp ?? 'Not added yet'}</dd>
+        </div>
+      </dl>
+    </div>
   )
 }

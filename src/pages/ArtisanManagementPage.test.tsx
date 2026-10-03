@@ -71,6 +71,11 @@ async function fillProfile() {
   fireEvent.change(screen.getByLabelText('City / LGA'), { target: { value: 'Eket' } })
 }
 
+async function editProfile() {
+  fireEvent.click(await screen.findByRole('button', { name: 'Edit' }))
+  await screen.findByLabelText(/Business name/)
+}
+
 const calls = (fetcher: ReturnType<typeof mockApi>, method: string) => fetcher.mock.calls.filter(([, init]) => init?.method === method)
 
 beforeEach(() => {
@@ -82,10 +87,41 @@ beforeEach(() => {
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('shows a read-only summary instead of the form when a profile exists', async () => {
+  mockApi()
+  mount()
+  expect(await screen.findByRole('button', { name: 'Edit' })).toBeVisible()
+  expect(screen.queryByRole('button', { name: 'Save profile' })).not.toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument()
+})
+
+it('displays the persisted profile information in the summary', async () => {
+  mockApi({ profile: { ...owner, displayName: 'Ada Lovelace', bio: 'Expert welder', yearsExperience: 7, phone: '+2348012345678', whatsapp: '+2348012345679', city: 'Eket', state: 'Akwa Ibom', isAvailable: true, profileImageUrl: photoUrl } })
+  mount()
+  expect(await screen.findByText('Ada Lovelace')).toBeVisible()
+  expect(screen.getByText('Available for work')).toBeVisible()
+  expect(screen.getByText('7 years of experience')).toBeVisible()
+  expect(screen.getByText('Eket, Akwa Ibom')).toBeVisible()
+  expect(screen.getByText('Expert welder')).toBeVisible()
+  expect(screen.getByText('+2348012345678')).toBeVisible()
+  expect(screen.getByText('+2348012345679')).toBeVisible()
+  const photo = screen.getByRole('img', { name: 'Ada Lovelace profile photo' })
+  expect(photo).toHaveAttribute('src', photoUrl)
+})
+
+it('explains missing profile information in the summary', async () => {
+  mockApi()
+  mount()
+  expect(await screen.findByText('No introduction added yet.')).toBeVisible()
+  expect(screen.getAllByText('Not added yet')).toHaveLength(2)
+  expect(screen.getByText('No photo')).toBeVisible()
+})
+
 it('stages a selected image locally without uploading it', async () => {
   const fetcher = mockApi()
   mount()
-  fireEvent.change(await screen.findByLabelText('Choose photo'), { target: { files: [file()] } })
+  await editProfile()
+  fireEvent.change(screen.getByLabelText('Choose photo'), { target: { files: [file()] } })
   expect(await screen.findByRole('img', { name: 'Selected profile photo preview' })).toBeVisible()
   expect(calls(fetcher, 'POST')).toHaveLength(0)
   expect(calls(fetcher, 'PUT')).toHaveLength(0)
@@ -94,7 +130,7 @@ it('stages a selected image locally without uploading it', async () => {
 it('removes the separate photo upload action from the photo section', async () => {
   mockApi()
   mount()
-  await screen.findByLabelText(/Business name/)
+  await editProfile()
   expect(screen.queryByRole('button', { name: 'Upload photo' })).not.toBeInTheDocument()
   expect(screen.queryByRole('button', { name: 'Save profile and upload photo' })).not.toBeInTheDocument()
   expect(screen.getByRole('button', { name: 'Save profile' })).toBeVisible()
@@ -119,7 +155,7 @@ it('saves a new profile and uploads the selected image from one save click', asy
   fireEvent.change(screen.getByLabelText('Choose photo'), { target: { files: [photo] } })
   expect(await screen.findByRole('img', { name: 'Selected profile photo preview' })).toBeVisible()
   fireEvent.click(screen.getByRole('button', { name: 'Save profile' }))
-  await screen.findByText('Your business details and profile photo are up to date.')
+  await screen.findByText('Profile saved')
   const put = calls(fetcher, 'PUT')[0]!
   expect(put[0]).toBe('/api/v1/artisans/me')
   const post = calls(fetcher, 'POST')[0]!
@@ -136,9 +172,10 @@ it('saves a new profile and uploads the selected image from one save click', asy
 it('saves an existing profile without re-uploading when no image is selected', async () => {
   const fetcher = mockApi({ profile: { ...owner, profileImageUrl: oldPhotoUrl } })
   mount()
-  fireEvent.change(await screen.findByLabelText(/Business name/), { target: { value: 'Ada Lovelace' } })
+  await editProfile()
+  fireEvent.change(screen.getByLabelText(/Business name/), { target: { value: 'Ada Lovelace' } })
   fireEvent.click(screen.getByRole('button', { name: 'Save profile' }))
-  await screen.findByText('Your business details are up to date.')
+  await screen.findByText('Profile saved')
   const put = calls(fetcher, 'PUT')[0]!
   const payload = JSON.parse(String(put[1]?.body)) as { displayName: string; profileImageUrl: string | null }
   expect(payload.displayName).toBe('Ada Lovelace')
@@ -149,10 +186,11 @@ it('saves an existing profile without re-uploading when no image is selected', a
 it('uploads a staged image from the save action and shows the saved photo', async () => {
   const fetcher = mockApi({ profile: { ...owner, profileImageUrl: oldPhotoUrl } })
   mount()
-  fireEvent.change(await screen.findByLabelText('Change photo'), { target: { files: [file()] } })
+  await editProfile()
+  fireEvent.change(screen.getByLabelText('Change photo'), { target: { files: [file()] } })
   expect(await screen.findByRole('img', { name: 'Selected profile photo preview' })).toBeVisible()
   fireEvent.click(screen.getByRole('button', { name: 'Save profile' }))
-  await screen.findByText('Your business details and profile photo are up to date.')
+  await screen.findByText('Profile saved')
   const put = calls(fetcher, 'PUT')[0]!
   const payload = JSON.parse(String(put[1]?.body)) as { profileImageUrl: string | null }
   expect(payload.profileImageUrl).toBe(oldPhotoUrl)
@@ -162,9 +200,24 @@ it('uploads a staged image from the save action and shows the saved photo', asyn
   expect(calls(fetcher, 'POST')).toHaveLength(1)
 })
 
+it('returns to the summary with updated information after saving an edit', async () => {
+  const fetcher = mockApi()
+  mount()
+  await editProfile()
+  fireEvent.change(screen.getByLabelText(/Business name/), { target: { value: 'Ada Lovelace' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Save profile' }))
+  expect(await screen.findByRole('button', { name: 'Edit' })).toBeVisible()
+  expect(screen.getByText('Ada Lovelace')).toBeVisible()
+  expect(screen.queryByRole('button', { name: 'Save profile' })).not.toBeInTheDocument()
+  const put = calls(fetcher, 'PUT')[0]!
+  const payload = JSON.parse(String(put[1]?.body)) as { displayName: string }
+  expect(payload.displayName).toBe('Ada Lovelace')
+})
+
 it('rejects an invalid staged image before saving or uploading', async () => {
   const fetcher = mockApi()
   mount()
+  await editProfile()
   await fillProfile()
   fireEvent.change(screen.getByLabelText('Choose photo'), { target: { files: [new File(['x'], 'photo.svg', { type: 'image/svg+xml' })] } })
   expect(await screen.findByText('Choose a JPEG, PNG or WebP image.')).toBeVisible()
@@ -177,6 +230,7 @@ it('rejects an invalid staged image before saving or uploading', async () => {
 it('does not upload an image when profile validation fails', async () => {
   const fetcher = mockApi()
   mount()
+  await editProfile()
   await fillProfile()
   fireEvent.change(screen.getByLabelText('Choose photo'), { target: { files: [file()] } })
   await screen.findByRole('img', { name: 'Selected profile photo preview' })
@@ -197,6 +251,7 @@ it('reports a failed photo upload without claiming the photo was saved', async (
     },
   })
   mount()
+  await editProfile()
   await fillProfile()
   fireEvent.change(screen.getByLabelText('Choose photo'), { target: { files: [file()] } })
   await screen.findByRole('img', { name: 'Selected profile photo preview' })
@@ -218,6 +273,7 @@ it('prevents duplicate profile and image submissions when save is clicked twice'
     },
   })
   mount()
+  await editProfile()
   await fillProfile()
   fireEvent.change(screen.getByLabelText('Choose photo'), { target: { files: [file()] } })
   await screen.findByRole('img', { name: 'Selected profile photo preview' })
@@ -227,7 +283,7 @@ it('prevents duplicate profile and image submissions when save is clicked twice'
   expect(calls(fetcher, 'PUT')).toHaveLength(1)
   expect(saving).toBeDisabled()
   await act(async () => resolvePut(response(owner)))
-  await screen.findByText('Your business details and profile photo are up to date.')
+  await screen.findByText('Profile saved')
   expect(calls(fetcher, 'PUT')).toHaveLength(1)
   expect(calls(fetcher, 'POST')).toHaveLength(1)
 })
@@ -235,10 +291,43 @@ it('prevents duplicate profile and image submissions when save is clicked twice'
 it('keeps the existing remove-photo action working independently of save', async () => {
   const fetcher = mockApi({ profile: { ...owner, profileImageUrl: oldPhotoUrl } })
   mount()
-  fireEvent.click(await screen.findByRole('button', { name: 'Remove photo' }))
+  await editProfile()
+  fireEvent.click(screen.getByRole('button', { name: 'Remove photo' }))
   await screen.findByText('Profile photo removed')
   const del = calls(fetcher, 'DELETE')[0]!
   expect(del[0]).toBe('/api/v1/artisans/me/profile-image')
   expect(await screen.findByText('No photo')).toBeVisible()
   expect(calls(fetcher, 'PUT')).toHaveLength(0)
+})
+
+it('cancel discards unsaved changes without an API request', async () => {
+  const fetcher = mockApi()
+  mount()
+  await editProfile()
+  fireEvent.change(screen.getByLabelText(/Business name/), { target: { value: 'Changed Name' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+  expect(await screen.findByRole('button', { name: 'Edit' })).toBeVisible()
+  expect(screen.getByText('Ada')).toBeVisible()
+  expect(screen.queryByText('Changed Name')).not.toBeInTheDocument()
+  expect(calls(fetcher, 'PUT')).toHaveLength(0)
+})
+
+it('cancel discards a staged image and restores the saved photo', async () => {
+  const fetcher = mockApi({ profile: { ...owner, profileImageUrl: oldPhotoUrl } })
+  mount()
+  await editProfile()
+  fireEvent.change(screen.getByLabelText('Change photo'), { target: { files: [file()] } })
+  expect(await screen.findByRole('img', { name: 'Selected profile photo preview' })).toBeVisible()
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+  const photo = await screen.findByRole('img', { name: 'Ada profile photo' })
+  expect(photo).toHaveAttribute('src', oldPhotoUrl)
+  expect(calls(fetcher, 'PUT')).toHaveLength(0)
+  expect(calls(fetcher, 'POST')).toHaveLength(0)
+})
+
+it('does not offer a delete profile action', async () => {
+  mockApi()
+  mount()
+  await screen.findByRole('button', { name: 'Edit' })
+  expect(screen.queryByRole('button', { name: 'Delete profile' })).not.toBeInTheDocument()
 })

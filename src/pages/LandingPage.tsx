@@ -147,13 +147,12 @@ export function LandingPage() {
                 <Link to="/register" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent no-underline shadow-action hover:bg-accent-hover">Join as an artisan<ArrowRight size={18} aria-hidden="true" /></Link>
               </div>}
               {artisan && <div className="relative z-10">
-                <div className="flex items-center justify-between gap-3 pb-4">
+                <div className="flex items-center justify-between flex-wrap sm:flex-nowrap gap-3 pb-4">
                   <div className="flex min-w-0 items-center gap-3">
                     <ArtisanImage url={artisan.profileImageUrl} alt={artisan.displayName} className="size-12 shrink-0 rounded-full object-cover" />
                     <div className="min-w-0">
                       <h2 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-lg">
                         <span className="min-w-0 flex-1 line-clamp-1">{artisan.displayName}</span>
-                        <VerifiedBadge verified={artisan.verificationStatus === 'VERIFIED'} className="shrink-0 px-2 py-0.5 text-[0.6875rem]" />
                       </h2>
                       <p className="mt-1 flex items-center gap-1 text-sm text-ink-muted">
                         <MapPin size={14} aria-hidden="true" className="shrink-0" />
@@ -161,6 +160,7 @@ export function LandingPage() {
                       </p>
                     </div>
                   </div>
+                  <VerifiedBadge verified={artisan.verificationStatus === 'VERIFIED'} className="shrink-0 px-2 py-0.5 text-[0.6875rem]" />
                   <Badge className="shrink-0 bg-accent-soft text-accent-soft-ink">Top rated</Badge>
                 </div>
                 {artwork ? <figure className="mt-1 overflow-hidden rounded-control">

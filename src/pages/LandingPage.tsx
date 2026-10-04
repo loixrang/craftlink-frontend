@@ -89,13 +89,6 @@ export function LandingPage() {
         <div aria-hidden="true" className="pointer-events-none absolute top-1/3 -right-24 size-80 rounded-full bg-amber/10 blur-[110px]" />
         <div className="relative z-10 mx-auto grid w-full max-w-content items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-10">
           <div className="flex min-w-0 flex-col items-start gap-4 lg:col-span-7">
-            <p className="inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1.5 text-xs font-bold uppercase tracking-[0.04em] text-accent-soft-ink shadow-card">
-              <span aria-hidden="true" className="relative flex size-2.5 items-center justify-center">
-                <span className="absolute inline-flex size-full rounded-full bg-accent opacity-75 motion-safe:animate-ping" />
-                <span className="relative inline-flex size-2.5 rounded-full bg-accent" />
-              </span>
-              Verified local skills · Everyday possibilities
-            </p>
             <h1 id="landing-title" className="text-4xl text-ink sm:text-5xl lg:text-display">
               Find the right <span className="text-amber">hands</span> for the job.
             </h1>
@@ -243,7 +236,7 @@ export function LandingPage() {
           </div>
           <ol className="grid gap-8 lg:grid-cols-3">
             {steps.map(({ title, description, note, icon: Icon }, index) => <li key={title} className="flex flex-col gap-4 rounded-modal bg-surface p-6 shadow-card">
-              <span aria-hidden="true" className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-accent to-amber text-lg font-bold text-on-accent shadow-action">
+              <span aria-hidden="true" className="flex size-12 items-center justify-center rounded-full bg-linear-to-br from-accent to-amber text-lg font-bold text-on-accent shadow-action">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <div>

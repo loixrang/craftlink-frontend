@@ -32,7 +32,7 @@ export function CustomerDashboardPage() {
           <Input label="Service or keyword" name="q" type="search" placeholder="Try plumbing or tailoring" />
           <Button type="submit"><Search size={18} aria-hidden="true" />Search artisans</Button>
         </form>
-        <p className="mt-6 flex items-start gap-2 text-sm text-ink-muted"><MapPin size={18} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />On the results page, use your device location or enter coordinates to find nearby artisans.</p>
+        <p className="mt-6 flex items-start gap-2 text-sm text-ink-muted"><MapPin size={18} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />On the results page, select your state and city to find nearby artisans.</p>
       </section>
       <aside aria-labelledby="customer-account-title" className="min-w-0 rounded-panel border border-line bg-surface-muted p-5 sm:p-6">
         <h2 id="customer-account-title" className="text-lg">Your account</h2>

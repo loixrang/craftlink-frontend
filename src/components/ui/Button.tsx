@@ -14,7 +14,7 @@ const variants = {
 export function Button({ variant = 'primary', pending = false, disabled, type = 'button', className = '', children, ...props }: ButtonProps) {
   return (
     <button {...props} type={type} disabled={disabled || pending} aria-busy={pending || undefined}
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 ${variants[variant]} ${className}`}>
+      className={`inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 ${variants[variant]} ${className}`}>
       {children}
     </button>
   )
